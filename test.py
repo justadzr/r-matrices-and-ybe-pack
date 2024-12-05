@@ -38,7 +38,7 @@ r2 = mat2.MatrixTensor2(3, mat2.to_sparray(3, coef1))
 r3 = r2 + mat2.MatrixTensor2(3, mat2.to_sparray(3, coef11))
 
 # print(cybe(r3).simplify())
-para = [2, 0, 1]
+para = [5, 4, 0, 0, 0, 0, 6]
 trip = triple.BDTriple(para)
 r0 = trip.choose_r0()
 casimir = mat2.casimir(len(para))
