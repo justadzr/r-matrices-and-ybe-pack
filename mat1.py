@@ -1,4 +1,5 @@
 import mat2
+# this is a circular import. to be resolved
 from numpy import zeros
 import sympy as sp
 from copy import deepcopy

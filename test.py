@@ -1,6 +1,7 @@
 import mat2
 import triple
 import sympy as sp
+import ybe
 
 # Need to declare the variables first
 x = sp.Symbol("x")
@@ -37,6 +38,9 @@ r2 = mat2.MatrixTensor2(3, mat2.to_sparray(3, coef1))
 r3 = r2 + mat2.MatrixTensor2(3, mat2.to_sparray(3, coef11))
 
 # print(cybe(r3).simplify())
-
-triple = triple.BDTriple([5, 4, 0, 0, 0, 0, 6])
-print(triple.choose_r0())
+para = [2, 0, 1]
+trip = triple.BDTriple(para)
+r0 = trip.choose_r0()
+casimir = mat2.casimir(len(para))
+print(r0)
+print(ybe.check_continuous_datum(trip, r0))

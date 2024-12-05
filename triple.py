@@ -3,7 +3,8 @@ from itertools import groupby
 from numpy import zeros
 from copy import deepcopy
 import sympy as sp
-import mat2, mat
+import mat2, mat1
+import numpy as np
 
 # Write a BD triple of the affine untwisted sl(n) as a list of length n, indicating the image
 # of \alpha_i under the transformation T: for instance
@@ -30,23 +31,26 @@ def right_end(n, connected):
 # a basis of the Cartan algebra of sl(N)
 def dual_basis(basis):
     n = len(basis)
+    # print(basis)
     N = n + 1
     aux = []
     for i in basis:
         temp = sp.MutableDenseNDimArray(zeros((N,)*2).astype(int))
         temp[(i-1) % N, (i-1) % N] = -sp.Integer(1)
         temp[i % N, i % N] = sp.Integer(1)
-        aux.append(mat.MatrixTensor1(N, temp))
+        aux.append(mat1.MatrixTensor1(N, temp))
     
-    res = []
+    system = sp.zeros(n, n)
     for i, j in [(x, y) for x in range(n) for y in range(n)]:
+        system[i, j] = 2 * int(i == j) - int(basis[j] == basis[i] % N + 1) \
+            - int(basis[j] == (basis[i] -2 + N) % N + 1)
+    inverse = system.inv()
+    res = []
+    for i in range(n):
         temp = sp.MutableDenseNDimArray(zeros((N,)*2).astype(int))
-        temp_mat = mat.MatrixTensor1(N, temp)
-        if i <= j:
-            temp_mat += sp.Integer(i + 1) * sp.Rational(n - j, n + 1) * aux[j]
-        else:
-            temp_mat += sp.Integer(j + 1) * sp.Rational(n - i, n + 1) * aux[i]
-        print(type(temp_mat.coef[0, 0]))
+        temp_mat = mat1.MatrixTensor1(N, temp)
+        for j in range(n):
+            temp_mat += inverse[i, j] * aux[j]
         res.append(temp_mat)
     return res
 
@@ -186,39 +190,39 @@ class BDTriple:
             basis = [x for x in range(1, n+1) if x != excl]
             dual_basis_temp = dual_basis(basis)
             dual_basis_modified = []
+
+            T_mat = sp.zeros(len(basis), len(basis))
             for i in range(len(basis)):
-                if basis[i] not in g1:
-                    dual_basis_modified.append(dual_basis_temp[i])
-                else:
-                    dual_basis_modified.append(sp.Rational(1, 2) * \
-                                               (dual_basis_temp[i] + dual_basis_temp[self.T(i)]))
+                if basis[i] in g1:
+                    j = self.T(basis[i])
+                    if j not in basis:
+                        for p in range(len(basis)):
+                            T_mat[p, i] = -1
+                    else:
+                        T_mat[basis.index(j), i] = 1
+            transform = (sp.eye(len(basis)) - T_mat).inv()
+
+            for i in range(len(basis)):
+                temp = mat1.MatrixTensor1(n, sp.MutableDenseNDimArray(zeros((n,)*2).astype(int)))
+                for j in range(len(basis)):
+                    temp += transform[i, j] * dual_basis_temp[j]
+                dual_basis_modified.append(temp)
 
             def aux_inner(triple, i, j):
                 k = triple.T(i)
                 l = triple.T(j)
                 return 2 * (int(i == j) + int(k == j)) \
                     - 2 * int(l != 0) * (int(i == l) + int(k == l)) \
-                    - int(i+1 == j) - int(i == j+1) - int(k+1 == j) - int(k == j+1) \
-                    + int(l != 0) * (int(i+1 == l) + int(i == l+1) + int(k+1 == l) + int(k == l+1))
-
+                    - int(i%n+1 == j) - int(i == j%n+1) - int(k%n+1 == j) - int(k == j%n+1) \
+                    + int(l != 0) * (int(i%n+1 == l) + int(i == l%n+1) + \
+                                     int(k%n+1 == l) + int(k == l%n+1))
             
-            res = mat2.MatrixTensor2(n, sp.MutableDenseNDimArray(zeros((n,)*4).astype(int)))
+            s = mat2.MatrixTensor2(n, sp.MutableDenseNDimArray(zeros((n,)*4).astype(int)))
             for i, j in [(x, y) for x in range(len(basis)) for y in range(len(basis))]:
                 if basis[i] in g1:
-                    res += sp.Rational(1, 2) * aux_inner(self, basis[i], basis[j]) * \
+                    s += sp.Rational(1, 2) * aux_inner(self, basis[i], basis[j]) * \
                         dual_basis_modified[i].tensor(dual_basis_modified[j])
                 elif basis[j] in g1:
-                    res -= sp.Rational(1, 2) * aux_inner(self, basis[j], basis[i]) * \
+                    s -= sp.Rational(1, 2) * aux_inner(self, basis[j], basis[i]) * \
                         dual_basis_modified[i].tensor(dual_basis_modified[j])
-            return res + sp.Rational(1, 2) * mat2.casimir(n)
-    
-    # Here x is a Sympy symbol, and r0 is the continuous datum we choose.
-    # Not including the computation of r0 in this method prevents us from repeatedly calculating r0.
-    def to_trigonometric_solution(self, r0, x) -> mat2.MatrixTensor2:
-        n = self.n
-        coef = mat2.to_sparray([0] * pow(n, 4))
-        for m in range(1, n+1):
-            for i, j in [(x, y) for x in range(n) for y in range(n)]:
-                if (i - j) % n == m:
-                    coef[i, j, j, i] += sp.exp(m * x / n) / (sp.exp(x) - 1)
-        return mat2.MatrixTensor2(coef) + r0
+            return s + sp.Rational(1, 2) * mat2.casimir(n)

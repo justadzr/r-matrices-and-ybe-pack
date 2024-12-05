@@ -1,4 +1,4 @@
-import mat3, mat
+import mat3, mat1
 from numpy import zeros
 import sympy as sp
 from copy import deepcopy        
@@ -25,14 +25,14 @@ def casimir(dim):
             temp[i, i] = 1
             temp[j, j] = -1
             res += sp.Rational(1, dim) * \
-                mat.MatrixTensor1(dim, temp).tensor(mat.MatrixTensor1(dim, temp))
+                mat1.MatrixTensor1(dim, temp).tensor(mat1.MatrixTensor1(dim, temp))
     return res
 
 def identity(dim):
     coef = sp.MutableDenseNDimArray(zeros((dim,)*2).astype(int))
     for i in range(dim):
         coef[i, i] = 1
-    return mat.MatrixTensor1(coef).tensor(mat.MatrixTensor1(coef))
+    return mat1.MatrixTensor1(coef).tensor(mat1.MatrixTensor1(coef))
 
 class MatrixTensor2:
     def __init__(self, dim, coef):
@@ -177,27 +177,27 @@ class MatrixTensor2:
         return res
 
     # I always define the simple roots as \alpha_i = e_{i+1} - e_i
-    # The root applied to matrix not in h is set to be zero. This won't affect anything.
-    def root_action_left(self, simple_root_num) -> mat.MatrixTensor1:
+    # The root applied to components not in h is set to be zero. This won't affect anything.
+    def root_action_left(self, simple_root_num) -> mat1.MatrixTensor1:
         dim = self.dim
         coef1 = self.coef
         coef = sp.MutableDenseNDimArray(zeros((dim,)*2).astype(int))
         for i in range(dim):
             for k, l in [(x, y) for x in range(dim) for y in range(dim)]:
-                if i == simple_root_num:
-                    coef[k, l] = -1 * coef1[i, i, k, l]
-                elif i == simple_root_num + 1:
-                    coef[k, l] = coef1[i, i, k, l]
-        return mat.MatrixTensor1(dim, coef)
+                if i + 1 == simple_root_num:
+                    coef[k, l] -= coef1[i, i, k, l]
+                elif i + 1 == simple_root_num % dim + 1:
+                    coef[k, l] += coef1[i, i, k, l]
+        return mat1.MatrixTensor1(dim, coef)
     
-    def root_action_right(self, simple_root_num) -> mat.MatrixTensor1:
+    def root_action_right(self, simple_root_num) -> mat1.MatrixTensor1:
         dim = self.dim
         coef1 = self.coef
         coef = sp.MutableDenseNDimArray(zeros((dim,)*2).astype(int))
         for i in range(dim):
             for k, l in [(x, y) for x in range(dim) for y in range(dim)]:
-                if i == simple_root_num:
-                    coef[k, l] = -1 * coef1[k, l, i, i]
-                elif i == simple_root_num + 1:
-                    coef[k, l] = coef1[k, l, i, i]
-        return mat.MatrixTensor1(dim, coef)
+                if i + 1 == simple_root_num:
+                    coef[k, l] -= coef1[k, l, i, i]
+                elif i + 1 == simple_root_num % dim + 1:
+                    coef[k, l] += coef1[k, l, i, i]
+        return mat1.MatrixTensor1(dim, coef)
