@@ -9,7 +9,7 @@ def hash_human(dim, i, j, k, l, p, q):
     return hash(dim, i-1, j-1, k-1, l-1, p-1, q-1)
 
 def to_sparray(dim, coef):
-    temp = sp.MutableDenseNDimArray(zeros((dim,)*6))
+    temp = sp.MutableDenseNDimArray(zeros((dim,)*6).astype(int))
     for i, j in [(x, y) for x in range(dim) for y in range(dim)]:
             for k, l in [(x, y) for x in range(dim) for y in range(dim)]:
                 for p, q in [(x, y) for x in range(dim) for y in range(dim)]:
@@ -24,7 +24,7 @@ class MatrixTensor3:
         else:
             raise(ValueError, "Dimension error")
 
-    def __str__(self):
+    def __repr__(self):
         dim = self.dim
         coef = self.coef
         result = ""
@@ -35,7 +35,7 @@ class MatrixTensor3:
                     sub = str.maketrans("0123456789", "₀₁₂₃₄₅₆₇₈₉")
                     term = f"e{i+1}{j+1}⊗e{k+1}{l+1}⊗e{p+1}{q+1}".translate(sub)
                     if temp != 0:
-                        result += "(" + str(temp) + ") * " + term + " + "
+                        result += "(" + str(sp.nsimplify(temp)) + ") * " + term + " + "
         if result == "":
             return "0"
         else:
@@ -55,7 +55,7 @@ class MatrixTensor3:
             dim = self.dim
             coef1 = self.coef
             coef2 = other.coef
-            coef = sp.MutableDenseNDimArray(zeros((dim,)*6))
+            coef = sp.MutableDenseNDimArray(zeros((dim,)*6).astype(int))
             for i, j in [(x, y) for x in range(dim) for y in range(dim)]:
                 for k, l in [(x, y) for x in range(dim) for y in range(dim)]:
                     for p, q in [(x, y) for x in range(dim) for y in range(dim)]:
@@ -77,7 +77,7 @@ class MatrixTensor3:
     def subs(self, x, y):
         coef1 = self.coef
         dim = self.dim
-        coef = sp.MutableDenseNDimArray(zeros((dim,)*6))
+        coef = sp.MutableDenseNDimArray(zeros((dim,)*6).astype(int))
         for i, j in [(x, y) for x in range(dim) for y in range(dim)]:
             for k, l in [(x, y) for x in range(dim) for y in range(dim)]:
                 for p, q in [(x, y) for x in range(dim) for y in range(dim)]:

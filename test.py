@@ -36,26 +36,7 @@ r1 = mat2.MatrixTensor2(2, mat2.to_sparray(2, coef))
 r2 = mat2.MatrixTensor2(3, mat2.to_sparray(3, coef1))
 r3 = r2 + mat2.MatrixTensor2(3, mat2.to_sparray(3, coef11))
 
-
-
-# I should write these in the class MatrixTensor2, 
-# but in that case we can't substitute explicitly.
-def cybe(r):
-    r12 = r.subs(x, u1-u2).to_matrixtensor3_12()
-    r13 = r.subs(x, u1-u3).to_matrixtensor3_13()
-    r23 = r.subs(x, u2-u3).to_matrixtensor3_23()
-    return r12.comm(r13) + r12.comm(r23) + r13.comm(r23)
-
-def qybe(R):
-    R12 = R.subs(x, u1-u2).to_matrixtensor3_12
-    R13 = R.subs(x, u1-u3).to_matrixtensor3_13
-    R23 = R.subs(x, u2-u3).to_matrixtensor3_23
-    return R12 * R13 * R23 - R23 * R13 * R12
-
 # print(cybe(r3).simplify())
 
-T = triple.BDTriple([5, 4, 0, 0, 0, 0, 6])
-print(T)
-print(T.connected_components())
-print(T.connected_components_img())
-print(T.associative())
+triple = triple.BDTriple([5, 4, 0, 0, 0, 0, 6])
+print(triple.choose_r0())

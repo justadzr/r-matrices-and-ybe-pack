@@ -7,7 +7,7 @@ def hash(dim, i, j):
     return int(i * dim + j)
 
 def to_sparray(dim, coef):
-    temp = sp.MutableDenseNDimArray(zeros((dim,)*4))
+    temp = sp.MutableDenseNDimArray(zeros((dim,)*4).astype(int))
     for i, j in [(x, y) for x in range(dim) for y in range(dim)]:
         temp[i, j] = coef[hash(dim, i, j)]
     return temp
@@ -18,9 +18,9 @@ class MatrixTensor1:
             self.dim = dim
             self.coef = coef
         else:
-            raise(ValueError, "Dimension error")
+            raise Exception("Dimension error")
 
-    def __str__(self):
+    def __repr__(self):
         dim = self.dim
         coef = self.coef
         sub = str.maketrans("0123456789", "₀₁₂₃₄₅₆₇₈₉")
@@ -55,7 +55,7 @@ class MatrixTensor1:
             dim = self.dim
             coef1 = self.coef
             coef2 = other.coef
-            coef = sp.MutableDenseNDimArray(zeros((dim,)*2))
+            coef = sp.MutableDenseNDimArray(zeros((dim,)*2).astype(int))
             for i, j in [(x, y) for x in range(dim) for y in range(dim)]:
                 for p, q in [(x, y) for x in range(dim) for y in range(dim)]:
                     coef[i, j] += coef1[i, p] * coef2[q, j]
@@ -69,7 +69,7 @@ class MatrixTensor1:
     def subs(self, x, y):
         coef1 = self.coef
         dim = self.dim
-        coef = sp.MutableDenseNDimArray(zeros((dim,)*2))
+        coef = sp.MutableDenseNDimArray(zeros((dim,)*2).astype(int))
         for i, j in [(x, y) for x in range(dim) for y in range(dim)]:
             temp = coef1[i, j]
             if isinstance(temp, sp.Expr):
@@ -94,7 +94,7 @@ class MatrixTensor1:
             coef1 = self.coef
             coef2 = other.coef
             dim = self.dim
-            coef = sp.MutableDenseNDimArray(zeros((dim,)*4))
+            coef = sp.MutableDenseNDimArray(zeros((dim,)*4).astype(int))
             for i, j in [(x, y) for x in range(dim) for y in range(dim)]:
                 for k, l in [(x, y) for x in range(dim) for y in range(dim)]:
                     coef[i, j, k, l] = coef1[i, j] * coef2[k, l]
