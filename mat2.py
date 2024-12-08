@@ -1,7 +1,9 @@
 import mat3, mat1
 from numpy import zeros
 import sympy as sp
-from copy import deepcopy        
+from copy import deepcopy
+
+# import time
 
 def hash(dim, i, j, k, l):
     return int(i * pow(dim, 3) + j * dim * dim + k * dim + l)
@@ -18,7 +20,7 @@ def to_sparray(dim, coef):
 
 def casimir(dim):
     coef = sp.MutableDenseNDimArray(zeros((dim,)*4).astype(int))
-    res = MatrixTensor2(dim, coef)
+    res = MatrixTensor2(dim, coef, False)
     for i, j in [(x, y) for x in range(dim) for y in range(dim)]:
         if i < j:
             temp = sp.MutableDenseNDimArray(zeros((dim,)*2).astype(int))
@@ -26,7 +28,7 @@ def casimir(dim):
             temp[j, j] = -1
             res += sp.Rational(1, dim) * \
                 mat1.MatrixTensor1(dim, temp).tensor(mat1.MatrixTensor1(dim, temp))
-    return res
+    return MatrixTensor2(dim, res.coef, True)
 
 def identity(dim):
     coef = sp.MutableDenseNDimArray(zeros((dim,)*2).astype(int))
@@ -35,10 +37,11 @@ def identity(dim):
     return mat1.MatrixTensor1(coef).tensor(mat1.MatrixTensor1(coef))
 
 class MatrixTensor2:
-    def __init__(self, dim, coef):
+    def __init__(self, dim: int, coef: sp.MutableDenseNDimArray, of_ggs_type: bool):
         if len(coef) == pow(dim, 4): 
             self.dim = dim
             self.coef = coef
+            self.ggs = of_ggs_type
         else:
             raise(ValueError, "Dimension error")
 
@@ -63,27 +66,33 @@ class MatrixTensor2:
             dim = self.dim
             coef1 = self.coef
             coef2 = other.coef
-            return MatrixTensor2(dim, coef1 + coef2)
+            return MatrixTensor2(dim, coef1 + coef2, self.ggs and other.ggs)
         else: 
             raise(ValueError, "Cannot add matrices of different dimensions")
 
     def __rmul__(self, other):
-        return MatrixTensor2(self.dim, other * self.coef)
+        return MatrixTensor2(self.dim, other * self.coef, self.ggs and other.ggs)
 
     def __sub__(self, other):
         return self + (-1) * other
     
     def __mul__(self, other):
+        # start_time = time.time()
         if self.dim == other.dim:
             dim = self.dim
             coef1 = self.coef
             coef2 = other.coef
             coef = sp.MutableDenseNDimArray(zeros((dim,)*4).astype(int))
-            for i, j in [(x, y) for x in range(dim) for y in range(dim)]:
-                for k, l in [(x, y) for x in range(dim) for y in range(dim)]:
-                    for p, q in [(x, y) for x in range(dim) for y in range(dim)]:
-                        coef[i, j, k, l] += coef1[i, p, k, q] * coef2[p, j, q, l]
-            return MatrixTensor2(dim, coef)
+            if self.ggs and other.ggs:
+                pass
+            else:
+                for i, j in [(x, y) for x in range(dim) for y in range(dim)]:
+                    for k, l in [(x, y) for x in range(dim) for y in range(dim)]:
+                        for p, q in [(x, y) for x in range(dim) for y in range(dim)]:
+                            coef[i, j, k, l] += coef1[i, p, k, q] * coef2[p, j, q, l]
+            # delta_t = time.time() - start_time
+            # print(f"A multiplication took: {delta_t} seconds")
+            return MatrixTensor2(dim, coef, self.ggs and other.ggs)
         else: 
             raise(ValueError, "Cannot multiply matrices of different dimensions")
     
@@ -94,7 +103,7 @@ class MatrixTensor2:
         for i, j in [(x, y) for x in range(dim) for y in range(dim)]:
                 for k, l in [(x, y) for x in range(dim) for y in range(dim)]:
                     coef[i, j, k, l] = coef1[k, l, i, j]
-        return MatrixTensor2(dim, coef)
+        return MatrixTensor2(dim, coef, self.ggs)
     
     def flip(self):
         return casimir(self.dim) * self
@@ -107,7 +116,7 @@ class MatrixTensor2:
                 for k, l in [(x, y) for x in range(dim) for y in range(dim)]:
                     for p in range(dim):
                         coef[i, j, k, l, p, p] = coef1[i, j, k, l]
-        return mat3.MatrixTensor3(dim, coef)
+        return mat3.MatrixTensor3(dim, coef, self.ggs)
 
     def to_matrixtensor3_23(self):
         coef1 = self.coef
@@ -117,7 +126,7 @@ class MatrixTensor2:
                 for k, l in [(x, y) for x in range(dim) for y in range(dim)]:
                     for p in range(dim):
                         coef[p, p, i, j, k, l] = coef1[i, j, k, l]
-        return mat3.MatrixTensor3(dim, coef)
+        return mat3.MatrixTensor3(dim, coef, self.ggs)
         
     def to_matrixtensor3_13(self):
         coef1 = self.coef
@@ -127,7 +136,7 @@ class MatrixTensor2:
                 for k, l in [(x, y) for x in range(dim) for y in range(dim)]:
                     for p in range(dim):
                         coef[i, j, p, p, k, l] = coef1[i, j, k, l]
-        return mat3.MatrixTensor3(dim, coef)
+        return mat3.MatrixTensor3(dim, coef, self.ggs)
     
     def comm(self, other):
         return self * other - other * self
@@ -143,7 +152,7 @@ class MatrixTensor2:
                     coef[i, j, k, l] = temp.subs(x, y)
                 else:
                     coef[i, j, k, l] = temp
-        return MatrixTensor2(dim, coef)
+        return MatrixTensor2(dim, coef, self.ggs)
     
     def identity(self):
         dim = self.dim
@@ -156,7 +165,7 @@ class MatrixTensor2:
                 temp = coef[i, j, k, l]
                 if isinstance(temp, sp.Expr):
                     coef[i, j, k, l] = temp.simplify()
-        return MatrixTensor2(dim, coef)
+        return MatrixTensor2(dim, coef, self.ggs)
     
     # The input hbar here is the Sympy.symbol parameter used to define q
     # The input half is a boolean constant indicating if q=e^\hbar or q=e^{\hbar/2}
@@ -173,7 +182,7 @@ class MatrixTensor2:
         for i, k in [(x, y) for x in range(dim) for y in range(dim)]:
             temp = sp.MutableDenseNDimArray(zeros((dim,)*4).astype(int))
             temp[i, i, k, k] = sp.exp(const * hbar) * coef1[i, i, k, k]
-            res *= MatrixTensor2(dim, temp)
+            res *= MatrixTensor2(dim, temp, self.ggs)
         return res
 
     # I always define the simple roots as \alpha_i = e_{i+1} - e_i

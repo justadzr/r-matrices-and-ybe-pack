@@ -1,10 +1,8 @@
 from operator import itemgetter
 from itertools import groupby
 from numpy import zeros
-from copy import deepcopy
 import sympy as sp
 import mat2, mat1
-import numpy as np
 
 # Write a BD triple of the affine untwisted sl(n) as a list of length n, indicating the image
 # of \alpha_i under the transformation T: for instance
@@ -27,9 +25,16 @@ def right_end(n, connected):
         if connected[i] % n + 1 not in connected:
             return connected[i]
 
-# The input basis here is a list of n=N-1 distinct integers from 1 to N representing
-# a basis of the Cartan algebra of sl(N)
 def dual_basis(basis):
+    """
+    Finds the dual basis of a given basis of simple roots of the weight space.
+
+    Args:
+        basis (list of int): A list of integers corresponding to a basis of α_i
+
+    Returns:
+        list of MatrixTensor1: The dual basis corresponding to the given basis of simple roots.
+    """
     n = len(basis)
     # print(basis)
     N = n + 1
@@ -57,10 +62,16 @@ def dual_basis(basis):
 class BDTriple:
     def __init__(self, triple):
         self.n = len(triple)
-        self.g1 = [(x+1) for x in range(self.n) if triple[x] != 0]
-        self.g2 = [triple[x-1] for x in self.g1]
+        self.g1 = [] + [(x+1) for x in range(self.n) if triple[x] != 0]
+        self.g2 = [] + [triple[x-1] for x in self.g1]
 
     def valid(self) -> bool:
+        """
+        Checks if a Belavin-Drinfeld triple is valid.
+
+        Returns:
+            bool: True if the Belavin-Drinfeld triple is valid, False otherwise.
+        """
         if len(set(self.g2)) != len(self.g1):
             print("Not bijective")
             return False
@@ -104,6 +115,15 @@ class BDTriple:
         return True
     
     def T(self, i):
+        """
+        Returns the index of T(α_i).
+
+        Args:
+            i (int): The index for which T(α_i) is to be retrieved.
+
+        Returns:
+            int: The index of T(α_i).
+        """
         if i not in self.g1:
             return 0
         else:
@@ -137,9 +157,21 @@ class BDTriple:
         return [x for x in res if x is not None]
     
     def connected_components(self):
+        """
+        Returns all connected components of the Belavin-Drinfeld triple.
+
+        Returns:
+            list: A list of connected components.
+        """
         return self.connected_components_aux(self.g1)
     
     def connected_components_img(self):
+        """
+        Returns all connected components in the image of the Belavin-Drinfeld triple.
+
+        Returns:
+            list: A list of connected components in the correct order.
+        """
         components = self.connected_components()
         unclean = self.connected_components_aux(sorted(self.g2))
         temp = []
@@ -154,7 +186,21 @@ class BDTriple:
                         break
             return temp
 
+    # 0 if preserves orientation, 1 o/w
+    def orientation_check(self, connected, connected_img):
+        n = self.n
+        l1 = left_end(n, connected)
+        l2 = left_end(n, connected_img)
+        return int(l2 != self.T(l1))
+
     def associative(self) -> bool:
+        """
+        Checks if a Belavin-Drinfeld triple is associative by 
+            checking the orientation of each connected component.
+
+        Returns:
+            bool: True if the Belavin-Drinfeld triple is associative, False otherwise.
+        """
         if not self.valid():
             raise Exception("Triple not valid")
         else:
@@ -162,20 +208,29 @@ class BDTriple:
             components_img = self.connected_components_img()
             n = self.n
             for i in range(len(components)):
-                length = len(components[i])
-                if 1 < length < n: 
+                if 1 < len(components[i]) < n: 
                     # It is impossible for the length to be n. But I will leave it be.
-                    l1 = left_end(n, components[i])
-                    l2 = left_end(n, components_img[i])
-                    if l2 != self.T(l1):
+                    if self.orientation_check(components[i], components_img[i]) == 1:
                         print(f"The orientation of" + \
                               " the connected component {components[i]} is reversed")
                         return False
             return True
-    
-    # We first choose s := r0 - Casimir/2 via Schedler's method and add a half of the Casimir.
-    # Please only use this method once for each triple!
-    def choose_r0(self) -> mat2.MatrixTensor2:
+
+    def choose_r0(self, only_return_s) -> mat2.MatrixTensor2:
+        """
+        Chooses one correct r_0 for a given Belavin-Drinfeld triple using the method described in 
+        Schedler, T. (1999). "Verification of the GGS Conjecture for sl(n), n ≤ 12". 
+
+        Args:
+            only_return_s (bool): If True, the function returns s instead of r_0.
+
+        Returns:
+            MatrixTensor2: The chosen r_0 or s, depending on the value of `only_return_s`.
+
+        References:
+            Schedler, T. (1999). "Verification of the GGS Conjecture for sl(n), n ≤ 12". 
+            Available at: https://arxiv.org/abs/9901079
+        """
         if not self.valid():
             raise Exception("Triple not valid")
         else:
@@ -217,7 +272,7 @@ class BDTriple:
                     + int(l != 0) * (int(i%n+1 == l) + int(i == l%n+1) + \
                                      int(k%n+1 == l) + int(k == l%n+1))
             
-            s = mat2.MatrixTensor2(n, sp.MutableDenseNDimArray(zeros((n,)*4).astype(int)))
+            s = mat2.MatrixTensor2(n, sp.MutableDenseNDimArray(zeros((n,)*4).astype(int)), True)
             for i, j in [(x, y) for x in range(len(basis)) for y in range(len(basis))]:
                 if basis[i] in g1:
                     s += sp.Rational(1, 2) * aux_inner(self, basis[i], basis[j]) * \
@@ -225,4 +280,49 @@ class BDTriple:
                 elif basis[j] in g1:
                     s -= sp.Rational(1, 2) * aux_inner(self, basis[j], basis[i]) * \
                         dual_basis_modified[i].tensor(dual_basis_modified[j])
-            return s + sp.Rational(1, 2) * mat2.casimir(n)
+            return s + int(not only_return_s) * sp.Rational(1, 2) * mat2.casimir(n)
+
+    def C(self, alpha, beta):
+        """
+        Computes the orientation indicator C_{αβ} for a given Belavin-Drinfeld triple 
+            using the method described in Schedler, T. (2000). "Proof of the GGS Conjecture". 
+
+        Args:
+            alpha (tuple): A tuple of two integers, representing (i, j).
+            beta (tuple): A tuple of two integers, representing (k, l).
+
+        Returns:
+            int or None: The orientation indicator C_{αβ}, or None if undefined.
+
+        References:
+            Schedler, T. (2000). "Proof of the GGS Conjecture". 
+            Available at: https://arxiv.org/abs/math/0009173
+        """
+        if not self.valid():
+            raise Exception("Triple not valid")
+
+        i, j = alpha
+        k, l = beta
+        n = self.n
+        components_1 = self.connected_components()
+        components_2 = self.connected_components_img()
+        
+        # First we check if \alpha is in \tilde{\Gamma_1} and if \beta is in \tilde{\Gamma_2}
+        in_span_1 = False
+        in_span_2 = False
+        for connected_1 in components_1:
+            if j in connected_1 and (i - 2 + n) % n + 1  in connected_1:
+                in_span_1 = True
+                break
+        for connected_2 in components_2:
+            if l in connected_2 and (k - 2 + n) % n + 1  in connected_2:
+                in_span_2 = True
+                break
+        if not (in_span_1 and in_span_2):
+            return None
+        # The check here is redundant as we already have an orientation check
+        # Yet this is probably better as we don't need to apply the check several times
+        elif left_end(n, connected_2) == self.T(left_end(n, connected_1)):
+            return 0
+        else:
+            return 1

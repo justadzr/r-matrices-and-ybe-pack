@@ -88,6 +88,7 @@ class MatrixTensor1:
                 coef[i, j] = temp.simplify()
         return MatrixTensor1(dim, coef)
     
+    # Only use this for matrix of GGS type!
     def tensor(self, other):
         if self.dim != other.dim:
             raise(ValueError, "Cannot tensor matrices of different dimensions")
@@ -99,4 +100,4 @@ class MatrixTensor1:
             for i, j in [(x, y) for x in range(dim) for y in range(dim)]:
                 for k, l in [(x, y) for x in range(dim) for y in range(dim)]:
                     coef[i, j, k, l] = coef1[i, j] * coef2[k, l]
-            return mat2.MatrixTensor2(dim, coef)
+            return mat2.MatrixTensor2(dim, coef, True)

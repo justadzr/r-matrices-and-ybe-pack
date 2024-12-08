@@ -1,7 +1,6 @@
-import mat2
-import triple
+from time import time
+import mat2, triple, ybe
 import sympy as sp
-import ybe
 
 # Need to declare the variables first
 x = sp.Symbol("x")
@@ -29,18 +28,15 @@ coef1 = [
     0, 0, 0, 0, 0, sp.exp(const * x)/(sp.exp(x)-1), 0, 0, 0,
     - 1/(3*(sp.exp(x)-1)), 0, 0, 0, -const - 1/(3*(sp.exp(x)-1)), 0, 0, 0, const + 2/(3*(sp.exp(x)-1))
 ]
-# Adding the part corresponding to the triple [2 0 0] in Schedler's notation
-coef11 = [0] * pow(3, 4)
-coef11[mat2.hash_human(3, 3, 2, 1, 2)] = -sp.exp(x/3)
-coef11[mat2.hash_human(3, 1, 2, 3, 2)] = sp.exp(-x/3)
-r1 = mat2.MatrixTensor2(2, mat2.to_sparray(2, coef))
-r2 = mat2.MatrixTensor2(3, mat2.to_sparray(3, coef1))
-r3 = r2 + mat2.MatrixTensor2(3, mat2.to_sparray(3, coef11))
 
-# print(cybe(r3).simplify())
-para = [5, 4, 0, 0, 0, 0, 6]
+
+para = [0, 0, 0, 0, 0]
 trip = triple.BDTriple(para)
-r0 = trip.choose_r0()
-casimir = mat2.casimir(len(para))
-print(r0)
-print(ybe.check_continuous_datum(trip, r0))
+para2 = [4, 3, 0, 0]
+trip2 = triple.BDTriple(para2)
+
+coef = [x for x in range(4 ** 4)]
+t = time()
+r1 * r2
+print(time() - t)
+print(r1 * r2)

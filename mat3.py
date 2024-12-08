@@ -2,6 +2,8 @@ from numpy import zeros
 import sympy as sp
 from copy import deepcopy
 
+from time import time
+
 def hash(dim, i, j, k, l, p, q):
         return i * pow(dim, 5) + j * pow(dim, 4) + k * pow(dim, 3) + l * dim * dim + p * dim + q
 
@@ -17,10 +19,11 @@ def to_sparray(dim, coef):
     return temp
 
 class MatrixTensor3:
-    def __init__(self, dim, coef):
+    def __init__(self, dim: int, coef: sp.MutableDenseNDimArray, of_ggs_type: bool):
         if len(coef) == pow(dim, 6): 
             self.dim = dim
             self.coef = coef
+            self.ggs = of_ggs_type
         else:
             raise(ValueError, "Dimension error")
 
@@ -46,27 +49,34 @@ class MatrixTensor3:
             dim = self.dim
             coef1 = self.coef
             coef2 = other.coef
-            return MatrixTensor3(dim, coef1 + coef2)
+            return MatrixTensor3(dim, coef1 + coef2, self.ggs and other.ggs)
         else: 
             raise(ValueError, "Cannot add matrices of different dimensions")
     
     def __mul__(self, other):
+        start = time()
         if self.dim == other.dim:
             dim = self.dim
             coef1 = self.coef
             coef2 = other.coef
             coef = sp.MutableDenseNDimArray(zeros((dim,)*6).astype(int))
-            for i, j in [(x, y) for x in range(dim) for y in range(dim)]:
-                for k, l in [(x, y) for x in range(dim) for y in range(dim)]:
-                    for p, q in [(x, y) for x in range(dim) for y in range(dim)]:
-                        for x, y, z in [(x, y, z) for x in range(dim) for y in range(dim) for z in range(dim)]:
-                            coef[i, j, k, l, p, q] += coef1[i, x, k, y, p, z] * coef2[x, j, y, l, z, q]
-            return MatrixTensor3(dim, coef)
+            if self.ggs and other.ggs:
+                pass
+            else:
+                counter = 0
+                for i, j in [(x, y) for x in range(dim) for y in range(dim)]:
+                    for k, l in [(x, y) for x in range(dim) for y in range(dim)]:
+                        for p, q in [(x, y) for x in range(dim) for y in range(dim)]:
+                            for x, y, z in [(x, y, z) for x in range(dim) for y in range(dim) for z in range(dim)]:
+                                coef[i, j, k, l, p, q] += coef1[i, x, k, y, p, z] * coef2[x, j, y, l, z, q]
+                                counter += 1
+            print(f"It took us {time() - start} seconds to do {counter} multiplications.")
+            return MatrixTensor3(dim, coef, self.ggs and other.ggs)
         else: 
             raise(ValueError, "Cannot multiply matrices of different dimensions")
     
     def __rmul__(self, other):
-        return MatrixTensor3(self.dim, other * self.coef)
+        return MatrixTensor3(self.dim, other * self.coef, self.ggs and other.ggs)
 
     def __sub__(self, other):
         return self + (-1) * other
@@ -86,9 +96,10 @@ class MatrixTensor3:
                         coef[i, j, k, l, p, q] = temp.subs(x, y)
                     else:
                         coef[i, j, k, l, p, q] = temp
-        return MatrixTensor3(dim, coef)
+        return MatrixTensor3(dim, coef, self.ggs)
 
     def simplify(self):
+        start = time()
         coef = deepcopy(self.coef)
         dim = self.dim
         for i, j in [(x, y) for x in range(dim) for y in range(dim)]:
@@ -97,4 +108,5 @@ class MatrixTensor3:
                     temp = coef[i, j, k, l, p, q]
                     if isinstance(temp, sp.Expr):
                         coef[i, j, k, l, p, q] = temp.simplify()
-        return MatrixTensor3(dim, coef)
+        print(f"It took us {time() - start} seconds to simplify.")
+        return MatrixTensor3(dim, coef, self.ggs)

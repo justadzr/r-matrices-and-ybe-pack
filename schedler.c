@@ -516,6 +516,7 @@ void setupr(int n, int d) {
 
 int qybe(int n, int d, struct poly *t1, struct sp *t3, struct sp *t4) {
   int i,j,k,l,m,o,good = 1;
+  int counter = 0;
   for(i = 0; i < n && good; i++) 
     for(j = 0; j < n && good; j++) 
       for(k = 0; k < n && good; k++) 
@@ -526,6 +527,7 @@ int qybe(int n, int d, struct poly *t1, struct sp *t3, struct sp *t4) {
 	      if(k+i-o == red(k+i-o,n) && m+k+i-o-j == red(m+k+i-o-j,n)) {
 	      spmult(&r[i][k+i-o][k], &r[k+i-o][j][m], t3);
 	      spmult(t3, &r[o][l][m+k+i-o-j], t4);
+        counter+=1;
 	      sppoladd(t4, t1, d << 1);
 	      }
 
@@ -533,13 +535,14 @@ int qybe(int n, int d, struct poly *t1, struct sp *t3, struct sp *t4) {
 	      spmult(&r[k][o][m], &r[i][j+l-o][m+k-o], t3);
 	      spmult(t3, &r[j+l-o][j][o], t4);
 	      spscalmult(t4, -1);
+        counter+=1;
 	      sppoladd(t4, t1, d << 1);
 	      }
 	    }
             if(t1->con != 0 || t1->posdeg != 0 || t1->negdeg != 0) good = 0; 
           }
 	  }
-  
+  printf("%d multiplications are performed", counter);
   return good;
 }
 
@@ -610,6 +613,7 @@ int main() {
       if(qybe(n, d, &tm, &tsp, &tsp2)) 
       printf("(qybe passed)"); else printf("(qybe failed)"); 
       printf("\n\n");
+      printf("%d", n);
     } 
   }
   fclose(silly);   
