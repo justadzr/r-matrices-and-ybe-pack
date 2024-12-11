@@ -13,6 +13,10 @@ def to_sparray(dim, coef):
         temp[i, j] = coef[hash(dim, i, j)]
     return temp
 
+def zero(dim):
+    coef = sp.MutableDenseNDimArray(zeros((dim,)*2).astype(int))
+    return MatrixTensor1(dim, coef)
+
 class MatrixTensor1:
     def __init__(self, dim, coef):
         if len(coef) == pow(dim, 2):
@@ -20,6 +24,9 @@ class MatrixTensor1:
             self.coef = coef
         else:
             raise Exception("Dimension error")
+    
+    def __eq__(self, other):
+        return self.coef == other.coef
 
     def __repr__(self):
         dim = self.dim

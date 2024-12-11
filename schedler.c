@@ -521,7 +521,11 @@ int qybe(int n, int d, struct poly *t1, struct sp *t3, struct sp *t4) {
     for(j = 0; j < n && good; j++) 
       for(k = 0; k < n && good; k++) 
         for(l = 0; l < n && good; l++) 
-          for(m = 0; m < n && good; m++) { if(m+k+i-j-l == red(m+k+i-j-l,n)) {
+          for(m = 0; m < n && good; m++) 
+        { 
+            
+          if(m+k+i-j-l == red(m+k+i-j-l,n)) 
+        {
             zero(t1);
             for(o = 0; o < n; o++) { 
 	      if(k+i-o == red(k+i-o,n) && m+k+i-o-j == red(m+k+i-o-j,n)) {

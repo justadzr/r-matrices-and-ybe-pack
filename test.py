@@ -30,13 +30,7 @@ coef1 = [
 ]
 
 
-para = [0, 0, 0, 0, 0]
+para = [4, 3, 0, 0]
 trip = triple.BDTriple(para)
-para2 = [4, 3, 0, 0]
-trip2 = triple.BDTriple(para2)
-
-coef = [x for x in range(4 ** 4)]
-t = time()
-r1 * r2
-print(time() - t)
-print(r1 * r2)
+r1 = ybe.to_trigonometric_solution(trip, x, True)
+print(r1.check_of_ggs_type().ggs)

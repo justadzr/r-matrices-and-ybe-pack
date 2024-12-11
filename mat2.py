@@ -36,6 +36,10 @@ def identity(dim):
         coef[i, i] = 1
     return mat1.MatrixTensor1(coef).tensor(mat1.MatrixTensor1(coef))
 
+def zero(dim):
+    coef = sp.MutableDenseNDimArray(zeros((dim,)*4).astype(int))
+    return MatrixTensor2(dim, coef, True)
+
 class MatrixTensor2:
     def __init__(self, dim: int, coef: sp.MutableDenseNDimArray, of_ggs_type: bool):
         if len(coef) == pow(dim, 4): 
@@ -44,6 +48,9 @@ class MatrixTensor2:
             self.ggs = of_ggs_type
         else:
             raise(ValueError, "Dimension error")
+    
+    def __eq__(self, other):
+        return self.coef == other.coef #and self.ggs == other.ggs
 
     def __repr__(self):
         dim = self.dim
@@ -71,7 +78,7 @@ class MatrixTensor2:
             raise(ValueError, "Cannot add matrices of different dimensions")
 
     def __rmul__(self, other):
-        return MatrixTensor2(self.dim, other * self.coef, self.ggs and other.ggs)
+        return MatrixTensor2(self.dim, other * self.coef, self.ggs)
 
     def __sub__(self, other):
         return self + (-1) * other
@@ -84,7 +91,12 @@ class MatrixTensor2:
             coef2 = other.coef
             coef = sp.MutableDenseNDimArray(zeros((dim,)*4).astype(int))
             if self.ggs and other.ggs:
-                pass
+                for i, j in [(x, y) for x in range(dim) for y in range(dim)]:
+                    for k in range(dim):
+                        l = (i + k - j) % dim
+                        for m in range(dim):
+                            l_m = (i + k - m) % dim
+                            coef[i, j, k, l] += coef1[i, m, k, l_m] * coef2[m, j, l_m, l]
             else:
                 for i, j in [(x, y) for x in range(dim) for y in range(dim)]:
                     for k, l in [(x, y) for x in range(dim) for y in range(dim)]:
@@ -210,3 +222,14 @@ class MatrixTensor2:
                 elif i + 1 == simple_root_num % dim + 1:
                     coef[k, l] += coef1[k, l, i, i]
         return mat1.MatrixTensor1(dim, coef)
+
+    # Matrices of GGS type have the form \sum a_{ijk}e_{ij}\otimes e_{k, i+k-j (mod n)}
+    def check_of_ggs_type(self):
+        dim = self.dim
+        coef = self.coef
+        for i, j in [(x, y) for x in range(dim) for y in range(dim)]:
+            for k, l in [(x, y) for x in range(dim) for y in range(dim)]:
+                if l != (i + k - j) % dim and coef[i, j, k, l] != 0:
+                    print(f"{i} {j} {k} {l}")
+                    return MatrixTensor2(dim, coef, False)
+        return MatrixTensor2(dim, coef, True)
