@@ -1,10 +1,10 @@
 from time import time
+from ybe import u1, u2, u3
 import mat2, triple, ybe
 import sympy as sp
 
 # Need to declare the variables first
 x = sp.Symbol("x")
-(u1, u2, u3) = sp.symbols("u1:4")
 
 # An trigonometric example corresponding to the triple [2 0] of sl(2) in Schedler's notation
 coef = [
@@ -32,5 +32,19 @@ coef1 = [
 
 para = [4, 3, 0, 0]
 trip = triple.BDTriple(para)
+
+r0 = trip.choose_r0(only_return_s=False)
+# print(ybe.check_continuous_datum(trip, r0))
 r1 = ybe.to_trigonometric_solution(trip, x, True)
-print(r1.check_of_ggs_type().ggs)
+print(ybe.cybe(r1, x).simplify())
+
+# print(r1)
+# r2 = mat2.MatrixTensor2(r1.dim, r1.coef, False)
+# c = ybe.cybe(r2, x)
+# print(c.simplify())
+# dim = c.dim
+# for i, j in [(x, y) for x in range(dim) for y in range(dim)]:
+#     for k, l in [(x, y) for x in range(dim) for y in range(dim)]:
+#         for p, q in [(x, y) for x in range(dim) for y in range(dim)]:
+#                 print(f"i {i} j {j} k {k} l {l} p {p} q {q}")
+#                 print(c.coef[i, j, k, l, p, q].simplify())

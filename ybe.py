@@ -15,7 +15,7 @@ def subs(num_or_symbol, x, u):
 def r_1213(r: mat2.MatrixTensor2, x: sp.Symbol):
     dim = r.dim
     coef = r.coef
-    if r.check_of_ggs_type().ggs:
+    if r.ggs:
         coef_1213 = sp.MutableDenseNDimArray(zeros((dim,)*6).astype(int))
         for i, j in [(x, y) for x in range(dim) for y in range(dim)]:
             for k, l in [(x, y) for x in range(dim) for y in range(dim)]:
@@ -30,7 +30,7 @@ def r_1213(r: mat2.MatrixTensor2, x: sp.Symbol):
 def r_1312(r: mat2.MatrixTensor2, x: sp.Symbol):
     dim = r.dim
     coef = r.coef
-    if r.check_of_ggs_type().ggs:
+    if r.ggs:
         coef_1312 = sp.MutableDenseNDimArray(zeros((dim,)*6).astype(int))
         for i, j in [(x, y) for x in range(dim) for y in range(dim)]:
             for k, l in [(x, y) for x in range(dim) for y in range(dim)]:
@@ -45,7 +45,7 @@ def r_1312(r: mat2.MatrixTensor2, x: sp.Symbol):
 def r_1223(r: mat2.MatrixTensor2, x: sp.Symbol):
     dim = r.dim
     coef = r.coef
-    if r.check_of_ggs_type().ggs:
+    if r.ggs:
         coef_1223 = sp.MutableDenseNDimArray(zeros((dim,)*6).astype(int))
         for i, j in [(x, y) for x in range(dim) for y in range(dim)]:
             for k, l in [(x, y) for x in range(dim) for y in range(dim)]:
@@ -60,7 +60,7 @@ def r_1223(r: mat2.MatrixTensor2, x: sp.Symbol):
 def r_2312(r: mat2.MatrixTensor2, x: sp.Symbol):
     dim = r.dim
     coef = r.coef
-    if r.check_of_ggs_type().ggs:
+    if r.ggs:
         coef_1213 = sp.MutableDenseNDimArray(zeros((dim,)*6).astype(int))
         for i, j in [(x, y) for x in range(dim) for y in range(dim)]:
             for k, l in [(x, y) for x in range(dim) for y in range(dim)]:
@@ -75,7 +75,7 @@ def r_2312(r: mat2.MatrixTensor2, x: sp.Symbol):
 def r_1323(r: mat2.MatrixTensor2, x: sp.Symbol):
     dim = r.dim
     coef = r.coef
-    if r.check_of_ggs_type().ggs:
+    if r.ggs:
         coef_1323 = sp.MutableDenseNDimArray(zeros((dim,)*6).astype(int))
         for i, j in [(x, y) for x in range(dim) for y in range(dim)]:
             for k, l in [(x, y) for x in range(dim) for y in range(dim)]:
@@ -90,24 +90,24 @@ def r_1323(r: mat2.MatrixTensor2, x: sp.Symbol):
 def r_2313(r: mat2.MatrixTensor2, x: sp.Symbol):
     dim = r.dim
     coef = r.coef
-    if r.check_of_ggs_type().ggs:
+    if r.ggs:
         coef_2313 = sp.MutableDenseNDimArray(zeros((dim,)*6).astype(int))
         for i, j in [(x, y) for x in range(dim) for y in range(dim)]:
             for k, l in [(x, y) for x in range(dim) for y in range(dim)]:
                 for p in range(dim):
                     q = (i + k + p - j - l) % dim
-                    coef_2313[i, j, k, l, p, q] = subs(coef[i, j, (k + p - l) % dim, q], x, u2 - u3) *\
-                        subs(coef[k, l, p, (k + p - l) % dim], x, u1 - u3)
+                    coef_2313[i, j, k, l, p, q] = subs(coef[i, j, (k + p - l) % dim, q], x, u1 - u3) *\
+                        subs(coef[k, l, p, (k + p - l) % dim], x, u2 - u3)
         return mat3.MatrixTensor3(dim, coef_2313, True)
     else:
-        return r.to_matrixtensor3_13().subs(x, u2 - u3) * r.to_matrixtensor3_23().subs(x, u1 - u3)
+        return r.to_matrixtensor3_23().subs(x, u2 - u3) * r.to_matrixtensor3_13().subs(x, u1 - u3)
 
 # Note this function does not simplify the result.
-def cybe(r: mat2.MatrixTensor2, x: sp.Symbol):
+def cybe(r: mat2.MatrixTensor2, x: sp.Symbol) -> mat3.MatrixTensor3:
     return r_1213(r, x) - r_1312(r, x) + r_1223(r, x) - r_2312(r, x) + r_1323(r, x) - r_2313(r, x)
 
 
-def qybe1(R: mat2.MatrixTensor2, x: sp.Symbol):
+def qybe1(R: mat2.MatrixTensor2, x: sp.Symbol) -> mat3.MatrixTensor3:
     if R.ggs:
         dim = R.dim
         c1 = R.coef
@@ -128,7 +128,7 @@ def qybe1(R: mat2.MatrixTensor2, x: sp.Symbol):
         R23 = R.subs(x, u2-u3).to_matrixtensor3_23
         return R12 * R13 * R23
 
-def qybe2(R: mat2.MatrixTensor2, x: sp.Symbol):
+def qybe2(R: mat2.MatrixTensor2, x: sp.Symbol) -> mat3.MatrixTensor3:
     if R.ggs:
         dim = R.dim
         c1 = R.coef
@@ -149,7 +149,7 @@ def qybe2(R: mat2.MatrixTensor2, x: sp.Symbol):
         return R23 * R13 * R12
 
 # Note this function does not simplify the result.
-def qybe(R: mat3.MatrixTensor3, x: sp.Symbol):
+def qybe(R: mat3.MatrixTensor3, x: sp.Symbol) -> mat3.MatrixTensor3:
     return qybe1(R, x) - qybe2(R, x)
 
 def check_continuous_datum(trip: triple.BDTriple, r0: mat2.MatrixTensor2):
@@ -167,7 +167,6 @@ def to_trigonometric_solution(triple: triple.BDTriple, x: sp.Symbol, standard_pa
     n = triple.n
     T = triple.T
     components = triple.connected_components()
-    components_img = triple.connected_components_img()
     coef1 = sp.MutableDenseNDimArray(zeros((n,)*4).astype(int))
     coef2 = sp.MutableDenseNDimArray(zeros((n,)*4).astype(int))
 
@@ -181,59 +180,54 @@ def to_trigonometric_solution(triple: triple.BDTriple, x: sp.Symbol, standard_pa
                 # The standard part
                 coef1[i, j, j, i] += int(standard_part) * \
                     sp.exp(sp.Rational(m, n) * x) / (sp.exp(x) - 1)
+                
+    def in_one_component(i, j):
+        for connected in components:
+            p = (i - j) % n
+            if set([red(j + k, n) for k in range(p)]).issubset(connected):
+                return True
+        return False
+    
+    def take_out_ind(symb):
+        s = str(symb)
+        if s[0] == "-":
+            return int(s[-1]), int(s[2])
+        else:
+            return int(s[1]), int(s[-1])
+    
+    def red(a, b):
+        return (a - 1) % b + 1
 
-    # # At last the nonstandard part
-    # for connected in components:
-    #     for m in range(1, n):
-    #         for i, j in [(x, y) for x in connected for y in connected]:
-    #             if (i - j) % n == m
-
+    # At last the nonstandard part
+    e = sp.symbols(f"e1:{n + 1}")
     for m in range(1, n):
         for i, j in [(x, y) for x in range(n) for y in range(n)]:
                 i_human = i + 1
                 j_human = j + 1
-                # The nonstandard part
-                # First apply T (if applicable)
-                if i_human > j_human:
-                    k_human, l_human = (T(i_human - 1) % n + 1, T(j_human))
-                    k = k_human - 1
-                    l = l_human - 1
-                    indicator = triple.C((i_human, j_human), (k_human, l_human))
-                else:
-                    l_human, k_human = (T(i_human - 1) % n + 1, T(j_human))
-                    k = k_human - 1
-                    l = l_human - 1
-                    indicator = triple.C((i_human, j_human), (k_human, l_human))
-                # print(f"m = {m}")
-                # print(f"i: {i_human}, j: {j_human}, k: {k_human}, l: {l_human}")
-                # print(f"indicator: {indicator}")
-                # counter = 1
-                # print(f"Here counter is {counter}\n======================")
-
-                # When the previous T is applicable
-                while indicator is not None:
-                    # Add one nonstandard term
-                    coef2[k, l, j, i] -= (-1) ** (indicator * (abs(i - j) - 1)) * \
-                        sp.exp(sp.Rational(m, n) * x)
-                    coef2[j, i, k, l] += (-1) ** (indicator * (abs(i - j) - 1)) * \
-                        sp.exp(sp.Rational(-m, n) * x)
-
-                    # Apply T again
-                    if k_human > l_human:
-                        k_human, l_human = (T(k_human - 1) % n + 1, T(l_human))
-                        k = k_human - 1
-                        l = l_human - 1
-                        indicator = triple.C((i_human, j_human), (k_human, l_human))
-                    else:
-                        l_human, k_human = (T(k_human - 1) % n + 1, T(l_human))
-                        k = k_human - 1
-                        l = l_human - 1
-                        indicator = triple.C((i_human, j_human), (k_human, l_human))
-
-                    # counter += 1
+                if (i - j) % n == m:
+                    while in_one_component(i_human, j_human):
+                        a = i_human - 1
+                        b = j_human - 1
+                        root = 0
+                        
+                        p = (a - b) % n
+                        for q in range(p):
+                            root += e[T(red(j_human + q, n)) % n] - e[T(red(j_human + q, n)) - 1]
+                        
+                        k_human, l_human = take_out_ind(root)
+                        k, l = k_human - 1, l_human - 1
+                        indicator = triple.C((i + 1, j + 1), (k_human, l_human))
+                        if indicator is None:
+                            break
+                        else:
+                            coef2[k, l, j, i] -= (-1) ** (indicator * (abs(a - b) - 1)) * \
+                                sp.exp(sp.Rational(m, n) * x)
+                            coef2[j, i, k, l] += (-1) ** (indicator * (abs(b - a) - 1)) * \
+                                sp.exp(sp.Rational(-m, n) * x)
+                            i_human, j_human = k_human, l_human
                     # print(f"i: {i_human}, j: {j_human}, k: {k_human}, l: {l_human}")
                     # print(f"indicator: {indicator}")
                     # print(f"Here counter is {counter}\n======================")
 
-    return mat2.MatrixTensor2(n, coef1, True) + mat2.MatrixTensor2(n, coef2, True) + \
-        int(standard_part) * (1 / (sp.exp(x) - 1)) * mat2.casimir(n) + int(standard_part) * r0
+    return  mat2.MatrixTensor2(n, coef2, True) + int(standard_part) * \
+        (mat2.MatrixTensor2(n, coef1, True) + (1 / (sp.exp(x) - 1)) * mat2.casimir(n) + r0)

@@ -288,8 +288,8 @@ class BDTriple:
             using the method described in Schedler, T. (2000). "Proof of the GGS Conjecture". 
 
         Args:
-            alpha (tuple): A tuple of two integers, representing (i, j).
-            beta (tuple): A tuple of two integers, representing (k, l).
+            alpha (tuple): A tuple (i, j) of two integers, representing α = e_i - e_j.
+            beta (tuple): A tuple (k, l) of two integers, representing β = e_k - e_l.
 
         Returns:
             int or None: The orientation indicator C_{αβ}, or None if undefined.
@@ -322,7 +322,7 @@ class BDTriple:
             return None
         # The check here is redundant as we already have an orientation check
         # Yet this is probably better as we don't need to apply the check several times
-        elif left_end(n, connected_2) == self.T(left_end(n, connected_1)):
+        if left_end(n, connected_2) == self.T(left_end(n, connected_1)):
             return 0
         else:
             return 1
