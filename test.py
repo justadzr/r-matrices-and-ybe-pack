@@ -33,10 +33,10 @@ coef1 = [
 para = [4, 3, 0, 0]
 trip = triple.BDTriple(para)
 
-r0 = trip.choose_r0(only_return_s=False)
-# print(ybe.check_continuous_datum(trip, r0))
 r1 = ybe.to_trigonometric_solution(trip, x, True)
+r2 = ybe.to_trigonometric_solution(trip, x, False)
 print(ybe.cybe(r1, x).simplify())
+print(r2)
 
 # print(r1)
 # r2 = mat2.MatrixTensor2(r1.dim, r1.coef, False)
