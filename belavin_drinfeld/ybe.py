@@ -1,5 +1,5 @@
 import mat3, mat2, mat1
-import triple
+import triple as triple
 import sympy as sp
 from numpy import zeros
 
@@ -231,3 +231,6 @@ def to_trigonometric_solution(triple: triple.BDTriple, x: sp.Symbol, standard_pa
 
     return  mat2.MatrixTensor2(n, coef2, True) + int(standard_part) * \
         (mat2.MatrixTensor2(n, coef1, True) + (1 / (sp.exp(x) - 1)) * mat2.casimir(n) + r0)
+
+def ggs_conjecture(triple: triple.BDTriple, x: sp.Symbol):
+    pass

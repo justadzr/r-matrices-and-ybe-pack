@@ -1,7 +1,8 @@
 from time import time
-from ybe import u1, u2, u3
-import mat2, triple, ybe
+from belavin_drinfeld.ybe import u1, u2, u3
+import mat2, belavin_drinfeld.triple as triple, belavin_drinfeld.ybe as ybe
 import sympy as sp
+import math
 
 # Need to declare the variables first
 x = sp.Symbol("x")
@@ -35,8 +36,8 @@ trip = triple.BDTriple(para)
 
 r1 = ybe.to_trigonometric_solution(trip, x, True)
 r2 = ybe.to_trigonometric_solution(trip, x, False)
-print(ybe.cybe(r1, x).simplify())
-print(r2)
+# print(ybe.cybe(r1, x).simplify())
+# print(r2)
 
 # print(r1)
 # r2 = mat2.MatrixTensor2(r1.dim, r1.coef, False)
