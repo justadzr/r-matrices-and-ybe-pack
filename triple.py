@@ -1,8 +1,8 @@
 from operator import itemgetter
 from itertools import groupby
 from numpy import zeros
-import sympy as sp
-import mat2, mat1
+from sympy.combinatorics import Permutation
+import sympy as sp, itertools, mat2, mat1
 
 # Write a BD triple of the affine untwisted sl(n) as a list of length n, indicating the image
 # of \alpha_i under the transformation T: for instance
@@ -193,28 +193,45 @@ class BDTriple:
         l2 = left_end(n, connected_img)
         return int(l2 != self.T(l1))
 
-    def associative(self) -> bool:
+    def associative(self) -> Permutation:
         """
         Checks if a Belavin-Drinfeld triple is associative by 
-            checking the orientation of each connected component.
+            checking if there is a cyclic permutation compatible with T.
 
         Returns:
-            bool: True if the Belavin-Drinfeld triple is associative, False otherwise.
+            sympy.Permutation: the compatible permutation 
+                               if the Belavin-Drinfeld triple is associative, None otherwise.
         """
         if not self.valid():
             raise Exception("Triple not valid")
         else:
-            components = self.connected_components()
-            components_img = self.connected_components_img()
             n = self.n
-            for i in range(len(components)):
-                if 1 < len(components[i]) < n: 
-                    # It is impossible for the length to be n. But I will leave it be.
-                    if self.orientation_check(components[i], components_img[i]) == 1:
-                        print(f"The orientation of" + \
-                              " the connected component {components[i]} is reversed")
-                        return False
-            return True
+            g1 = self.g1
+            T = self.T
+            l = list(range(n))
+            p0 = Permutation(l[-1:] + l[:-1])
+            all = list(itertools.permutations(range(n)))
+            perm = [0] * n
+
+            for lst in all:
+                temp = True
+                for i in range(n):
+                    if lst[i] + 1 in g1 and T(lst[i] + 1) != lst[(i + 1) % n] + 1:
+                        temp = False
+                        break
+                
+                if temp:
+                    for i in range(n):
+                        perm[lst[i]] = lst[(i + 1) % n]
+                    p = Permutation(perm)
+                    assoc_check = True
+
+                    for a_human in g1:
+                        if (a_human - 1) ^ (p0 * p) != (a_human - 1) ^ (p * p0):
+                            assoc_check = False
+                    if assoc_check:
+                        return p
+            return None
 
     def choose_r0(self, only_return_s) -> mat2.MatrixTensor2:
         """

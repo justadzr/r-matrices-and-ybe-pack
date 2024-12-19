@@ -1,7 +1,6 @@
-from numpy import zeros
 import sympy as sp
 from copy import deepcopy
-
+from numpy import zeros
 from time import time
 
 def hash(dim, i, j, k, l, p, q):

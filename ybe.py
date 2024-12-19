@@ -1,6 +1,4 @@
-import mat3, mat2, mat1
-import triple as triple
-import sympy as sp
+import sympy as sp, mat1, mat2, mat3, triple
 from numpy import zeros
 
 # Need to declare the variables first
@@ -232,5 +230,62 @@ def to_trigonometric_solution(triple: triple.BDTriple, x: sp.Symbol, standard_pa
     return  mat2.MatrixTensor2(n, coef2, True) + int(standard_part) * \
         (mat2.MatrixTensor2(n, coef1, True) + (1 / (sp.exp(x) - 1)) * mat2.casimir(n) + r0)
 
-def ggs_conjecture(triple: triple.BDTriple, x: sp.Symbol):
-    pass
+def ggs_conjecture(triple: triple.BDTriple, x: sp.Symbol, h: sp.Symbol, small_r: bool):
+    T = triple.T
+    n = triple.n
+    g1 = triple.g1
+    p = triple.associative()
+
+    if p is not None:
+        print(list(range(n)))
+        print([o^p for o in range(n)])
+        coef = mat2.to_sparray(n, [0] * pow(n, 4))
+
+        for i in range(n):
+            coef[i, i, i, i] += 1 / (sp.exp(h) - 1) + 1 / (1 - sp.exp(-x))
+
+        for k_human in range(1, n):
+            p_temp = p ** k_human
+            for i in range(n):
+                C_k_i = i ^ p_temp
+                coef[C_k_i, C_k_i, i, i] += sp.exp(k_human * h / n) / (sp.exp(h) - 1)
+
+        for m_human in range(1, n):
+            for i in range(n):
+                coef[(i + m_human) % n, i, i, (i + m_human) % n] += \
+                    sp.exp(m_human * x / n) / (sp.exp(x) - 1)
+        
+        coef_nonstandard = mat2.to_sparray(n, [0] * pow(n, 4))
+        for m_human in range(1, n + 1):
+            for k_human in range(1, n + 1):
+                for a_human in g1:
+                    print(f"k: {k_human}, m: {m_human}, a: {a_human}")
+                    check = True
+                    for j in range(k_human):
+                        p_temp = p**j
+                        for i in range(m_human):
+                            if (1 + (((a_human + i  - 1) % n) ^ p_temp)) not in g1:
+                                check = False
+                                break
+                        else:
+                            continue
+                        break
+                    print(check)
+                    if check:
+                        a = a_human - 1
+                        C_a = a ^ (p**k_human)
+                        print(f"For these k, m, a, we have C_a = {C_a+1}")
+                        print(a+1, 1+(a + m_human) % n, 1+(C_a + m_human) % n, 1+C_a)
+                        coef_nonstandard[a, (a + m_human) % n, (C_a + m_human) % n, C_a] += \
+                            sp.exp(-(k_human * h + m_human * x) / n)
+                        coef_nonstandard[(C_a + m_human) % n, C_a, a, (a + m_human) % n] -= \
+                            sp.exp((k_human * h + m_human * x) / n)
+        print(mat2.MatrixTensor2(n, coef_nonstandard, True))
+
+        if small_r:
+            return mat2.MatrixTensor2(n, coef, True) + mat2.MatrixTensor2(n, coef_nonstandard, True)
+        else:
+            return 1 / (1 / (sp.exp(h/2) - sp.exp(-h/2)) + 1 / (sp.exp(x/2) - sp.exp(-x/2))) *\
+                (mat2.MatrixTensor2(n, coef, True) + mat2.MatrixTensor2(n, coef_nonstandard, True))
+    else:
+        print("NOT associative. TODO")

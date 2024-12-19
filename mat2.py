@@ -1,6 +1,5 @@
-import mat3, mat1
+import mat3, mat1, sympy as sp
 from numpy import zeros
-import sympy as sp
 from copy import deepcopy
 
 # import time
@@ -183,11 +182,11 @@ class MatrixTensor2:
     # The input half is a boolean constant indicating if q=e^\hbar or q=e^{\hbar/2}
     # Note the input gets automatically projected to h\otimes h,
     # which is where the exponential makes sense in U_q(g)
-    def exp(self, hbar, half):
+    def exp(self, hbar: sp.Symbol, q_exp_half: bool):
         coef1 = self.coef
         dim = self.dim
         res = identity(dim)
-        if half:
+        if q_exp_half:
             const = sp.Rational(1, 2)
         else:
             const = 1

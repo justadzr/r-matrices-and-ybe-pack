@@ -1,11 +1,10 @@
+import math, sympy as sp, triple, ybe
+from sympy.combinatorics import Permutation
 from time import time
-from belavin_drinfeld.ybe import u1, u2, u3
-import mat2, belavin_drinfeld.triple as triple, belavin_drinfeld.ybe as ybe
-import sympy as sp
-import math
 
 # Need to declare the variables first
 x = sp.Symbol("x")
+h = sp.Symbol("h")
 
 # An trigonometric example corresponding to the triple [2 0] of sl(2) in Schedler's notation
 coef = [
@@ -31,11 +30,13 @@ coef1 = [
 ]
 
 
-para = [4, 3, 0, 0]
+para = [2, 3, 0]
 trip = triple.BDTriple(para)
+r = ybe.ggs_conjecture(trip, x, h, True)
+print(ybe.qybe(r, x).simplify())
 
-r1 = ybe.to_trigonometric_solution(trip, x, True)
-r2 = ybe.to_trigonometric_solution(trip, x, False)
+# r1 = ybe.to_trigonometric_solution(trip, x, True)
+# r2 = ybe.to_trigonometric_solution(trip, x, False)
 # print(ybe.cybe(r1, x).simplify())
 # print(r2)
 
