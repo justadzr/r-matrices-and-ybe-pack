@@ -221,6 +221,15 @@ class MatrixTensor2:
                 elif i + 1 == simple_root_num % dim + 1:
                     coef[k, l] += coef1[k, l, i, i]
         return mat1.MatrixTensor1(dim, coef)
+    
+    def root_action(self, i, j, k, l):
+        coef = self.coef
+        i -= 1
+        j -= 1
+        k -= 1
+        l -= 1
+        return coef[i, i, k, k] + coef[j, j, l, l]\
+            - coef[i, i, l, l] - coef[j, j, k, k]
 
     # Matrices of GGS type have the form \sum a_{ijk}e_{ij}\otimes e_{k, i+k-j (mod n)}
     def check_of_ggs_type(self):

@@ -30,10 +30,12 @@ coef1 = [
 ]
 
 
-para = [2, 3, 0]
+para = [3, 4, 0, 0, 0]
 trip = triple.BDTriple(para)
-r = ybe.ggs_conjecture(trip, x, h, True)
-print(ybe.qybe(r, x).simplify())
+s = trip.choose_r0(only_return_s=True)
+print(1-s.root_action(2, 1, 4, 3))
+# r = ybe.ggs_conjecture(trip, x, h, small_r=True)
+# print(ybe.qybe(r, x).simplify())
 
 # r1 = ybe.to_trigonometric_solution(trip, x, True)
 # r2 = ybe.to_trigonometric_solution(trip, x, False)

@@ -233,7 +233,7 @@ class BDTriple:
                         return p
             return None
 
-    def choose_r0(self, only_return_s) -> mat2.MatrixTensor2:
+    def choose_r0(self, only_return_s: bool) -> mat2.MatrixTensor2:
         """
         Chooses one correct r_0 for a given Belavin-Drinfeld triple using the method described in 
         Schedler, T. (1999). "Verification of the GGS Conjecture for sl(n), n ≤ 12". 

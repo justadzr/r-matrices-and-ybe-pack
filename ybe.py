@@ -230,6 +230,8 @@ def to_trigonometric_solution(triple: triple.BDTriple, x: sp.Symbol, standard_pa
     return  mat2.MatrixTensor2(n, coef2, True) + int(standard_part) * \
         (mat2.MatrixTensor2(n, coef1, True) + (1 / (sp.exp(x) - 1)) * mat2.casimir(n) + r0)
 
+# Please only use small_r = True if you want simplified results. Sympy does
+# weird things with fractions.
 def ggs_conjecture(triple: triple.BDTriple, x: sp.Symbol, h: sp.Symbol, small_r: bool):
     T = triple.T
     n = triple.n
@@ -288,4 +290,5 @@ def ggs_conjecture(triple: triple.BDTriple, x: sp.Symbol, h: sp.Symbol, small_r:
             return 1 / (1 / (sp.exp(h/2) - sp.exp(-h/2)) + 1 / (sp.exp(x/2) - sp.exp(-x/2))) *\
                 (mat2.MatrixTensor2(n, coef, True) + mat2.MatrixTensor2(n, coef_nonstandard, True))
     else:
+        
         print("NOT associative. TODO")
