@@ -232,15 +232,15 @@ def to_trigonometric_solution(triple: triple.BDTriple, x: sp.Symbol, standard_pa
 
 # Please only use small_r = True if you want simplified results. Sympy does
 # weird things with fractions.
-def ggs_conjecture(triple: triple.BDTriple, x: sp.Symbol, h: sp.Symbol, small_r: bool):
-    T = triple.T
-    n = triple.n
-    g1 = triple.g1
-    p = triple.associative()
+def ggs_conjecture(trip: triple.BDTriple, x: sp.Symbol, h: sp.Symbol, small_r: bool):
+    T = trip.T
+    n = trip.n
+    g1 = trip.g1
+    p = trip.associative()
 
     if p is not None:
-        print(list(range(n)))
-        print([o^p for o in range(n)])
+        print("Producing a GGS conjectural R-matrix for this associative triple......")
+        print("The triple is:\n" + str(trip))
         coef = mat2.to_sparray(n, [0] * pow(n, 4))
 
         for i in range(n):
@@ -282,7 +282,6 @@ def ggs_conjecture(triple: triple.BDTriple, x: sp.Symbol, h: sp.Symbol, small_r:
                             sp.exp(-(k_human * h + m_human * x) / n)
                         coef_nonstandard[(C_a + m_human) % n, C_a, a, (a + m_human) % n] -= \
                             sp.exp((k_human * h + m_human * x) / n)
-        print(mat2.MatrixTensor2(n, coef_nonstandard, True))
 
         if small_r:
             return mat2.MatrixTensor2(n, coef, True) + mat2.MatrixTensor2(n, coef_nonstandard, True)
@@ -290,5 +289,65 @@ def ggs_conjecture(triple: triple.BDTriple, x: sp.Symbol, h: sp.Symbol, small_r:
             return 1 / (1 / (sp.exp(h/2) - sp.exp(-h/2)) + 1 / (sp.exp(x/2) - sp.exp(-x/2))) *\
                 (mat2.MatrixTensor2(n, coef, True) + mat2.MatrixTensor2(n, coef_nonstandard, True))
     else:
+        print("Producing a GGS conjectural R-matrix for this nonassociative triple......")
+        print("The triple is:\n" + str(trip))
+        n = trip.n
+        s = trip.choose_r0(only_return_s=True)
+        triple_empty = triple.BDTriple([0] * n)
+        standard_part = s.exp(h, True) * ggs_conjecture(triple_empty, x, h, True) * s.exp(h, True)
+
+        components = trip.connected_components()
+        coef = mat2.to_sparray(n, [0] * pow(n, 4))
+        coef_s = s.coef
         
-        print("NOT associative. TODO")
+        def in_one_component(i, j):
+            for connected in components:
+                p = (i - j) % n
+                if set([red(j + k, n) for k in range(p)]).issubset(connected):
+                    return True
+            return False
+    
+        def take_out_ind(symb):
+            s = str(symb)
+            if s[0] == "-":
+                return int(s[-1]), int(s[2])
+            else:
+                return int(s[1]), int(s[-1])
+    
+        def red(a, b):
+            return (a - 1) % b + 1
+
+        e = sp.symbols(f"e1:{n + 1}")
+        for m in range(1, n):
+            for i, j in [(x, y) for x in range(n) for y in range(n)]:
+                    i_human = i + 1
+                    j_human = j + 1
+                    if (i - j) % n == m:
+                        while in_one_component(i_human, j_human):
+                            a = i_human - 1
+                            b = j_human - 1
+                            root = 0
+
+                            p = (a - b) % n
+                            for q in range(p):
+                                root += e[T(red(j_human + q, n)) % n] - e[T(red(j_human + q, n)) - 1]
+                            
+                            k_human, l_human = take_out_ind(root)
+                            k, l = k_human - 1, l_human - 1
+                            indicator = trip.C((i_human, j_human), (k_human, l_human))
+                            if indicator is None:
+                                break
+                            else:
+                                temp = sp.Rational(1, 2) * (1 - coef_s[i, i, k, k] 
+                                                            - coef_s[j, j, l, l]
+                                                            + indicator * (abs(a - b) - 1))
+                                coef[k, l, j, i] -= (-1) ** (indicator * (abs(a - b) - 1)) * \
+                                    sp.exp((temp * h + m * x) / n)
+                                coef[j, i, k, l] += (-1) ** (indicator * (abs(b - a) - 1)) * \
+                                    sp.exp(-(temp * h + m * x) / n)
+                                i_human, j_human = k_human, l_human
+        if small_r:
+            return standard_part + mat2.MatrixTensor2(n, coef, True)
+        else:
+            return 1 / (1 / (sp.exp(h/2) - sp.exp(-h/2)) + 1 / (sp.exp(x/2) - sp.exp(-x/2))) *\
+                (standard_part + mat2.MatrixTensor2(n, coef, True))

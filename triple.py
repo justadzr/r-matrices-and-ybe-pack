@@ -134,7 +134,10 @@ class BDTriple:
         sub = str.maketrans("0123456789", "₀₁₂₃₄₅₆₇₈₉")
         for i in range(len(self.g1)):
             res += f"\u03B1{self.g1[i]} -> \u03B1{self.g2[i]}\n".translate(sub)
-        return res
+        if res != "":
+            return res[:-1]
+        else:
+            return "Empty triple."
 
     def connected_components_aux(self, G):
         n = self.n
@@ -343,3 +346,6 @@ class BDTriple:
             return 0
         else:
             return 1
+
+    def passing_ord(self, i, j, k, l):
+        return 1 - self.choose_r0(only_return_s=True).root_action(i, j, k, l)

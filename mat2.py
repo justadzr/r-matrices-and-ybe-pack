@@ -33,7 +33,7 @@ def identity(dim):
     coef = sp.MutableDenseNDimArray(zeros((dim,)*2).astype(int))
     for i in range(dim):
         coef[i, i] = 1
-    return mat1.MatrixTensor1(coef).tensor(mat1.MatrixTensor1(coef))
+    return mat1.MatrixTensor1(dim, coef).tensor(mat1.MatrixTensor1(dim, coef))
 
 def zero(dim):
     coef = sp.MutableDenseNDimArray(zeros((dim,)*4).astype(int))

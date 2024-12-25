@@ -30,25 +30,7 @@ coef1 = [
 ]
 
 
-para = [3, 4, 0, 0, 0]
+para = [4, 3, 0, 0]
 trip = triple.BDTriple(para)
 s = trip.choose_r0(only_return_s=True)
-print(1-s.root_action(2, 1, 4, 3))
-# r = ybe.ggs_conjecture(trip, x, h, small_r=True)
-# print(ybe.qybe(r, x).simplify())
-
-# r1 = ybe.to_trigonometric_solution(trip, x, True)
-# r2 = ybe.to_trigonometric_solution(trip, x, False)
-# print(ybe.cybe(r1, x).simplify())
-# print(r2)
-
-# print(r1)
-# r2 = mat2.MatrixTensor2(r1.dim, r1.coef, False)
-# c = ybe.cybe(r2, x)
-# print(c.simplify())
-# dim = c.dim
-# for i, j in [(x, y) for x in range(dim) for y in range(dim)]:
-#     for k, l in [(x, y) for x in range(dim) for y in range(dim)]:
-#         for p, q in [(x, y) for x in range(dim) for y in range(dim)]:
-#                 print(f"i {i} j {j} k {k} l {l} p {p} q {q}")
-#                 print(c.coef[i, j, k, l, p, q].simplify())
+print(ybe.qybe(ybe.ggs_conjecture(trip, x, h, True), x).simplify())
