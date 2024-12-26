@@ -294,6 +294,7 @@ def ggs_conjecture(trip: triple.BDTriple, x: sp.Symbol, h: sp.Symbol, small_r: b
         n = trip.n
         s = trip.choose_r0(only_return_s=True)
         triple_empty = triple.BDTriple([0] * n)
+        print("Computing the standard part by:")
         standard_part = s.exp(h, True) * ggs_conjecture(triple_empty, x, h, True) * s.exp(h, True)
 
         components = trip.connected_components()

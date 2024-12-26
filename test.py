@@ -30,7 +30,10 @@ coef1 = [
 ]
 
 
-para = [4, 3, 0, 0]
+para = [4, 5, 0, 8, 7, 0, 0, 0]
 trip = triple.BDTriple(para)
+print(trip)
 s = trip.choose_r0(only_return_s=True)
-print(ybe.qybe(ybe.ggs_conjecture(trip, x, h, True), x).simplify())
+R = ybe.ggs_conjecture(trip, x, h, True)
+print(R)
+print(ybe.qybe(R, x).simplify())
