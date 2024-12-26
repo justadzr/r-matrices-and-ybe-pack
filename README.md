@@ -1,3 +1,5 @@
+# A small package for classical r-matrices and quantum R-matrices in affine untwisted sl(n)
+---
 TODO: documentations, etc. Everything happens in `test.py`. Some modules contain circular imports.
 ---
 <del> The current status: I wrote a very naive formula and tested it with some simple nonassociative triples. It seems that the formula worked, but I can't be sure because</del>
