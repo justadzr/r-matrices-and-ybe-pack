@@ -1,6 +1,6 @@
 import math, sympy as sp, triple, ybe
 from sympy.combinatorics import Permutation
-from time import time
+import mat2, time
 
 # Need to declare the variables first
 x = sp.Symbol("x")
@@ -30,12 +30,22 @@ coef1 = [
 ]
 
 
-para = [4, 5, 0, 8, 7, 0, 0, 0]
-# para = [4, 3, 0, 0]
+para = [3, 4, 0, 0]
+# para = [0, 0, 0]
 trip = triple.BDTriple(para)
-print(trip)
 s = trip.choose_r0(only_return_s=True)
-print(s)
-R = ybe.ggs_conjecture(trip, x, h, True)
-print(R)
-print(ybe.qybe(R, x).simplify())
+R1 = ybe.ggs_conjecture(trip, x, h, True)
+
+print('===============')
+print(R1)
+print('===============')
+n = trip.n
+coef = ybe.qybe(R1, x).coef
+
+for i, j in [(x, y) for x in range(n) for y in range(n)]:
+    for k, l in [(x, y) for x in range(n) for y in range(n)]:
+        for p, q in [(x, y) for x in range(n) for y in range(n)]:
+            start = time.time()
+            print(f"i={i+1} j={j+1} k={k+1} l={l+1} p={p+1} q={q+1}")
+            print(coef[i, j, k, l, p, q].simplify())
+            print(f"The above simplification takes {time.time() - start} seconds")

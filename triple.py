@@ -33,7 +33,7 @@ def dual_basis(basis):
         basis (list of int): A list of integers corresponding to a basis of α_i
 
     Returns:
-        list of MatrixTensor1: The dual basis corresponding to the given basis of simple roots.
+        A list of MatrixTensor1: The dual basis corresponding to the given basis of simple roots.
     """
     n = len(basis)
     # print(basis)

@@ -29,6 +29,12 @@ def casimir(dim):
                 mat1.MatrixTensor1(dim, temp).tensor(mat1.MatrixTensor1(dim, temp))
     return MatrixTensor2(dim, res.coef, True)
 
+def casimir_gl(dim):
+    coef = sp.MutableDenseNDimArray(zeros((dim,)*4).astype(int))
+    for i, j in [(x, y) for x in range(dim) for y in range(dim)]:
+        coef[i, j, j, i] = 1
+    return MatrixTensor2(dim, coef, True)
+
 def identity(dim):
     coef = sp.MutableDenseNDimArray(zeros((dim,)*2).astype(int))
     for i in range(dim):
@@ -182,19 +188,17 @@ class MatrixTensor2:
     # The input half is a boolean constant indicating if q=e^\hbar or q=e^{\hbar/2}
     # Note the input gets automatically projected to h\otimes h,
     # which is where the exponential makes sense in U_q(g)
-    def exp(self, hbar: sp.Symbol, q_exp_half: bool):
+    def exp(self, h: sp.Symbol, q_exp_half: bool):
         coef1 = self.coef
         dim = self.dim
-        res = identity(dim)
+        coef = identity(dim).coef
         if q_exp_half:
             const = sp.Rational(1, 2)
         else:
             const = 1
         for i, k in [(x, y) for x in range(dim) for y in range(dim)]:
-            temp = sp.MutableDenseNDimArray(zeros((dim,)*4).astype(int))
-            temp[i, i, k, k] = sp.exp(const * hbar) * coef1[i, i, k, k]
-            res *= MatrixTensor2(dim, temp, self.ggs)
-        return res
+            coef[i, i, k, k] = sp.exp(const * coef1[i, i, k, k] * h)
+        return MatrixTensor2(dim, coef, True)
 
     # I always define the simple roots as \alpha_i = e_{i+1} - e_i
     # The root applied to components not in h is set to be zero. This won't affect anything.

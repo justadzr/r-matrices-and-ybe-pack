@@ -1,4 +1,4 @@
-# A small package for classical r-matrices and quantum R-matrices in affine untwisted sl(n)
+### A small package for classical r-matrices and quantum R-matrices in affine untwisted sl(n)
 ---
 TODO: documentations, etc. Everything happens in `test.py`. Some modules contain circular imports.
 ---
