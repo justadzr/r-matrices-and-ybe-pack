@@ -245,3 +245,12 @@ class MatrixTensor2:
                     print(f"{i} {j} {k} {l}")
                     return MatrixTensor2(dim, coef, False)
         return MatrixTensor2(dim, coef, True)
+    
+    def pr_to_sln(self):
+        dim = self.dim
+        coef = self.coef
+        res = zero(dim)
+        for i, j in [(x, y) for x in range(dim) for y in range(dim)]:
+            for k, l in [(x, y) for x in range(dim) for y in range(dim)]:
+                res += coef[i, j, k, l] * mat1.e(dim, i, j).pr_to_sln().tensor(mat1.e(dim, k, l).pr_to_sln())
+        return res

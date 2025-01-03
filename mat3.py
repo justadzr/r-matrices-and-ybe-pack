@@ -2,6 +2,7 @@ import sympy as sp
 from copy import deepcopy
 from numpy import zeros
 from time import time
+from mat1 import e
 
 def hash(dim, i, j, k, l, p, q):
         return i * pow(dim, 5) + j * pow(dim, 4) + k * pow(dim, 3) + l * dim * dim + p * dim + q
@@ -142,3 +143,15 @@ class MatrixTensor3:
                     if q != (i + k + p - j - l) % dim and coef[i, j, k, l, p, q] != 0:
                         return MatrixTensor3(dim, coef, False)
         return MatrixTensor3(dim, coef, True)
+
+    def pr_to_sln(self):
+        dim = self.dim
+        coef = self.coef
+        res = zero(dim)
+        for i, j in [(x, y) for x in range(dim) for y in range(dim)]:
+            for k, l in [(x, y) for x in range(dim) for y in range(dim)]:
+                for p, q in [(x, y) for x in range(dim) for y in range(dim)]:
+                    res += coef[i, j, k, l, p, q] * \
+                        (e(dim, i, j).pr_to_sln().tensor(e(dim, k, l).pr_to_sln())).tensor(e(dim, p, q).pr_to_sln())
+
+        return res

@@ -17,6 +17,11 @@ def zero(dim):
     coef = sp.MutableDenseNDimArray(zeros((dim,)*2).astype(int))
     return MatrixTensor1(dim, coef)
 
+def e(dim, i, j):
+    coef = sp.MutableDenseNDimArray(zeros((dim,)*2).astype(int))
+    coef[i, j] = 1
+    return MatrixTensor1(dim, coef)
+
 class MatrixTensor1:
     def __init__(self, dim, coef):
         if len(coef) == pow(dim, 2):
@@ -108,3 +113,19 @@ class MatrixTensor1:
                 for k, l in [(x, y) for x in range(dim) for y in range(dim)]:
                     coef[i, j, k, l] = coef1[i, j] * coef2[k, l]
             return mat2.MatrixTensor2(dim, coef, True)
+    
+    def pr_to_sln(self):
+        dim = self.dim
+        coef1 = self.coef
+        coef = sp.MutableDenseNDimArray(zeros((dim,)*2).astype(int))
+        for i, j in [(x, y) for x in range(dim) for y in range(dim)]:
+            if i != j:
+                coef[i, j] += coef1[i, j]
+            else:
+                if i < dim-1:
+                    coef[i+1, i+1] -= sp.Rational(1, 2) * coef1[i, i]
+                coef[i, i] += (int(i < dim-1) * sp.Rational(1, 2) 
+                               + int(i > 0) * sp.Rational(1, 2)) * coef1[i, i]
+                if i > 0:
+                    coef[i-1, i-1] -= sp.Rational(1, 2) * coef1[i, i]
+        return MatrixTensor1(dim, coef)

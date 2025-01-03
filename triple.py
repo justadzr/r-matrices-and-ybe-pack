@@ -27,13 +27,13 @@ def right_end(n, connected):
 
 def dual_basis(basis):
     """
-    Finds the dual basis of a given basis of simple roots of the weight space.
+    Finds the dual basis of (α_i) a given set of linearly independent roots of sl(n).
 
     Args:
-        basis (list of int): A list of integers corresponding to a basis of α_i
+        basis (list of int): A list of integers corresponding to a set of α_i
 
     Returns:
-        A list of MatrixTensor1: The dual basis corresponding to the given basis of simple roots.
+        A list of MatrixTensor1: The dual basis corresponding to the given basis of h*.
     """
     n = len(basis)
     # print(basis)
@@ -41,8 +41,8 @@ def dual_basis(basis):
     aux = []
     for i in basis:
         temp = sp.MutableDenseNDimArray(zeros((N,)*2).astype(int))
-        temp[(i-1) % N, (i-1) % N] = -sp.Integer(1)
-        temp[i % N, i % N] = sp.Integer(1)
+        temp[(i-1) % N, (i-1) % N] = -1
+        temp[i % N, i % N] = 1
         aux.append(mat1.MatrixTensor1(N, temp))
     
     system = sp.zeros(n, n)
@@ -331,11 +331,11 @@ class BDTriple:
         in_span_1 = False
         in_span_2 = False
         for connected_1 in components_1:
-            if j in connected_1 and (i - 2 + n) % n + 1  in connected_1:
+            if j in connected_1 and (i - 2 + n) % n + 1 in connected_1:
                 in_span_1 = True
                 break
         for connected_2 in components_2:
-            if l in connected_2 and (k - 2 + n) % n + 1  in connected_2:
+            if l in connected_2 and (k - 2 + n) % n + 1 in connected_2:
                 in_span_2 = True
                 break
         if not (in_span_1 and in_span_2):

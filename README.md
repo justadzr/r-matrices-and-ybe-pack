@@ -1,7 +1,12 @@
 ### A small package for classical r-matrices and quantum R-matrices in affine untwisted sl(n)
 ---
-TODO: documentations, etc. Everything happens in `test.py`. Some modules contain circular imports.
 ---
+I'm now having trouble to write down the standard part of R_{T, s} given a triple and a continuous datum. Technically speaking, here s can be selected as an element of sl(n). But it troubles me when I tried to produce the standard part. That is, the method I use produces a different standard part in contrast to Polishchuk's formula, although our nonstandard parts are the same (for associative matrices), which is not surprising.
+
+Update: ok I figured out why. I saw the part with e_{-alpha}\otimes e_{alpha} as the standard part, and multiplied both sides of it with q^s, which is not what I'm supposed to do. After getting this part out and multiplying the true standard part with q^s, we get the same standard part, and there is no need to think about where s lives.
+
+TODO: documentations, etc. Everything happens in `test.py`. Some modules contain circular imports.
+
 <del> The current status: I wrote a very naive formula and tested it with some simple nonassociative triples. It seems that the formula worked, but I can't be sure because</del>
 1. <del>The passing order was never dealt with rigorously.</del>
 2. <del>I did not compute the actual formula of the affine twist.</del>
