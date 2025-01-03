@@ -354,28 +354,39 @@ def ggs_conjecture(trip: triple.BDTriple, x: sp.Symbol, h: sp.Symbol, small_r: b
                             p = (a - b) % n
                             for q in range(p):
                                 root += e[T(red(j_human + q, n)) % n] - e[T(red(j_human + q, n)) - 1]
-                            
+
                             k_human, l_human = take_out_ind(root)
                             k, l = k_human - 1, l_human - 1
+                            print((i + 1, j + 1), (k_human, l_human))
                             indicator = trip.C((i + 1, j + 1), (k_human, l_human))
+                            print(indicator)
                             if indicator is None:
                                 break
                             else:
                                 # Thought: there is no left and right, only consecutive or not.
-                                print(f"The passing order for alpha=e{i+1}-e{j+1} and beta=e{k_human}-e{l_human}")
+                                print(f"The passing order for alpha=e{i+1}-e{j+1} and beta=e{k_human}-e{l_human} is:")
                                 print(1-coef_s[i, i, k, k]-coef_s[j, j, l, l]+coef_s[i, i, l, l]+coef_s[j, j, k, k])
                                 if  i + 1 == l_human and j + 1 == k_human:
-                                    temp = sp.Rational(1, 2) * (coef_s[j, j, k, k] 
+                                    conjecture = sp.Rational(5, 2)
+                                    print(f"My conjectured passing order is: {conjecture}")
+                                    temp1 = sp.Rational(1, 2) * (-conjecture + coef_s[j, j, k, k] 
                                                             + coef_s[i, i, l, l]
+                                                            - indicator * (abs(a - b) - 1))
+                                    temp2 = sp.Rational(1, 2) * (conjecture + coef_s[k, k, j, j] 
+                                                            + coef_s[l, l, i, i]
                                                             + indicator * (abs(a - b) - 1))
+                                    coef[k, l, j, i] -= (-1) ** (indicator * (abs(a - b) - 1)) * \
+                                        sp.exp(temp2 * h + sp.Rational(m, n) * x)
+                                    coef[j, i, k, l] += (-1) ** (indicator * (abs(b - a) - 1)) * \
+                                        sp.exp(temp1 * h - sp.Rational(m, n) * x)
                                 else:
                                     temp = sp.Rational(1, 2) * (1 - coef_s[i, i, k, k] 
                                                             - coef_s[j, j, l, l]
                                                             + indicator * (abs(a - b) - 1))
-                                coef[k, l, j, i] -= (-1) ** (indicator * (abs(a - b) - 1)) * \
-                                    sp.exp(temp * h + sp.Rational(m, n) * x)
-                                coef[j, i, k, l] += (-1) ** (indicator * (abs(b - a) - 1)) * \
-                                    sp.exp(- temp * h - sp.Rational(m, n) * x)
+                                    coef[k, l, j, i] -= (-1) ** (indicator * (abs(a - b) - 1)) * \
+                                        sp.exp(temp * h + sp.Rational(m, n) * x)
+                                    coef[j, i, k, l] += (-1) ** (indicator * (abs(b - a) - 1)) * \
+                                        sp.exp(- temp * h - sp.Rational(m, n) * x)
                                 i_human, j_human = k_human, l_human
         print("Nonstandard part produced.")
         if small_r:
@@ -436,6 +447,8 @@ def ggs_conjecture_aux(trip: triple.BDTriple, x: sp.Symbol, h: sp.Symbol, small_
                         if indicator is None:
                             break
                         else:
+                            print(f"The passing order for alpha=e{i+1}-e{j+1} and beta=e{k_human}-e{l_human} is:")
+                            print(1-coef_s[i, i, k, k]-coef_s[j, j, l, l]+coef_s[i, i, l, l]+coef_s[j, j, k, k])
                             temp = sp.Rational(1, 2) * (1 - coef_s[i, i, k, k] 
                                                         - coef_s[j, j, l, l]
                                                         + indicator * (abs(a - b) - 1))
