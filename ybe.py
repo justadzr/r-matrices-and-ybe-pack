@@ -233,7 +233,7 @@ def to_trigonometric_solution(triple: triple.BDTriple, x: sp.Symbol, standard_pa
 # Please only use small_r = True if you want simplified results. Sympy does
 # weird things with fractions.
 # TODOOOOO: this is a bad function! rewrite some parts of it! maybe make another one!
-def ggs_conjecture(trip: triple.BDTriple, x: sp.Symbol, h: sp.Symbol, small_r: bool):
+def ggs_conjecture(trip: triple.BDTriple, x: sp.Symbol, h: sp.Symbol, small_r: bool, conjec):
     T = trip.T
     n = trip.n
     g1 = trip.g1
@@ -316,7 +316,7 @@ def ggs_conjecture(trip: triple.BDTriple, x: sp.Symbol, h: sp.Symbol, small_r: b
         n = trip.n
         s = trip.choose_r0(only_return_s=True)
         triple_empty = triple.BDTriple([0] * n)
-        std1, std2 = ggs_conjecture(triple_empty, x, h, True)
+        std1, std2 = ggs_conjecture(triple_empty, x, h, True, 0)
         standard_part = s.exp(h, True) * std1 * s.exp(h, True) + std2
 
         components = trip.connected_components()
@@ -367,7 +367,7 @@ def ggs_conjecture(trip: triple.BDTriple, x: sp.Symbol, h: sp.Symbol, small_r: b
                                 print(f"The passing order for alpha=e{i+1}-e{j+1} and beta=e{k_human}-e{l_human} is:")
                                 print(1-coef_s[i, i, k, k]-coef_s[j, j, l, l]+coef_s[i, i, l, l]+coef_s[j, j, k, k])
                                 if  i + 1 == l_human and j + 1 == k_human:
-                                    conjecture = sp.Rational(5, 2)
+                                    conjecture = conjec
                                     print(f"My conjectured passing order is: {conjecture}")
                                     temp1 = sp.Rational(1, 2) * (-conjecture + coef_s[j, j, k, k] 
                                                             + coef_s[i, i, l, l]
@@ -395,14 +395,14 @@ def ggs_conjecture(trip: triple.BDTriple, x: sp.Symbol, h: sp.Symbol, small_r: b
             return 1 / (1 / (sp.exp(h/2) - sp.exp(-h/2)) + 1 / (sp.exp(x/2) - sp.exp(-x/2))) *\
                 (standard_part + mat2.MatrixTensor2(n, coef, True))
         
-def ggs_conjecture_aux(trip: triple.BDTriple, x: sp.Symbol, h: sp.Symbol, small_r: bool):
+def ggs_conjecture_aux(trip: triple.BDTriple, x: sp.Symbol, h: sp.Symbol, small_r: bool, conjec):
     T = trip.T
     n = trip.n
     g1 = trip.g1
     print("Force nonassociative procedure:")
     s = trip.choose_r0(only_return_s=True)
     triple_empty = triple.BDTriple([0] * n)
-    std1, std2 = ggs_conjecture(triple_empty, x, h, True)
+    std1, std2 = ggs_conjecture(triple_empty, x, h, True, conjec)
     standard_part = s.exp(h, True) * std1 * s.exp(h, True) + std2
 
     components = trip.connected_components()
