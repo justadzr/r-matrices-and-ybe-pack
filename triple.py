@@ -212,7 +212,7 @@ class BDTriple:
             g1 = self.g1
             T = self.T
             l = list(range(n))
-            p0 = Permutation(l[-1:] + l[:-1])
+            p0 = Permutation(l[1:] + l[:1])
             all = list(itertools.permutations(range(n)))
             perm = [0] * n
 
@@ -230,7 +230,7 @@ class BDTriple:
                     assoc_check = True
 
                     for a_human in g1:
-                        if (a_human - 1) ^ (p0 * p) != (a_human - 1) ^ (p * p0):
+                        if ((a_human - 1) ^ p0) ^ p != ((a_human - 1) ^ p) ^ p0:
                             assoc_check = False
                     if assoc_check:
                         return p

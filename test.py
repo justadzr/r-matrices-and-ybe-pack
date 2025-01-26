@@ -30,26 +30,40 @@ coef1 = [
 ]
 
 
-para = [0, 0, 1, 2]
-# para = [2, 0, 0]
+para = [5, 4, 0, 7, 8, 0, 0, 0]
 trip = triple.BDTriple(para)
 s = trip.choose_r0(only_return_s=True)
-conjec = sp.Rational(2, 2)
-R1 = ybe.ggs_conjecture(trip, x, h, True, conjec)
+r0 = s + sp.Rational(1, 2) * mat2.casimir(trip.n)
 
-print('===============')
+# ggs_conjecture_aux does NOT use the conjectured value `conjec`.
+conjec = sp.Rational(1, 1)
+R1 = ybe.ggs_conjecture_aux(trip, x, h, True, conjec)
+
+
+print(ybe.qybe(R1, x).simplify())
+print('=========================================')
+print(s)
+print('=========================================')
 print(R1)
-print('===============')
-# print(ybe.qybe(R1, x).coef[0,0,0,2,0,2])
 
-n = trip.n
-coef = ybe.qybe(R1, x).coef
-for i, j in [(x, y) for x in range(n) for y in range(n)]:
-    for k, l in [(x, y) for x in range(n) for y in range(n)]:
-        for p, q in [(x, y) for x in range(n) for y in range(n)]:
-            start = time.time()
-            temp = coef[i, j, k, l, p, q].simplify()
-            if temp != 0:
-                print(f"i={i+1} j={j+1} k={k+1} l={l+1} p={p+1} q={q+1}")
-                print(temp)
-                print(f"The above simplification takes {time.time() - start} seconds")
+
+# attention = [0, 0, 1, 2, 0, 3]
+# coef1 = ybe.qybe1_aux(R1, x, attention).coef
+# coef2 = ybe.qybe2_aux(R1, x, attention).coef
+# print(coef1[attention].simplify())
+# print(coef[attention].simplify())
+
+coef_print = False
+
+if coef_print:
+    coef = ybe.qybe(R1, x).coef
+    n = trip.n
+    for i, j in [(x, y) for x in range(n) for y in range(n)]:
+        for k, l in [(x, y) for x in range(n) for y in range(n)]:
+            for p, q in [(x, y) for x in range(n) for y in range(n)]:
+                start = time.time()
+                temp = coef[i, j, k, l, p, q].simplify()
+                if temp != 0:
+                    print(f"i={i+1} j={j+1} k={k+1} l={l+1} p={p+1} q={q+1}")
+                    print(temp)
+                    print(f"The above simplification takes {time.time() - start} seconds")

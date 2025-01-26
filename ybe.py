@@ -1,5 +1,6 @@
 import sympy as sp, mat1, mat2, mat3, triple
 from numpy import zeros
+from sympy.combinatorics import Permutation
 
 # Need to declare the variables first
 (u1, u2, u3) = sp.symbols("u1:4")
@@ -125,6 +126,43 @@ def qybe1(R: mat2.MatrixTensor2, x: sp.Symbol) -> mat3.MatrixTensor3:
         R13 = R.subs(x, u1-u3).to_matrixtensor3_13
         R23 = R.subs(x, u2-u3).to_matrixtensor3_23
         return R12 * R13 * R23
+    
+def qybe1_aux(R: mat2.MatrixTensor2, x: sp.Symbol, attention: list) -> mat3.MatrixTensor3:
+    if R.ggs:
+        dim = R.dim
+        c1 = R.coef
+        c = sp.MutableDenseNDimArray(zeros((dim,)*6).astype(int))
+        for i, j in [(x, y) for x in range(dim) for y in range(dim)]:
+            for k, l in [(x, y) for x in range(dim) for y in range(dim)]:
+                for m in range(dim):
+                    n = (i + k + m - j - l) % dim
+                    print_index = attention == [i, j, k, l, m, n]
+                    if print_index:
+                            print("*****************1111********************")
+                            print(f"The coefficient before {[i, j, k, l, m, n]} is given by the sum of")
+                    for p in range(dim):
+                        q = (k + i + m - p - j) % dim
+                        A = subs(c1[i, (k + i - p) % dim, k, p], x, u1 - u2)
+                        B = subs(c1[(k + i - p) % dim, j, m, q], x, u1 - u3)
+                        C = subs(c1[p, l, q, n], x, u2 - u3)
+                        D = A * B * C
+                        if print_index and str(D) != "0":
+                            print(f"A at {[i, (k + i - p) % dim, k, p]}")
+                            print(A)
+                            print(f"B at {[(k + i - p) % dim, j, m, q]}")
+                            print(B)
+                            print(f"C at {[p, l, q, n]}")
+                            print(C)
+                            print("With product:")
+                            print(D)
+                            print("=========================================")
+                        c[i, j, k, l, m, n] += D
+        return mat3.MatrixTensor3(dim, c, True)
+    else:
+        R12 = R.subs(x, u1-u2).to_matrixtensor3_12
+        R13 = R.subs(x, u1-u3).to_matrixtensor3_13
+        R23 = R.subs(x, u2-u3).to_matrixtensor3_23
+        return R12 * R13 * R23
 
 def qybe2(R: mat2.MatrixTensor2, x: sp.Symbol) -> mat3.MatrixTensor3:
     if R.ggs:
@@ -139,6 +177,42 @@ def qybe2(R: mat2.MatrixTensor2, x: sp.Symbol) -> mat3.MatrixTensor3:
                         c[i, j, k, l, m, n] += subs(c1[k, p, m, (k + m - p) % dim], x, u2 - u3)\
                             * subs(c1[i, (j + l - p) % dim, (k + m - p) % dim, n], x, u1 - u3)\
                             * subs(c1[(j + l - p) % dim, j, p, l], x, u1 - u2)
+        return mat3.MatrixTensor3(dim, c, True)
+    else:
+        R12 = R.subs(x, u1-u2).to_matrixtensor3_12
+        R13 = R.subs(x, u1-u3).to_matrixtensor3_13
+        R23 = R.subs(x, u2-u3).to_matrixtensor3_23
+        return R23 * R13 * R12
+
+def qybe2_aux(R: mat2.MatrixTensor2, x: sp.Symbol, attention: list) -> mat3.MatrixTensor3:
+    if R.ggs:
+        dim = R.dim
+        c1 = R.coef
+        c = sp.MutableDenseNDimArray(zeros((dim,)*6).astype(int))
+        for i, j in [(x, y) for x in range(dim) for y in range(dim)]:
+            for k, l in [(x, y) for x in range(dim) for y in range(dim)]:
+                for m in range(dim):
+                    n = (i + k + m - j - l) % dim
+                    print_index = attention == [i, j, k, l, m, n]
+                    if print_index:
+                            print("*****************2222********************")
+                            print(f"The coefficient of {[i, j, k, l, m, n]} is given by the sum of")
+                    for p in range(dim):
+                        A = subs(c1[k, p, m, (k + m - p) % dim], x, u2 - u3)
+                        B = subs(c1[i, (j + l - p) % dim, (k + m - p) % dim, n], x, u1 - u3)
+                        C = subs(c1[(j + l - p) % dim, j, p, l], x, u1 - u2)
+                        D = A * B * C
+                        if print_index and str(D) != "0":
+                            print(f"A at {[k, p, m, (k + m - p) % dim]}")
+                            print(A)
+                            print(f"B at {[i, (j + l - p) % dim, (k + m - p) % dim, n]}")
+                            print(B)
+                            print(f"C at {[(j + l - p) % dim, j, p, l]}")
+                            print(C)
+                            print("With product:")
+                            print(D)
+                            print("=========================================")
+                        c[i, j, k, l, m, n] += D
         return mat3.MatrixTensor3(dim, c, True)
     else:
         R12 = R.subs(x, u1-u2).to_matrixtensor3_12
@@ -241,18 +315,18 @@ def ggs_conjecture(trip: triple.BDTriple, x: sp.Symbol, h: sp.Symbol, small_r: b
     if not g1:
         print("A standard R-matrix is produced.")
         coef1 = mat2.to_sparray(n, [0] * pow(n, 4))
-        for m_human in range(1, n):
-            for i in range(n):
-                coef1[(i + m_human) % n, i, i, (i + m_human) % n] += \
-                    sp.exp(m_human * x / n) / (sp.exp(x) - 1)
+        for i in range(n):
+            for k_human in range(1, n):
+                coef1[(i + k_human) % n, (i + k_human) % n, i, i] += \
+                    sp.exp(k_human * h / n) / (sp.exp(h) - 1)
         for i in range(n):
             coef1[i, i, i, i] += 1 / (sp.exp(h) - 1) + 1 / (1 - sp.exp(-x))
         
         coef2 = mat2.to_sparray(n, [0] * pow(n, 4))
-        for i in range(n):
-            for k_human in range(1, n):
-                coef2[(i + k_human) % n, (i + k_human) % n, i, i] += \
-                    sp.exp(k_human * h / n) / (sp.exp(h) - 1)
+        for m_human in range(1, n):
+            for i in range(n):
+                coef2[(i + m_human) % n, i, i, (i + m_human) % n] += \
+                    sp.exp(m_human * x / n) / (sp.exp(x) - 1)
 
         if small_r:
             return mat2.MatrixTensor2(n, coef1, True), mat2.MatrixTensor2(n, coef2, True)
@@ -267,6 +341,9 @@ def ggs_conjecture(trip: triple.BDTriple, x: sp.Symbol, h: sp.Symbol, small_r: b
     if p is not None:
         print("Producing a GGS conjectural R-matrix for this associative triple:")
         print(trip)
+        print("Which extends to")
+        print([i ^ p for i in range(n)])
+
         coef = mat2.to_sparray(n, [0] * pow(n, 4))
 
         for i in range(n):
@@ -315,9 +392,16 @@ def ggs_conjecture(trip: triple.BDTriple, x: sp.Symbol, h: sp.Symbol, small_r: b
         print(trip)
         n = trip.n
         s = trip.choose_r0(only_return_s=True)
+
+        coef_temp = mat2.to_sparray(n, [0] * pow(n, 4))
+        for i, j in [(x, y) for x in range(n) for y in range(n)]:
+            if i != j:
+                coef_temp[i, i, j, j] = sp.Rational(1, 2) - sp.Rational((j - i) % n, n)
+        s0 = mat2.MatrixTensor2(n, coef_temp, True)
+
         triple_empty = triple.BDTriple([0] * n)
         std1, std2 = ggs_conjecture(triple_empty, x, h, True, 0)
-        standard_part = s.exp(h, True) * std1 * s.exp(h, True) + std2
+        standard_part = (s - s0).exp(h, True) * std1 * (s - s0).exp(h, True) + std2
 
         components = trip.connected_components()
         coef = mat2.to_sparray(n, [0] * pow(n, 4))
@@ -388,7 +472,7 @@ def ggs_conjecture(trip: triple.BDTriple, x: sp.Symbol, h: sp.Symbol, small_r: b
                                     coef[j, i, k, l] += (-1) ** (indicator * (abs(b - a) - 1)) * \
                                         sp.exp(- temp * h - sp.Rational(m, n) * x)
                                 i_human, j_human = k_human, l_human
-        print("Nonstandard part produced.")
+        print("The nonstandard part for this triple is produced.")
         if small_r:
             return (standard_part + mat2.MatrixTensor2(n, coef, True))
         else:
@@ -399,11 +483,19 @@ def ggs_conjecture_aux(trip: triple.BDTriple, x: sp.Symbol, h: sp.Symbol, small_
     T = trip.T
     n = trip.n
     g1 = trip.g1
-    print("Force nonassociative procedure:")
+    print("Forced nonassociative procedure for the following triple:")
+    print(trip)
     s = trip.choose_r0(only_return_s=True)
+
+    coef_temp = mat2.to_sparray(n, [0] * pow(n, 4))
+    for i, j in [(x, y) for x in range(n) for y in range(n)]:
+        if i != j:
+            coef_temp[i, i, j, j] = sp.Rational(1, 2) - sp.Rational((j - i) % n, n)
+    s0 = mat2.MatrixTensor2(n, coef_temp, True)
+
     triple_empty = triple.BDTriple([0] * n)
-    std1, std2 = ggs_conjecture(triple_empty, x, h, True, conjec)
-    standard_part = s.exp(h, True) * std1 * s.exp(h, True) + std2
+    std1, std2 = ggs_conjecture(triple_empty, x, h, True, 0)
+    standard_part = (s - s0).exp(h, True) * std1 * (s - s0).exp(h, True) + std2
 
     components = trip.connected_components()
     coef = mat2.to_sparray(n, [0] * pow(n, 4))
@@ -450,14 +542,14 @@ def ggs_conjecture_aux(trip: triple.BDTriple, x: sp.Symbol, h: sp.Symbol, small_
                             print(f"The passing order for alpha=e{i+1}-e{j+1} and beta=e{k_human}-e{l_human} is:")
                             print(1-coef_s[i, i, k, k]-coef_s[j, j, l, l]+coef_s[i, i, l, l]+coef_s[j, j, k, k])
                             temp = sp.Rational(1, 2) * (1 - coef_s[i, i, k, k] 
-                                                        - coef_s[j, j, l, l]
-                                                        + indicator * (abs(a - b) - 1))
+                                                            - coef_s[j, j, l, l]
+                                                            + indicator * (abs(a - b) - 1))
                             coef[k, l, j, i] -= (-1) ** (indicator * (abs(a - b) - 1)) * \
                                 sp.exp(temp * h + sp.Rational(m, n) * x)
                             coef[j, i, k, l] += (-1) ** (indicator * (abs(b - a) - 1)) * \
                                 sp.exp(- temp * h - sp.Rational(m, n) * x)
                             i_human, j_human = k_human, l_human
-    print("Nonstandard part produced.")
+    print("The nonstandard part for this triple is produced.")
     if small_r:
         return (standard_part + mat2.MatrixTensor2(n, coef, True))
     else:
