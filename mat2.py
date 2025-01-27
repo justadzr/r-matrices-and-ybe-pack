@@ -88,6 +88,9 @@ class MatrixTensor2:
     def __sub__(self, other):
         return self + (-1) * other
     
+    def __neg__(self):
+        return (-1) * self
+    
     def __mul__(self, other):
         # start_time = time.time()
         if self.dim == other.dim:

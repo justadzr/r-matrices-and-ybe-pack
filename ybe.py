@@ -222,6 +222,7 @@ def qybe2_aux(R: mat2.MatrixTensor2, x: sp.Symbol, attention: list) -> mat3.Matr
 
 # Note this function does not simplify the result.
 def qybe(R: mat3.MatrixTensor3, x: sp.Symbol) -> mat3.MatrixTensor3:
+    print("Computing the QYBE of the given R-matrix......")
     return qybe1(R, x) - qybe2(R, x)
 
 def check_continuous_datum(trip: triple.BDTriple, r0: mat2.MatrixTensor2):
@@ -307,7 +308,8 @@ def to_trigonometric_solution(triple: triple.BDTriple, x: sp.Symbol, standard_pa
 # Please only use small_r = True if you want simplified results. Sympy does
 # weird things with fractions.
 # TODOOOOO: this is a bad function! rewrite some parts of it! maybe make another one!
-def ggs_conjecture(trip: triple.BDTriple, x: sp.Symbol, h: sp.Symbol, small_r: bool, conjec):
+def ggs_conjecture(trip: triple.BDTriple, x: sp.Symbol, h: sp.Symbol, small_r: bool, conjec) \
+    -> mat2.MatrixTensor2:
     T = trip.T
     n = trip.n
     g1 = trip.g1
@@ -341,8 +343,8 @@ def ggs_conjecture(trip: triple.BDTriple, x: sp.Symbol, h: sp.Symbol, small_r: b
     if p is not None:
         print("Producing a GGS conjectural R-matrix for this associative triple:")
         print(trip)
-        print("Which extends to")
-        print([i ^ p for i in range(n)])
+        print("Which extends to the n-cycle")
+        print([(i ^ p) + 1 for i in range(n)])
 
         coef = mat2.to_sparray(n, [0] * pow(n, 4))
 
@@ -448,8 +450,9 @@ def ggs_conjecture(trip: triple.BDTriple, x: sp.Symbol, h: sp.Symbol, small_r: b
                                 break
                             else:
                                 # Thought: there is no left and right, only consecutive or not.
-                                print(f"The passing order for alpha=e{i+1}-e{j+1} and beta=e{k_human}-e{l_human} is:")
-                                print(1-coef_s[i, i, k, k]-coef_s[j, j, l, l]+coef_s[i, i, l, l]+coef_s[j, j, k, k])
+                                sub = str.maketrans("0123456789", "₀₁₂₃₄₅₆₇₈₉")
+                                print(f"The passing order for α=e{i+1}-e{j+1} and β=e{k_human}-e{l_human} is: ".translate(sub) +
+                                      f"{1-coef_s[i, i, k, k]-coef_s[j, j, l, l]+coef_s[i, i, l, l]+coef_s[j, j, k, k]}.")
                                 if  i + 1 == l_human and j + 1 == k_human:
                                     conjecture = conjec
                                     print(f"My conjectured passing order is: {conjecture}")
@@ -479,12 +482,17 @@ def ggs_conjecture(trip: triple.BDTriple, x: sp.Symbol, h: sp.Symbol, small_r: b
             return 1 / (1 / (sp.exp(h/2) - sp.exp(-h/2)) + 1 / (sp.exp(x/2) - sp.exp(-x/2))) *\
                 (standard_part + mat2.MatrixTensor2(n, coef, True))
         
-def ggs_conjecture_aux(trip: triple.BDTriple, x: sp.Symbol, h: sp.Symbol, small_r: bool, conjec):
+def ggs_conjecture_aux(trip: triple.BDTriple, x: sp.Symbol, h: sp.Symbol, small_r: bool) \
+    -> mat2.MatrixTensor2:
     T = trip.T
     n = trip.n
     g1 = trip.g1
     print("Forced nonassociative procedure for the following triple:")
     print(trip)
+    if trip.associative() is not None:
+        print("[which is associative]")
+    else:
+        print("[which is not associative]")
     s = trip.choose_r0(only_return_s=True)
 
     coef_temp = mat2.to_sparray(n, [0] * pow(n, 4))
@@ -539,14 +547,22 @@ def ggs_conjecture_aux(trip: triple.BDTriple, x: sp.Symbol, h: sp.Symbol, small_
                         if indicator is None:
                             break
                         else:
-                            print(f"The passing order for alpha=e{i+1}-e{j+1} and beta=e{k_human}-e{l_human} is:")
-                            print(1-coef_s[i, i, k, k]-coef_s[j, j, l, l]+coef_s[i, i, l, l]+coef_s[j, j, k, k])
+                            sub = str.maketrans("0123456789", "₀₁₂₃₄₅₆₇₈₉")
+                            print(f"The passing order for α=e{i+1}-e{j+1} and β=e{k_human}-e{l_human} is: ".translate(sub) +
+                                  f"{1-coef_s[i, i, k, k]-coef_s[j, j, l, l]+coef_s[i, i, l, l]+coef_s[j, j, k, k]}.")
+                            
+                            if b == n - 1 and a < b:
+                                root_length = a + 1
+                            else:
+                                root_length = abs(a - b)
+                            
                             temp = sp.Rational(1, 2) * (1 - coef_s[i, i, k, k] 
                                                             - coef_s[j, j, l, l]
-                                                            + indicator * (abs(a - b) - 1))
-                            coef[k, l, j, i] -= (-1) ** (indicator * (abs(a - b) - 1)) * \
+                                                            + indicator * (root_length - 1))
+                            print(a, b, root_length, temp)
+                            coef[k, l, j, i] -= (-1) ** (indicator * (root_length - 1)) * \
                                 sp.exp(temp * h + sp.Rational(m, n) * x)
-                            coef[j, i, k, l] += (-1) ** (indicator * (abs(b - a) - 1)) * \
+                            coef[j, i, k, l] += (-1) ** (indicator * (root_length - 1)) * \
                                 sp.exp(- temp * h - sp.Rational(m, n) * x)
                             i_human, j_human = k_human, l_human
     print("The nonstandard part for this triple is produced.")

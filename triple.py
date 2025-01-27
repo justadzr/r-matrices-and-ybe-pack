@@ -73,7 +73,7 @@ class BDTriple:
             bool: True if the Belavin-Drinfeld triple is valid, False otherwise.
         """
         if len(set(self.g2)) != len(self.g1):
-            print("Not bijective")
+            # print("Not bijective")
             return False
 
         n = self.n
@@ -82,25 +82,25 @@ class BDTriple:
                 ind = self.g1.index(self.g1[i] % n + 1)
                 temp = abs(self.g2[i] - self.g2[ind])
                 if temp != 1 and temp != n - 1:
-                    print("Not orthogonal")
+                    # print("Not orthogonal")
                     return False
             if (self.g1[i] - 2 + n) % n + 1 in self.g1:
                 ind = self.g1.index((self.g1[i] - 2 + n) % n + 1)
                 temp = abs(self.g2[i] - self.g2[ind])
                 if temp != 1 and temp != n - 1:
-                    print("Not orthogonal")
+                    # print("Not orthogonal")
                     return False
             if self.g2[i] % n + 1 in self.g2:
                 ind = self.g2.index(self.g2[i] % n + 1)
                 temp = abs(self.g1[i] - self.g1[ind])
                 if temp != 1 and temp != n - 1:
-                    print("Not orthogonal")
+                    # print("Not orthogonal")
                     return False
             if (self.g2[i] - 2 + n) % n + 1 in self.g2:
                 ind = self.g2.index((self.g2[i] - 2 + n) % n + 1)
                 temp = abs(self.g1[i] - self.g1[ind])
                 if temp != 1 and temp != n - 1:
-                    print("Not orthogonal")
+                    # print("Not orthogonal")
                     return False
 
         for i in range(len(self.g1)):
@@ -110,7 +110,7 @@ class BDTriple:
                 if temp == 0:
                     break
             if k >= self.n:
-                print("Not nilpotent")
+                # print("Not nilpotent")
                 return False
         return True
     
@@ -129,20 +129,23 @@ class BDTriple:
         else:
             return self.g2[self.g1.index(i)]
 
+    def __eq__(self, other):
+        return self.g1 == other.g1 and self.g2 == other.g2
+
     def __repr__(self):
         res = ""
         sub = str.maketrans("0123456789", "₀₁₂₃₄₅₆₇₈₉")
         for i in range(len(self.g1)):
-            res += f"\u03B1{self.g1[i]} -> \u03B1{self.g2[i]}\n".translate(sub)
+            res += f"T: \u03B1{self.g1[i]} -> \u03B1{self.g2[i]}\n".translate(sub)
         if res != "":
-            return res[:-1]
+            return res[:-1] + "."
         else:
             return "Empty triple."
 
     def connected_components_aux(self, G):
         n = self.n
         res = [None] * n
-        m = len(G)
+        m = n
         key_1, key_n = None, None
         for k, g in groupby(enumerate(G), lambda x : (x[0] - x[1]) % m):
             temp = list(map(itemgetter(1), g))
@@ -179,7 +182,6 @@ class BDTriple:
         unclean = self.connected_components_aux(sorted(self.g2))
         temp = []
         if len(components) != len(unclean):
-            print(unclean)
             raise Exception("Triple not valid: not orthogonal.")
         else: 
             for i in components:
@@ -349,3 +351,12 @@ class BDTriple:
 
     def passing_ord(self, i, j, k, l):
         return 1 - self.choose_r0(only_return_s=True).root_action(i, j, k, l)
+    
+    def triple_mk(n: int, g1: list[int], g2: list[int]):
+        if len(g1) != len(g2):
+            raise Exception("Failed to make a triple from inconsistent data.")
+        tup = [0] * n
+        for i in range(len(g1)):
+            tup[g1[i] - 1] = g2[i]
+
+        return BDTriple(tup)

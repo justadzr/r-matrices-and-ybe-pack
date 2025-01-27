@@ -103,6 +103,9 @@ class MatrixTensor3:
             return MatrixTensor3(dim, coef1 + coef2, self.ggs and other.ggs)
         else: 
             raise(ValueError, "Cannot add matrices of different dimensions")
+    
+    def __neg__(self):
+        return (-1) * self
 
     def comm(self, other):
         return self * other - other * self
@@ -131,7 +134,7 @@ class MatrixTensor3:
                     temp = coef[i, j, k, l, p, q]
                     if isinstance(temp, sp.Expr):
                         coef[i, j, k, l, p, q] = temp.simplify()
-        print(f"It took us {time() - start} seconds to simplify.")
+        print(f"It took us {(time() - start):0.2f} seconds to simplify.")
         return MatrixTensor3(dim, coef, self.ggs)
     
     def check_of_ggs_type(self):
