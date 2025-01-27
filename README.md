@@ -1,5 +1,8 @@
 ### A small package for classical r-matrices and quantum R-matrices in affine untwisted sl(n)
 ---
+I projected my formula to sl(n) (though some efforts spent on the projection codes...). And it checks out with BD's original formula! It remains to summarize the precise formula of the standard part and put them on Overleaf (I know what the precise formula of the nonstandard part is).
+
+---
 Now my program works. I've tested it with all triples of sl(n) for n <= 5. I have some trouble getting the correct standard part out of this formula. Indeed, the nonstandard part of my formula corresponds to the original formula of BD, however the standard parts are vastly different. The same is true for Polishchuk's formula. I suspect my formula is gauge equivalent to BD's.
 
 ---
