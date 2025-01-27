@@ -8,7 +8,7 @@ def hash(dim, i, j):
     return int(i * dim + j)
 
 def to_sparray(dim, coef):
-    temp = sp.MutableDenseNDimArray(zeros((dim,)*4).astype(int))
+    temp = sp.MutableDenseNDimArray(zeros((dim,)*2).astype(int))
     for i, j in [(x, y) for x in range(dim) for y in range(dim)]:
         temp[i, j] = coef[hash(dim, i, j)]
     return temp
@@ -21,6 +21,15 @@ def e(dim, i, j):
     coef = sp.MutableDenseNDimArray(zeros((dim,)*2).astype(int))
     coef[i, j] = 1
     return MatrixTensor1(dim, coef)
+
+def gram_schmidt(basis):
+        ortho = [basis[0]]
+        for i in range(1, len(basis)):
+            temp = basis[i]
+            for j in range(i):
+                temp -= basis[i].pr(ortho[j])
+            ortho.append(temp)
+        return ortho
 
 class MatrixTensor1:
     def __init__(self, dim, coef):
@@ -117,6 +126,12 @@ class MatrixTensor1:
     def pr_to_sln(self):
         dim = self.dim
         coef1 = self.coef
+        basis = [e(dim, i + 1, i + 1) - e(dim, i, i) for i in range(dim - 1)]
+        ortho_basis = gram_schmidt(basis)
+        res_coef = to_sparray(dim, [0] * pow(dim, 2))
+        for v in ortho_basis:
+            res_coef = res_coef + self.pr(v).coef
+        return MatrixTensor1(dim, res_coef)
         coef = sp.MutableDenseNDimArray(zeros((dim,)*2).astype(int))
         for i, j in [(x, y) for x in range(dim) for y in range(dim)]:
             if i != j:
@@ -129,3 +144,12 @@ class MatrixTensor1:
                 if i > 0:
                     coef[i-1, i-1] -= sp.Rational(1, 2) * coef1[i, i]
         return MatrixTensor1(dim, coef)
+
+    def trace(self):
+        tr = 0
+        for i in range(self.dim):
+            tr += self.coef[i, i]
+        return tr
+    
+    def pr(self, w):
+        return sp.Rational((self * w).trace(), (w * w).trace()) * w

@@ -32,7 +32,7 @@ def casimir(dim):
 def casimir_gl(dim):
     coef = sp.MutableDenseNDimArray(zeros((dim,)*4).astype(int))
     for i, j in [(x, y) for x in range(dim) for y in range(dim)]:
-        coef[i, j, j, i] = 1
+        coef[i, i, i, i] = 1
     return MatrixTensor2(dim, coef, True)
 
 def identity(dim):
@@ -255,5 +255,14 @@ class MatrixTensor2:
         res = zero(dim)
         for i, j in [(x, y) for x in range(dim) for y in range(dim)]:
             for k, l in [(x, y) for x in range(dim) for y in range(dim)]:
-                res += coef[i, j, k, l] * mat1.e(dim, i, j).pr_to_sln().tensor(mat1.e(dim, k, l).pr_to_sln())
+                if coef[i, j, k, l] != 0:
+                    if i == j:
+                        A = mat1.e(dim, i, j).pr_to_sln()
+                    else:
+                        A = mat1.e(dim, i, j)
+                    if k == l:
+                        B = mat1.e(dim, k, l).pr_to_sln()
+                    else:
+                        B = mat1.e(dim, k, l)
+                    res += coef[i, j, k, l] * A.tensor(B)
         return res
