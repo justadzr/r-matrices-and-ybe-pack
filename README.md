@@ -1,5 +1,8 @@
 ### A small package for classical r-matrices and quantum R-matrices in affine untwisted sl(n)
 ---
+Now my program works. I've tested it with all triples of sl(n) for n <= 5. I have some trouble getting the correct standard part out of this formula. Indeed, the nonstandard part of my formula corresponds to the original formula of BD, however the standard parts are vastly different. The same is true for Polishchuk's formula. I suspect my formula is gauge equivalent to BD's.
+
+---
 I'm now having trouble to write down the standard part of R_{T, s} given a triple and a continuous datum. Technically speaking, here s can be selected as an element of sl(n). But it troubles me when I tried to produce the standard part. That is, the method I use produces a different standard part in contrast to Polishchuk's formula, although our nonstandard parts are the same (for associative matrices), which is not surprising.
 
 Update: ok I figured out why. I saw the part with e_{-α}\otimes e_{α} as the standard part, and multiplied both sides of it with q^s, which is not what I'm supposed to do. After getting this part out and multiplying the true standard part with q^s, we get the same standard part, and there is no need to think about where s lives.
