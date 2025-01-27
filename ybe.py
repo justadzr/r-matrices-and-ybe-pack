@@ -551,11 +551,7 @@ def ggs_conjecture_aux(trip: triple.BDTriple, x: sp.Symbol, h: sp.Symbol, small_
                             print(f"The passing order for α=e{i+1}-e{j+1} and β=e{k_human}-e{l_human} is: ".translate(sub) +
                                   f"{1-coef_s[i, i, k, k]-coef_s[j, j, l, l]+coef_s[i, i, l, l]+coef_s[j, j, k, k]}.")
                             
-                            if b == n - 1 and a < b:
-                                root_length = a + 1
-                            else:
-                                root_length = abs(a - b)
-                            
+                            root_length = (a - b) % n
                             temp = sp.Rational(1, 2) * (1 - coef_s[i, i, k, k] 
                                                             - coef_s[j, j, l, l]
                                                             + indicator * (root_length - 1))
