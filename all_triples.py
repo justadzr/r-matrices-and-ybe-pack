@@ -15,10 +15,24 @@ def all_triples(n : int) -> list[triple.BDTriple]:
                 trip_temp = triple.BDTriple(trip_temp_tuple)
                 if trip_temp.valid():
                     res.append(trip_temp)
-    for trip1 in res:
-        for trip2 in res:
-            if trip1 != trip2 and are_iso(trip1, trip2):
-                res.remove(trip2)
+    group = [[res[0]]]
+    for trip in res:
+        in_group = False
+        for i in range(len(group)):
+            in_group = False
+            for trip_temp in group[i]:
+                if trip != trip_temp and are_iso(trip, trip_temp):
+                    in_group = True
+                    group[i].append(trip)
+                    break
+            else:
+                continue
+            break
+        if not in_group:
+            group.append([trip])
+    res = []
+    for subgroup in group:
+        res.append(subgroup[0])
     return res
 
 def are_iso(trip1: triple.BDTriple, trip2: triple.BDTriple):

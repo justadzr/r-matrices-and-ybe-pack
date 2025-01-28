@@ -503,6 +503,8 @@ def ggs_conjecture_aux(trip: triple.BDTriple, x: sp.Symbol, h: sp.Symbol, small_
 
     triple_empty = triple.BDTriple([0] * n)
     std1, std2 = ggs_conjecture(triple_empty, x, h, True, 0)
+
+    # saving some computation power by not twisting `std2`
     standard_part = (s - s0).exp(h, True) * std1 * (s - s0).exp(h, True) + std2
 
     components = trip.connected_components()
