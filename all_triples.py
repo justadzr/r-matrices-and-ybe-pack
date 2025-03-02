@@ -1,6 +1,14 @@
 import random, triple
 from itertools import combinations
 
+def nonassociative_triples(n: int) -> list[triple.BDTriple]:
+    res = []
+    temp = all_triples(n)
+    for trip in temp:
+        if trip.associative() is None:
+            res.append(trip)
+    return res
+
 def all_triples(n : int) -> list[triple.BDTriple]:
     res = []
     lst = [(x + 1) for x in range(n)]
