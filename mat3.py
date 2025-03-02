@@ -137,6 +137,19 @@ class MatrixTensor3:
         print(f"It took us {(time() - start):0.2f} seconds to simplify.")
         return MatrixTensor3(dim, coef, self.ggs)
     
+    def simplify_rat(self):
+        start = time()
+        coef = deepcopy(self.coef)
+        dim = self.dim
+        for i, j in [(x, y) for x in range(dim) for y in range(dim)]:
+            for k, l in [(x, y) for x in range(dim) for y in range(dim)]:
+                for p, q in [(x, y) for x in range(dim) for y in range(dim)]:
+                    temp = coef[i, j, k, l, p, q]
+                    if isinstance(temp, sp.Expr):
+                        coef[i, j, k, l, p, q] = temp.ratsimp()
+        print(f"It took us {(time() - start):0.2f} seconds to simplify.")
+        return MatrixTensor3(dim, coef, self.ggs)
+    
     def check_of_ggs_type(self):
         dim = self.dim
         coef = self.coef

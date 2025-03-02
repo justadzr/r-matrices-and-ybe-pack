@@ -5,34 +5,28 @@ import mat2, time, all_triples
 # Need to declare the variables first
 x = sp.Symbol("x")
 h = sp.Symbol("h")
+q_nth = sp.Symbol("qn")
 
-triples = all_triples.all_triples(6)
-print(len(triples))
-incorrect = []
-
-for trip in triples:
 # para = [3, 4, 0, 0]
 # trip = triple.BDTriple(para)
-    s = trip.choose_r0(only_return_s=True)
-    r0 = s + sp.Rational(1, 2) * mat2.casimir(trip.n)
-    # ggs_conjecture_aux does NOT use the conjectured value `conjec`.
-    conjec = sp.Rational(1, 1)
-    R1 = ybe.ggs_conjecture_aux(trip, x, h, True)
-    modifier = h - h ** 2 *(sp.exp(x / 2)) / (sp.exp(x) - 1) + h ** 3 * (sp.exp(x) / (sp.exp(x) - 1) ** 2 + sp.Rational(1, 24))
-    r1 = ybe.to_trigonometric_solution(trip, x, True)
-    # print(R1)
-    # print('=========================================')
-    # print(r1 * r1.subs(x, -x).simplify())
-    # print('=========================================')
-    # print(R1.pr_to_sln())
-    print('=========================================')
-    res = ybe.qybe(R1, x).simplify()
-    print(res)
-    if str(res) != "0":
-        incorrect.append(str(trip))
-    print('=========================================')
+# R = ybe.ggs_conjecture_aux_rat(trip, x, q_nth)
+# print(ybe.qybe_rat(R, x).simplify())
 
-print(incorrect)
+triples = all_triples.all_triples(7)
+num = len(triples)
+print(num)
+incorrect = []
+i = 0
+for trip in triples:
+    i += 1
+    R = ybe.ggs_conjecture_rat(trip, x, q_nth)
+    res = ybe.qybe_rat(R, x).simplify_rat()
+    if str(res) != "0":
+        print(res)
+        incorrect.append(str(trip) + "\n")
+    else:
+        print(f"Checked: {i}/{num}")
+print("The incorrect triples are:" + incorrect)
 
 # n =4
 # triple_empty = triple.BDTriple([0] * n)

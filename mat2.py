@@ -31,8 +31,14 @@ def casimir(dim):
 
 def casimir_gl(dim):
     coef = sp.MutableDenseNDimArray(zeros((dim,)*4).astype(int))
-    for i, j in [(x, y) for x in range(dim) for y in range(dim)]:
+    for i in range(dim):
         coef[i, i, i, i] = 1
+    return MatrixTensor2(dim, coef, True)
+
+def casimir_gl_not_proj(dim):
+    coef = sp.MutableDenseNDimArray(zeros((dim,)*4).astype(int))
+    for i, j in [(x, y) for x in range(dim) for y in range(dim)]:
+        coef[i, j, j, i] = 1
     return MatrixTensor2(dim, coef, True)
 
 def identity(dim):
@@ -187,6 +193,16 @@ class MatrixTensor2:
                     coef[i, j, k, l] = temp.simplify()
         return MatrixTensor2(dim, coef, self.ggs)
     
+    def simplify_rat(self):
+        coef = deepcopy(self.coef)
+        dim = self.dim
+        for i, j in [(x, y) for x in range(dim) for y in range(dim)]:
+            for k, l in [(x, y) for x in range(dim) for y in range(dim)]:
+                temp = coef[i, j, k, l]
+                if isinstance(temp, sp.Expr):
+                    coef[i, j, k, l] = temp.ratsimp()
+        return MatrixTensor2(dim, coef, self.ggs)
+    
     # The input hbar here is the Sympy.symbol parameter used to define q
     # The input half is a boolean constant indicating if q=e^\hbar or q=e^{\hbar/2}
     # Note the input gets automatically projected to h\otimes h,
@@ -201,6 +217,18 @@ class MatrixTensor2:
             const = 1
         for i, k in [(x, y) for x in range(dim) for y in range(dim)]:
             coef[i, i, k, k] = sp.exp(const * coef1[i, i, k, k] * h)
+        return MatrixTensor2(dim, coef, True)
+    
+    def exp_rat(self, q_nth: sp.Symbol, n, q_exp_half: bool):
+        coef1 = self.coef
+        dim = self.dim
+        coef = identity(dim).coef
+        for i, k in [(x, y) for x in range(dim) for y in range(dim)]:
+            if q_exp_half:
+                const = sp.Rational(coef1[i, i, k, k] * n, 2)
+            else:
+                const = coef1[i, i, k, k] * n
+            coef[i, i, k, k] = q_nth ** const
         return MatrixTensor2(dim, coef, True)
 
     # I always define the simple roots as \alpha_i = e_{i+1} - e_i

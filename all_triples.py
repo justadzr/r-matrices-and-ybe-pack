@@ -6,7 +6,7 @@ def all_triples(n : int) -> list[triple.BDTriple]:
     lst = [(x + 1) for x in range(n)]
     for i in range(n):
         sublists = []
-        sublists.extend(combinations(lst, i + 1))
+        sublists.extend(combinations(lst, i))
         for temp1 in sublists:
             for temp2 in sublists:
                 trip_temp_tuple = [0] * n
