@@ -12,18 +12,22 @@ q_nth = sp.Symbol("qn")
 # R = ybe.ggs_conjecture_aux_rat(trip, x, q_nth)
 # print(ybe.qybe_rat(R, x).simplify())
 
-triples = all_triples.nonassociative_triples(7)
+triples = all_triples.all_triples(12)
 num = len(triples)
 print(num)
-incorrect = []
-i = 0
-for trip in triples:
-    i += 1
-    R = ybe.ggs_conjecture_rat(trip, x, q_nth)
-    res = ybe.qybe_rat(R, x).simplify_rat()
-    if str(res) != "0":
-        print(res)
-        incorrect.append(str(trip) + "\n")
-    else:
-        print(f"Checked: {i}/{num}")
-print("The incorrect triples are:" + incorrect)
+# print(triples)
+# print(num)
+# incorrect = []
+# i = 0
+# for trip in triples:
+#     i += 1
+#     R = ybe.ggs_conjecture_rat(trip, x, q_nth)
+#     res = ybe.qybe_rat(R, x).simplify_rat()
+#     if str(res) != "0":
+#         print(res)
+#         incorrect.append(str(trip) + "\n")
+#     else:
+#         print(f"Checked: {i}/{num}")
+
+# print("The incorrect triples are:")
+# print(incorrect)

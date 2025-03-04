@@ -17,12 +17,13 @@ def all_triples(n : int) -> list[triple.BDTriple]:
         sublists.extend(combinations(lst, i))
         for temp1 in sublists:
             for temp2 in sublists:
-                trip_temp_tuple = [0] * n
-                for j in range(len(temp1)):
-                    trip_temp_tuple[temp1[j] - 1] = temp2[j]
-                trip_temp = triple.BDTriple(trip_temp_tuple)
-                if trip_temp.valid():
-                    res.append(trip_temp)
+                if temp1 != temp2:
+                        trip_temp_tuple = [0] * n
+                        for j in range(len(temp1)):
+                            trip_temp_tuple[temp1[j] - 1] = temp2[j]
+                        trip_temp = triple.BDTriple(trip_temp_tuple)
+                        if trip_temp.valid():
+                            res.append(trip_temp)
     group = [[res[0]]]
     for trip in res:
         in_group = False
