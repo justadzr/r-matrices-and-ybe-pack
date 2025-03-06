@@ -28,15 +28,15 @@ def all_triples(n : int) -> list[triple.BDTriple]:
     print("num of all")
     print(len(res))
 
-    group = [dihedral_action(res[0])]
-    for trip in res:
-        in_group = False
-        for i in range(len(group)):
-            if trip in group[i]:
-                in_group = True
-                break
-        if not in_group:
-            group.append(dihedral_action(trip))
+    group = []
+    i = 0
+    while res:
+        print(f"The {i}th reduction leaves {len(res)} triples")
+        trip = res[0]
+        equiv_class = dihedral_action(trip)
+        group.append(equiv_class)
+        res = [temp for temp in res if not temp in equiv_class]
+        i+=1
 
     mod_res = []
     for equiv_class in group:

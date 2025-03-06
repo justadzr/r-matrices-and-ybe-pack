@@ -15,8 +15,8 @@ q_nth = sp.Symbol("qn")
 triples = all_triples.all_triples(11)
 num = len(triples)
 print(num)
-# print(triples)
-# print(num)
+print(triples)
+
 # incorrect = []
 # i = 0
 # for trip in triples:
