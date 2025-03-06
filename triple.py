@@ -59,11 +59,23 @@ def dual_basis(basis):
         res.append(temp_mat)
     return res
 
+def triple_mk(n: int, g1: list[int], g2: list[int]):
+        if len(g1) != len(g2):
+            raise Exception("Failed to make a triple from inconsistent data.")
+        tup = [0] * n
+        for i in range(len(g1)):
+            tup[g1[i] - 1] = g2[i]
+
+        return BDTriple(tup)
+
 class BDTriple:
-    def __init__(self, triple):
-        self.n = len(triple)
-        self.g1 = [] + [(x+1) for x in range(self.n) if triple[x] != 0]
-        self.g2 = [] + [triple[x-1] for x in self.g1]
+    def __init__(self, triple, **kwarg):
+        if triple is not None:
+            self.n = len(triple)
+            self.g1 = [] + [(x+1) for x in range(self.n) if triple[x] != 0]
+            self.g2 = [] + [triple[x-1] for x in self.g1]
+        else:
+            self.n, self.g1, self.g2 = kwarg.get('n'), kwarg.get('g1'), kwarg.get('g2')
 
     def valid(self) -> bool:
         """
@@ -77,31 +89,47 @@ class BDTriple:
             return False
 
         n = self.n
-        for i in range(len(self.g1)):
-            if self.g1[i] % n + 1 in self.g1:
-                ind = self.g1.index(self.g1[i] % n + 1)
-                temp = abs(self.g2[i] - self.g2[ind])
-                if temp != 1 and temp != n - 1:
-                    # print("Not orthogonal")
+        components = self.connected_components()
+        num = len(components)
+        components_img = self.connected_components_img()
+        if components_img is None:
+            return False
+
+        for i in range(num):
+            for j in range(i + 1, num):
+                t0 = components_img[i]
+                c2 = components_img[j]
+                t1 = [x % n + 1 for x in t0]
+                t2 = [(x - 2) % n + 1 for x in t0]
+                if (set(t0) & set(c2)) or (set(t1) & set(c2)) or (set(t2) & set(c2)):
                     return False
-            if (self.g1[i] - 2 + n) % n + 1 in self.g1:
-                ind = self.g1.index((self.g1[i] - 2 + n) % n + 1)
-                temp = abs(self.g2[i] - self.g2[ind])
-                if temp != 1 and temp != n - 1:
-                    # print("Not orthogonal")
-                    return False
-            if self.g2[i] % n + 1 in self.g2:
-                ind = self.g2.index(self.g2[i] % n + 1)
-                temp = abs(self.g1[i] - self.g1[ind])
-                if temp != 1 and temp != n - 1:
-                    # print("Not orthogonal")
-                    return False
-            if (self.g2[i] - 2 + n) % n + 1 in self.g2:
-                ind = self.g2.index((self.g2[i] - 2 + n) % n + 1)
-                temp = abs(self.g1[i] - self.g1[ind])
-                if temp != 1 and temp != n - 1:
-                    # print("Not orthogonal")
-                    return False
+
+
+        # for i in range(len(self.g1)):
+        #     if self.g1[i] % n + 1 in self.g1:
+        #         ind = self.g1.index(self.g1[i] % n + 1)
+        #         temp = abs(self.g2[i] - self.g2[ind])
+        #         if temp != 1 and temp != n - 1:
+        #             # print("Not orthogonal")
+        #             return False
+        #     if (self.g1[i] - 2 + n) % n + 1 in self.g1:
+        #         ind = self.g1.index((self.g1[i] - 2 + n) % n + 1)
+        #         temp = abs(self.g2[i] - self.g2[ind])
+        #         if temp != 1 and temp != n - 1:
+        #             # print("Not orthogonal")
+        #             return False
+        #     if self.g2[i] % n + 1 in self.g2:
+        #         ind = self.g2.index(self.g2[i] % n + 1)
+        #         temp = abs(self.g1[i] - self.g1[ind])
+        #         if temp != 1 and temp != n - 1:
+        #             # print("Not orthogonal")
+        #             return False
+        #     if (self.g2[i] - 2 + n) % n + 1 in self.g2:
+        #         ind = self.g2.index((self.g2[i] - 2 + n) % n + 1)
+        #         temp = abs(self.g1[i] - self.g1[ind])
+        #         if temp != 1 and temp != n - 1:
+        #             # print("Not orthogonal")
+        #             return False
 
         for i in range(len(self.g1)):
             temp = self.g1[i]
@@ -136,9 +164,9 @@ class BDTriple:
         res = ""
         sub = str.maketrans("0123456789", "₀₁₂₃₄₅₆₇₈₉")
         for i in range(len(self.g1)):
-            res += f"T: \u03B1{self.g1[i]} -> \u03B1{self.g2[i]}\n".translate(sub)
+            res += f"T: \u03B1{self.g1[i]} -> \u03B1{self.g2[i]} ".translate(sub)
         if res != "":
-            return res[:-1] + "."
+            return "{" + res[:-1] + "}"
         else:
             return "Empty triple."
 
@@ -182,7 +210,7 @@ class BDTriple:
         unclean = self.connected_components_aux(sorted(self.g2))
         temp = []
         if len(components) != len(unclean):
-            raise Exception("Triple not valid: not orthogonal.")
+            return None
         else: 
             for i in components:
                 for j in unclean:
@@ -351,12 +379,3 @@ class BDTriple:
 
     def passing_ord(self, i, j, k, l):
         return 1 - self.choose_r0(only_return_s=True).root_action(i, j, k, l)
-    
-    def triple_mk(n: int, g1: list[int], g2: list[int]):
-        if len(g1) != len(g2):
-            raise Exception("Failed to make a triple from inconsistent data.")
-        tup = [0] * n
-        for i in range(len(g1)):
-            tup[g1[i] - 1] = g2[i]
-
-        return BDTriple(tup)

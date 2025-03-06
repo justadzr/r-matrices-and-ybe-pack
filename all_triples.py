@@ -24,24 +24,47 @@ def all_triples(n : int) -> list[triple.BDTriple]:
                         trip_temp = triple.BDTriple(trip_temp_tuple)
                         if trip_temp.valid():
                             res.append(trip_temp)
-    group = [[res[0]]]
+
+    print("num of all")
+    print(len(res))
+
+    group = [dihedral_action(res[0])]
     for trip in res:
         in_group = False
         for i in range(len(group)):
-            in_group = False
-            for trip_temp in group[i]:
-                if trip != trip_temp and are_iso(trip, trip_temp):
-                    in_group = True
-                    group[i].append(trip)
-                    break
-            else:
-                continue
-            break
+            if trip in group[i]:
+                in_group = True
+                break
         if not in_group:
-            group.append([trip])
+            group.append(dihedral_action(trip))
+
+    mod_res = []
+    for equiv_class in group:
+        mod_res.append(equiv_class[0])
+    return mod_res
+
+# Generate the orbit of a triple under actions of the dihedral group
+def dihedral_action(trip : triple.BDTriple) -> list[triple.BDTriple]:
+    g1, g2, n = trip.g1, trip.g2, trip.n
     res = []
-    for subgroup in group:
-        res.append(subgroup[0])
+
+    def red(a, b):
+        return (a - 1) % b + 1
+
+    for i in range(n):
+        g1_ri = [red(x + i, n) for x in g1]
+        g2_ri = [red(x + i, n) for x in g2]
+        res.append(triple.BDTriple(None, n=n, g1=g1_ri, g2=g2_ri))
+        res.append(triple.BDTriple(None, n=n, g1=g2_ri, g2=g1_ri))
+        if n % 2 == 0:
+            g1_ris = [n + 1 - x for x in g1_ri]
+            g2_ris = [n + 1 - x for x in g2_ri]
+        else:
+            g1_ris = [red(n + 2 - x, n) for x in g1_ri]
+            g2_ris = [red(n + 2 - x, n) for x in g2_ri]
+        res.append(triple.BDTriple(None, n=n, g1=g1_ris, g2=g2_ris))
+        res.append(triple.BDTriple(None, n=n, g1=g2_ris, g2=g1_ris))
+
     return res
 
 def are_iso(trip1: triple.BDTriple, trip2: triple.BDTriple):

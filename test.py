@@ -12,7 +12,7 @@ q_nth = sp.Symbol("qn")
 # R = ybe.ggs_conjecture_aux_rat(trip, x, q_nth)
 # print(ybe.qybe_rat(R, x).simplify())
 
-triples = all_triples.all_triples(12)
+triples = all_triples.all_triples(11)
 num = len(triples)
 print(num)
 # print(triples)
