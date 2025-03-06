@@ -84,16 +84,29 @@ class BDTriple:
             bool: True if the Belavin-Drinfeld triple is valid, False otherwise.
         """
         if len(set(self.g2)) != len(self.g1):
-            # print("Not bijective")
+            # print("Not bijective.")
             return False
+        
+        for i in range(len(self.g1)):
+            temp = self.g1[i]
+            for k in range(self.n + 1):
+                temp = self.T(temp)
+                if temp == 0:
+                    break
+            if k >= self.n:
+                # print("Not nilpotent")
+                return False
 
+        # Obtain the connected components and their images.
         n = self.n
         components = self.connected_components()
         num = len(components)
         components_img = self.connected_components_img()
         if components_img is None:
+            # print("Not orthogonal.")
             return False
 
+        # Check if the images of two connected components are overlapping or adjacent
         for i in range(num):
             for j in range(i + 1, num):
                 t0 = components_img[i]
@@ -101,6 +114,7 @@ class BDTriple:
                 t1 = [x % n + 1 for x in t0]
                 t2 = [(x - 2) % n + 1 for x in t0]
                 if (set(t0) & set(c2)) or (set(t1) & set(c2)) or (set(t2) & set(c2)):
+                    # print("Not orthogonal.")
                     return False
 
         # for i in range(len(self.g1)):
@@ -128,16 +142,6 @@ class BDTriple:
         #         if temp != 1 and temp != n - 1:
         #             # print("Not orthogonal")
         #             return False
-
-        for i in range(len(self.g1)):
-            temp = self.g1[i]
-            for k in range(self.n + 1):
-                temp = self.T(temp)
-                if temp == 0:
-                    break
-            if k >= self.n:
-                # print("Not nilpotent")
-                return False
         return True
     
     def T(self, i):
@@ -159,7 +163,7 @@ class BDTriple:
         res = ""
         sub = str.maketrans("0123456789", "₀₁₂₃₄₅₆₇₈₉")
         for i in range(len(self.g1)):
-            res += f"T: \u03B1{self.g1[i]} -> \u03B1{self.g2[i]} ".translate(sub)
+            res += f"\u03B1{self.g1[i]} -> \u03B1{self.g2[i]} ".translate(sub)
         if res != "":
             return "{" + res[:-1] + "}"
         else:

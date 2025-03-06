@@ -1,9 +1,10 @@
 import random, triple
-from itertools import combinations
+from itertools import permutations
 
 def nonassociative_triples(n: int) -> list[triple.BDTriple]:
     res = []
     temp = all_triples(n)
+    print(len(temp))
     for trip in temp:
         if trip.associative() is None:
             res.append(trip)
@@ -14,13 +15,14 @@ def all_triples(n : int) -> list[triple.BDTriple]:
     lst = [(x + 1) for x in range(n)]
     for i in range(n):
         sublists = []
-        sublists.extend(combinations(lst, i))
+        sublists.extend(permutations(lst, i))
         for temp1 in sublists:
             for temp2 in sublists:
                 if temp1 != temp2:
                         trip_temp = triple.BDTriple(None, n=n, g1=temp1, g2=temp2)
                         if trip_temp.valid():
                             res.append(trip_temp)
+    print(f"Number of all possible triples: {len(res)}")
     group = []
     i = 0
     while res:
