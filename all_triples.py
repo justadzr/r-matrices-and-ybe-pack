@@ -18,24 +18,17 @@ def all_triples(n : int) -> list[triple.BDTriple]:
         for temp1 in sublists:
             for temp2 in sublists:
                 if temp1 != temp2:
-                        trip_temp_tuple = [0] * n
-                        for j in range(len(temp1)):
-                            trip_temp_tuple[temp1[j] - 1] = temp2[j]
-                        trip_temp = triple.BDTriple(trip_temp_tuple)
+                        trip_temp = triple.BDTriple(None, n=n, g1=temp1, g2=temp2)
                         if trip_temp.valid():
                             res.append(trip_temp)
-
-    print("num of all")
-    print(len(res))
-
     group = []
     i = 0
     while res:
-        print(f"The {i}th reduction leaves {len(res)} triples")
+        # print(f"The {i}th reduction leaves {len(res)} triples")
         trip = res[0]
         equiv_class = dihedral_action(trip)
         group.append(equiv_class)
-        res = [temp for temp in res if not temp in equiv_class]
+        res = list(set(res) - set(equiv_class))
         i+=1
 
     mod_res = []

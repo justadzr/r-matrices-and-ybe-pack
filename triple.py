@@ -59,23 +59,22 @@ def dual_basis(basis):
         res.append(temp_mat)
     return res
 
-def triple_mk(n: int, g1: list[int], g2: list[int]):
-        if len(g1) != len(g2):
-            raise Exception("Failed to make a triple from inconsistent data.")
-        tup = [0] * n
-        for i in range(len(g1)):
-            tup[g1[i] - 1] = g2[i]
-
-        return BDTriple(tup)
-
 class BDTriple:
-    def __init__(self, triple, **kwarg):
-        if triple is not None:
-            self.n = len(triple)
-            self.g1 = [] + [(x+1) for x in range(self.n) if triple[x] != 0]
-            self.g2 = [] + [triple[x-1] for x in self.g1]
+    def __init__(self, tuple, **kwarg):
+        if tuple is not None:
+            self.n = len(tuple)
+            self.tuple = tuple
+            self.g1 = [] + [(x+1) for x in range(self.n) if tuple[x] != 0]
+            self.g2 = [] + [tuple[x-1] for x in self.g1]
         else:
             self.n, self.g1, self.g2 = kwarg.get('n'), kwarg.get('g1'), kwarg.get('g2')
+            tuple = [0] * self.n
+            for i in range(len(self.g1)):
+                tuple[self.g1[i] - 1] = self.g2[i]
+            self.tuple = tuple
+
+    def __hash__(self):
+        return hash(tuple(self.tuple))
 
     def valid(self) -> bool:
         """
@@ -103,7 +102,6 @@ class BDTriple:
                 t2 = [(x - 2) % n + 1 for x in t0]
                 if (set(t0) & set(c2)) or (set(t1) & set(c2)) or (set(t2) & set(c2)):
                     return False
-
 
         # for i in range(len(self.g1)):
         #     if self.g1[i] % n + 1 in self.g1:
@@ -152,13 +150,10 @@ class BDTriple:
         Returns:
             int: The index of T(α_i).
         """
-        if i not in self.g1:
-            return 0
-        else:
-            return self.g2[self.g1.index(i)]
+        return self.tuple[i - 1]
 
     def __eq__(self, other):
-        return self.g1 == other.g1 and self.g2 == other.g2
+        return self.tuple == other.tuple
 
     def __repr__(self):
         res = ""
