@@ -15,7 +15,7 @@ qn = sp.Symbol("qn")
 # Wrong: [5, 4, 0, 1, 0, 0]
 # Correct: [0, 5, 0, 2, 3, 0]
 
-trip = triple.BDTriple([6, 5, 0, 2, 1, 0, 0])
+trip = triple.BDTriple([0, 6, 5, 0, 0, 3, 0])
 n = trip.n
 # print(trip.valid())
 

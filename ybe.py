@@ -481,12 +481,11 @@ def ggs_conjecture_rat_new(trip: triple.BDTriple, x: sp.Symbol, q_nth: sp.Symbol
                                                     ord_from_alpha_to_root) == indicator:
                                         passed += 1
                                 else:
+                                    C = None
                                     if root_left_to_alpha in record:
                                         C = trip.C((i + 1, j), (k_human, l_human - 1), 
                                             ord_from_root_to_beta)
-                                    if C is not None and C == 0:
-                                        passed += 1
-                                    if root_right_to_alpha in record:
+                                    if C is None and root_right_to_alpha in record:
                                         C = trip.C((i + 2, j + 1), (k_human, l_human - 1), 
                                             ord_from_root_to_beta)
                                     if C is not None and C == 0:
@@ -501,12 +500,11 @@ def ggs_conjecture_rat_new(trip: triple.BDTriple, x: sp.Symbol, q_nth: sp.Symbol
                                                     ord_from_alpha_to_root) == indicator:
                                         passed += 1
                                 else:
+                                    C = None
                                     if root_left_to_alpha in record:
                                         C = trip.C((i + 1, j), (k_human + 1, l_human), 
                                             ord_from_root_to_beta)
-                                    if C is not None and C == 0:
-                                        passed += 1
-                                    if root_right_to_alpha in record:
+                                    if C is None and root_right_to_alpha in record:
                                         C = trip.C((i + 2, j + 1), (k_human + 1, l_human), 
                                             ord_from_root_to_beta)
                                     if C is not None and C == 0:
@@ -514,7 +512,7 @@ def ggs_conjecture_rat_new(trip: triple.BDTriple, x: sp.Symbol, q_nth: sp.Symbol
                                     
                             passing_order = sp.Rational(1, 2) * half_passed + passed        
                             # ps = 1 - coef_s[i, i, k, k] - coef_s[j, j, l, l] + coef_s[i, i, l, l] + coef_s[j, j, k, k]
-                            if False:
+                            if True:
                                 print(f"The passing order at alpha=({i+1},{j+1}) beta=({k+1}, {l+1}) is {passing_order}")
                                 print(f"The s part is given by {coef_s[i, i, l, l] + coef_s[j, j, k, k]}")
                                 print(f"The indicator is {indicator}")
