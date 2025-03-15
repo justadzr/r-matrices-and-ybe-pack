@@ -1,0 +1,250 @@
+Number of all possible triples: 4374
+40
+[[0, 6, 1, 0, 3, 0], [4, 3, 0, 0, 1, 0], [0, 3, 0, 6, 1, 0], [4, 0, 0, 0, 2, 3], [6, 5, 0, 0, 0, 0], [0, 0, 2, 1, 0, 5], [0, 4, 5, 6, 1, 0], [5, 6, 0, 0, 2, 0], [5, 4, 0, 1, 0, 0], [6, 5, 0, 2, 3, 0], [0, 0, 0, 3, 2, 1], [4, 0, 6, 0, 0, 0], [0, 0, 0, 2, 1, 0], [0, 4, 5, 0, 1, 2], [0, 5, 0, 1, 0, 3]]
+[0, 6, 1, 0, 3, 0]
+It took us 18.08 seconds to simplify.
+Checked: 1/15
+[4, 3, 0, 0, 1, 0]
+It took us 18.22 seconds to simplify.
+Checked: 2/15
+[0, 3, 0, 6, 1, 0]
+It took us 16.37 seconds to simplify.
+Checked: 3/15
+[4, 0, 0, 0, 2, 3]
+It took us 18.43 seconds to simplify.
+Checked: 4/15
+[6, 5, 0, 0, 0, 0]
+It took us 15.80 seconds to simplify.
+Checked: 5/15
+[0, 0, 2, 1, 0, 5]
+It took us 16.84 seconds to simplify.
+Checked: 6/15
+[0, 4, 5, 6, 1, 0]
+It took us 29.23 seconds to simplify.
+Checked: 7/15
+[5, 6, 0, 0, 2, 0]
+It took us 20.95 seconds to simplify.
+Checked: 8/15
+[5, 4, 0, 1, 0, 0]
+It took us 21.78 seconds to simplify.
+(qn**5*u3/(u2*(qn**3 + 1))) * e₁₁⊗e₂₃⊗e₆₅ + (qn**3*u2/(u3*(qn**3 + 1))) * e₁₁⊗e₆₅⊗e₂₃ + (u1**4*u2*u3/(u1**6 - u3**6)) * e₁₃⊗e₆₅⊗e₂₁ + (u1**2*u3**5/(u2*(u1**6 - u3**6))) * e₁₅⊗e₂₃⊗e₆₁ + (-u1*u2*u3**4/(u1**6 - u3**6)) * e₂₁⊗e₆₅⊗e₁₃ + (-qn**5*u3/(u2*(qn**3 + 1))) * e₂₂⊗e₂₃⊗e₆₅ + (u2*(-qn**3*u1**6 - u3**6)/(u3*(qn**3*u1**6 - qn**3*u3**6 + u1**6 - u3**6))) * e₂₂⊗e₆₅⊗e₂₃ + (u3*(-qn**9 + qn**6 + qn**3 - 1)/(qn**(5/2)*u1*(qn**12 - 2*qn**6 + 1))) * e₂₃⊗e₁₁⊗e₆₅ + (sqrt(qn)*u3*(qn**9 - qn**6 - qn**3 + 1)/(u1*(qn**12 - 2*qn**6 + 1))) * e₂₃⊗e₂₂⊗e₆₅ + (u3*(-qn**9 + qn**6 + qn**3 - 1)/(qn**(5/2)*u1*(qn**12 - 2*qn**6 + 1))) * e₂₃⊗e₄₄⊗e₆₅ + (sqrt(qn)*u3*(qn**9 - qn**6 - qn**3 + 1)/(u1*(qn**12 - 2*qn**6 + 1))) * e₂₃⊗e₅₅⊗e₆₅ + (u2**2/(u1*u3)) * e₂₃⊗e₆₄⊗e₂₃ + (u2/(u1*(qn**3 + 1))) * e₂₃⊗e₆₅⊗e₁₁ + (u2*(qn**3*u1**6 + u3**6)/(u1*(qn**3*u1**6 - qn**3*u3**6 + u1**6 - u3**6))) * e₂₃⊗e₆₅⊗e₂₂ + (-u1**5*u2/(u1**6 - u3**6)) * e₂₃⊗e₆₅⊗e₃₃ + (qn**5*u2/(u1*(qn**3 + 1))) * e₂₃⊗e₆₅⊗e₄₄ + (-qn**5*u2/(u1*(qn**3 + 1))) * e₂₃⊗e₆₅⊗e₅₅ + (-u1**4*u2*u3/(u1**6 - u3**6)) * e₂₄⊗e₆₅⊗e₄₃ + (u1**3*u3**4/(u2*(u1**6 - u3**6))) * e₂₅⊗e₂₃⊗e₆₂ + (-u1**3*u2*u3**2/(u1**6 - u3**6)) * e₂₅⊗e₆₅⊗e₅₃ + (-u1**2*u2*u3**3/(u1**6 - u3**6)) * e₂₆⊗e₆₅⊗e₆₃ + (u2*u3**5/(u1**6 - u3**6)) * e₃₃⊗e₆₅⊗e₂₃ + (u1**4*u3**3/(u2*(u1**6 - u3**6))) * e₃₅⊗e₂₃⊗e₆₃ + (u1*u2*u3**4/(u1**6 - u3**6)) * e₄₃⊗e₆₅⊗e₂₄ + (u3/(u2*(qn**3 + 1))) * e₄₄⊗e₂₃⊗e₆₅ + (u2/(qn**2*u3*(qn**3 + 1))) * e₄₄⊗e₆₅⊗e₂₃ + (u1**5*u3**2/(u2*(u1**6 - u3**6))) * e₄₅⊗e₂₃⊗e₆₄ + (u1**2*u2*u3**3/(u1**6 - u3**6)) * e₅₃⊗e₆₅⊗e₂₅ + (u3*(qn**3*u1**6 + u3**6)/(u2*(qn**3*u1**6 - qn**3*u3**6 + u1**6 - u3**6))) * e₅₅⊗e₂₃⊗e₆₅ + (-u2/(qn**2*u3*(qn**3 + 1))) * e₅₅⊗e₆₅⊗e₂₃ + (-u1**5*u3**2/(u2*(u1**6 - u3**6))) * e₆₁⊗e₂₃⊗e₁₅ + (-u1**4*u3**3/(u2*(u1**6 - u3**6))) * e₆₂⊗e₂₃⊗e₂₅ + (-u1**3*u3**4/(u2*(u1**6 - u3**6))) * e₆₃⊗e₂₃⊗e₃₅ + (u1**3*u2*u3**2/(u1**6 - u3**6)) * e₆₃⊗e₆₅⊗e₂₆ + (-u1**2*u3**5/(u2*(u1**6 - u3**6))) * e₆₄⊗e₂₃⊗e₄₅ + (qn**(11/2)*u1*(1 - qn**3)/(u3*(qn**6 - 1))) * e₆₅⊗e₁₁⊗e₂₃ + (u1*u3/u2**2) * e₆₅⊗e₁₃⊗e₆₅ + (qn**(5/2)*u1*(qn**9 - qn**6 - qn**3 + 1)/(u3*(qn**12 - 2*qn**6 + 1))) * e₆₅⊗e₂₂⊗e₂₃ + (u1/(qn**2*u2*(qn**3 + 1))) * e₆₅⊗e₂₃⊗e₁₁ + (-u1/(qn**2*u2*(qn**3 + 1))) * e₆₅⊗e₂₃⊗e₂₂ + (qn**3*u1/(u2*(qn**3 + 1))) * e₆₅⊗e₂₃⊗e₄₄ + (u1*(-qn**3*u1**6 - u3**6)/(u2*(qn**3*u1**6 - qn**3*u3**6 + u1**6 - u3**6))) * e₆₅⊗e₂₃⊗e₅₅ + (u1*u3**6/(u2*(u1**6 - u3**6))) * e₆₅⊗e₂₃⊗e₆₆ + (qn**(11/2)*u1*(1 - qn**3)/(u3*(qn**6 - 1))) * e₆₅⊗e₄₄⊗e₂₃ + (qn**(5/2)*u1*(qn**9 - qn**6 - qn**3 + 1)/(u3*(qn**12 - 2*qn**6 + 1))) * e₆₅⊗e₅₅⊗e₂₃ + (-u1**6*u3/(u2*(u1**6 - u3**6))) * e₆₆⊗e₂₃⊗e₆₅
+[6, 5, 0, 2, 3, 0]
+It took us 24.63 seconds to simplify.
+Checked: 10/15
+[0, 0, 0, 3, 2, 1]
+It took us 20.16 seconds to simplify.
+Checked: 11/15
+[4, 0, 6, 0, 0, 0]
+It took us 13.53 seconds to simplify.
+Checked: 12/15
+[0, 0, 0, 2, 1, 0]
+It took us 15.36 seconds to simplify.
+Checked: 13/15
+[0, 4, 5, 0, 1, 2]
+It took us 20.99 seconds to simplify.
+Checked: 14/15
+[0, 5, 0, 1, 0, 3]
+It took us 14.27 seconds to simplify.
+Checked: 15/15
+The incorrect triples are:
+['{α₁ -> α₅ α₂ -> α₄ α₄ -> α₁}\n']
+
+
+
+
+
+
+
+
+
+
+
+
+Number of all possible triples: 4374
+40
+[[0, 6, 1, 0, 3, 0], [4, 3, 0, 0, 1, 0], [0, 3, 0, 6, 1, 0], [4, 0, 0, 0, 2, 3], [6, 5, 0, 0, 0, 0], [0, 0, 2, 1, 0, 5], [0, 4, 5, 6, 1, 0], [5, 6, 0, 0, 2, 0], [5, 4, 0, 1, 0, 0], [6, 5, 0, 2, 3, 0], [0, 0, 0, 3, 2, 1], [4, 0, 6, 0, 0, 0], [0, 0, 0, 2, 1, 0], [0, 4, 5, 0, 1, 2], [0, 5, 0, 1, 0, 3]]
+{α₂ -> α₆ α₃ -> α₁ α₅ -> α₃}
+The passing order at alpha=(3,2) beta=(1, 6) is 0
+The s part is given by -1/3
+The passing order at alpha=(4,3) beta=(2, 1) is 0
+The s part is given by -1/3
+The passing order at alpha=(6,5) beta=(4, 3) is 0
+The s part is given by -1/3
+The passing order at alpha=(6,5) beta=(2, 1) is 0
+The s part is given by -2/3
+The passing order at alpha=(4,2) beta=(2, 6) is 1/2
+The s part is given by -1/2
+{α₁ -> α₄ α₂ -> α₃ α₅ -> α₁}
+The passing order at alpha=(2,1) beta=(5, 4) is 0
+The s part is given by -1
+The passing order at alpha=(3,2) beta=(4, 3) is 1/2
+The s part is given by -1/2
+The passing order at alpha=(6,5) beta=(2, 1) is 0
+The s part is given by -1
+The passing order at alpha=(6,5) beta=(5, 4) is 1/2
+The s part is given by 1/2
+The passing order at alpha=(3,1) beta=(5, 3) is 1/2
+The s part is given by -1/2
+{α₂ -> α₃ α₄ -> α₆ α₅ -> α₁}
+The passing order at alpha=(3,2) beta=(4, 3) is 1/2
+The s part is given by 1/6
+The passing order at alpha=(5,4) beta=(1, 6) is 0
+The s part is given by -1/6
+The passing order at alpha=(6,5) beta=(2, 1) is 0
+The s part is given by -1/6
+The passing order at alpha=(6,4) beta=(2, 6) is 1/2
+The s part is given by -1/6
+{α₁ -> α₄ α₅ -> α₂ α₆ -> α₃}
+The passing order at alpha=(1,6) beta=(4, 3) is 0
+The s part is given by 0
+The passing order at alpha=(2,1) beta=(5, 4) is 0
+The s part is given by -1/2
+The passing order at alpha=(6,5) beta=(3, 2) is 0
+The s part is given by -1/2
+The passing order at alpha=(1,5) beta=(4, 2) is 0
+The s part is given by -1/2
+The passing order at alpha=(2,6) beta=(5, 3) is 0
+The s part is given by -1/2
+The passing order at alpha=(2,5) beta=(5, 2) is 1
+The s part is given by 0
+{α₁ -> α₆ α₂ -> α₅}
+The passing order at alpha=(2,1) beta=(1, 6) is 1/2
+The s part is given by -1/3
+The passing order at alpha=(3,2) beta=(6, 5) is 0
+The s part is given by -2/3
+The passing order at alpha=(3,1) beta=(1, 5) is 1/2
+The s part is given by -1/3
+{α₃ -> α₂ α₄ -> α₁ α₆ -> α₅}
+The passing order at alpha=(1,6) beta=(6, 5) is 1/2
+The s part is given by 1/6
+The passing order at alpha=(4,3) beta=(3, 2) is 1/2
+The s part is given by -1/3
+The passing order at alpha=(5,4) beta=(2, 1) is 0
+The s part is given by -1/2
+The passing order at alpha=(5,3) beta=(3, 1) is 1/2
+The s part is given by -1/6
+{α₂ -> α₄ α₃ -> α₅ α₄ -> α₆ α₅ -> α₁}
+The passing order at alpha=(3,2) beta=(5, 4) is 0
+The s part is given by -1/3
+The passing order at alpha=(3,2) beta=(1, 6) is 0
+The s part is given by -2/3
+The passing order at alpha=(4,3) beta=(6, 5) is 0
+The s part is given by -1/3
+The passing order at alpha=(4,3) beta=(2, 1) is 0
+The s part is given by -2/3
+The passing order at alpha=(5,4) beta=(1, 6) is 0
+The s part is given by -1/3
+The passing order at alpha=(6,5) beta=(2, 1) is 0
+The s part is given by -1/3
+The passing order at alpha=(4,2) beta=(6, 4) is 1/2
+The s part is given by -1/6
+The passing order at alpha=(4,2) beta=(2, 6) is 3/2
+The s part is given by 1/6
+The passing order at alpha=(5,3) beta=(1, 5) is 1/2
+The s part is given by 1/2
+The passing order at alpha=(6,4) beta=(2, 6) is 1/2
+The s part is given by -1/6
+The passing order at alpha=(5,2) beta=(1, 4) is 0
+The s part is given by -1/3
+The passing order at alpha=(6,3) beta=(2, 5) is 0
+The s part is given by -1/3
+The passing order at alpha=(6,2) beta=(2, 4) is 1/2
+The s part is given by -1/6
+{α₁ -> α₅ α₂ -> α₆ α₅ -> α₂}
+The passing order at alpha=(2,1) beta=(6, 5) is 0
+The s part is given by -2/3
+The passing order at alpha=(2,1) beta=(3, 2) is 1/2
+The s part is given by -1/6
+The passing order at alpha=(2,1) beta=(1, 6) is 3/2
+The s part is given by 1/6
+The passing order at alpha=(3,2) beta=(1, 6) is 0
+The s part is given by -2/3
+The passing order at alpha=(6,5) beta=(3, 2) is 0
+The s part is given by 0
+The passing order at alpha=(6,5) beta=(1, 6) is 1/2
+The s part is given by -1/6
+The passing order at alpha=(3,1) beta=(1, 5) is 1/2
+The s part is given by -1/6
+{α₁ -> α₅ α₂ -> α₄ α₄ -> α₁}
+The passing order at alpha=(2,1) beta=(6, 5) is 0
+The s part is given by -2/3
+The passing order at alpha=(3,2) beta=(5, 4) is 0
+The s part is given by -2/3
+The passing order at alpha=(3,2) beta=(2, 1) is 1/2
+The s part is given by -1
+The passing order at alpha=(3,2) beta=(6, 5) is 1
+The s part is given by 5/6
+The passing order at alpha=(5,4) beta=(2, 1) is 0
+The s part is given by 1/6
+The passing order at alpha=(5,4) beta=(6, 5) is 1/2
+The s part is given by -1
+The passing order at alpha=(3,1) beta=(6, 4) is 0
+The s part is given by -2/3
+{α₁ -> α₆ α₂ -> α₅ α₄ -> α₂ α₅ -> α₃}
+The passing order at alpha=(2,1) beta=(1, 6) is 1/2
+The s part is given by -1/6
+The passing order at alpha=(3,2) beta=(6, 5) is 0
+The s part is given by -1/2
+The passing order at alpha=(3,2) beta=(4, 3) is 1/2
+The s part is given by -1/3
+The passing order at alpha=(5,4) beta=(3, 2) is 0
+The s part is given by -1/3
+The passing order at alpha=(5,4) beta=(6, 5) is 1/2
+The s part is given by -1/3
+The passing order at alpha=(5,4) beta=(4, 3) is 3/2
+The s part is given by 1/3
+The passing order at alpha=(6,5) beta=(4, 3) is 0
+The s part is given by -1/3
+The passing order at alpha=(3,1) beta=(1, 5) is 1/2
+The s part is given by -1/3
+The passing order at alpha=(6,4) beta=(4, 2) is 1/2
+The s part is given by 1/6
+{α₄ -> α₃ α₅ -> α₂ α₆ -> α₁}
+The passing order at alpha=(1,6) beta=(2, 1) is 1/2
+The s part is given by -1/3
+The passing order at alpha=(5,4) beta=(4, 3) is 1/2
+The s part is given by -1/3
+The passing order at alpha=(6,5) beta=(3, 2) is 0
+The s part is given by -2/3
+The passing order at alpha=(1,5) beta=(3, 1) is 1/2
+The s part is given by -1/3
+The passing order at alpha=(6,4) beta=(4, 2) is 1/2
+The s part is given by -1/3
+The passing order at alpha=(1,4) beta=(4, 1) is 1
+The s part is given by 0
+{α₁ -> α₄ α₃ -> α₆}
+The passing order at alpha=(2,1) beta=(5, 4) is 0
+The s part is given by -1/2
+The passing order at alpha=(4,3) beta=(1, 6) is 0
+The s part is given by -1/2
+{α₄ -> α₂ α₅ -> α₁}
+The passing order at alpha=(5,4) beta=(3, 2) is 0
+The s part is given by -2/3
+The passing order at alpha=(6,5) beta=(2, 1) is 0
+The s part is given by -2/3
+The passing order at alpha=(6,4) beta=(3, 1) is 0
+The s part is given by -2/3
+{α₂ -> α₄ α₃ -> α₅ α₅ -> α₁ α₆ -> α₂}
+The passing order at alpha=(1,6) beta=(3, 2) is 0
+The s part is given by -1/3
+The passing order at alpha=(1,6) beta=(5, 4) is 0
+The s part is given by -2/3
+The passing order at alpha=(3,2) beta=(5, 4) is 0
+The s part is given by -1/3
+The passing order at alpha=(4,3) beta=(6, 5) is 0
+The s part is given by -1/3
+The passing order at alpha=(4,3) beta=(2, 1) is 0
+The s part is given by -2/3
+The passing order at alpha=(6,5) beta=(2, 1) is 0
+The s part is given by -1/3
+The passing order at alpha=(1,5) beta=(3, 1) is 1/2
+The s part is given by -5/6
+The passing order at alpha=(4,2) beta=(6, 4) is 1/2
+The s part is given by -5/6
+{α₂ -> α₅ α₄ -> α₁ α₆ -> α₃}
+The passing order at alpha=(1,6) beta=(4, 3) is 0
+The s part is given by -1
+The passing order at alpha=(3,2) beta=(6, 5) is 0
+The s part is given by -1
+The passing order at alpha=(5,4) beta=(2, 1) is 0
+The s part is given by -1

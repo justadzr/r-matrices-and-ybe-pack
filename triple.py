@@ -99,49 +99,49 @@ class BDTriple:
 
         # Obtain the connected components and their images.
         n = self.n
-        components = self.connected_components()
-        num = len(components)
-        components_img = self.connected_components_img()
-        if components_img is None:
-            # print("Not orthogonal.")
-            return False
+        # components = self.connected_components()
+        # num = len(components)
+        # components_img = self.connected_components_img()
+        # if components_img is None:
+        #     # print("Not orthogonal.")
+        #     return False
 
-        # Check if the images of two connected components are overlapping or adjacent
-        for i in range(num):
-            for j in range(i + 1, num):
-                t0 = components_img[i]
-                c2 = components_img[j]
-                t1 = [x % n + 1 for x in t0]
-                t2 = [(x - 2) % n + 1 for x in t0]
-                if (set(t0) & set(c2)) or (set(t1) & set(c2)) or (set(t2) & set(c2)):
-                    # print("Not orthogonal.")
+        # # Check if the images of two connected components are overlapping or adjacent
+        # for i in range(num):
+        #     for j in range(i + 1, num):
+        #         t0 = components_img[i]
+        #         c2 = components_img[j]
+        #         t1 = [x % n + 1 for x in t0]
+        #         t2 = [(x - 2) % n + 1 for x in t0]
+        #         if (set(t0) & set(c2)) or (set(t1) & set(c2)) or (set(t2) & set(c2)):
+        #             # print("Not orthogonal.")
+        #             return False
+
+        for i in range(len(self.g1)):
+            if self.g1[i] % n + 1 in self.g1:
+                ind = self.g1.index(self.g1[i] % n + 1)
+                temp = abs(self.g2[i] - self.g2[ind])
+                if temp != 1 and temp != n - 1:
+                    # print("Not orthogonal")
                     return False
-
-        # for i in range(len(self.g1)):
-        #     if self.g1[i] % n + 1 in self.g1:
-        #         ind = self.g1.index(self.g1[i] % n + 1)
-        #         temp = abs(self.g2[i] - self.g2[ind])
-        #         if temp != 1 and temp != n - 1:
-        #             # print("Not orthogonal")
-        #             return False
-        #     if (self.g1[i] - 2 + n) % n + 1 in self.g1:
-        #         ind = self.g1.index((self.g1[i] - 2 + n) % n + 1)
-        #         temp = abs(self.g2[i] - self.g2[ind])
-        #         if temp != 1 and temp != n - 1:
-        #             # print("Not orthogonal")
-        #             return False
-        #     if self.g2[i] % n + 1 in self.g2:
-        #         ind = self.g2.index(self.g2[i] % n + 1)
-        #         temp = abs(self.g1[i] - self.g1[ind])
-        #         if temp != 1 and temp != n - 1:
-        #             # print("Not orthogonal")
-        #             return False
-        #     if (self.g2[i] - 2 + n) % n + 1 in self.g2:
-        #         ind = self.g2.index((self.g2[i] - 2 + n) % n + 1)
-        #         temp = abs(self.g1[i] - self.g1[ind])
-        #         if temp != 1 and temp != n - 1:
-        #             # print("Not orthogonal")
-        #             return False
+            if (self.g1[i] - 2 + n) % n + 1 in self.g1:
+                ind = self.g1.index((self.g1[i] - 2 + n) % n + 1)
+                temp = abs(self.g2[i] - self.g2[ind])
+                if temp != 1 and temp != n - 1:
+                    # print("Not orthogonal")
+                    return False
+            if self.g2[i] % n + 1 in self.g2:
+                ind = self.g2.index(self.g2[i] % n + 1)
+                temp = abs(self.g1[i] - self.g1[ind])
+                if temp != 1 and temp != n - 1:
+                    # print("Not orthogonal")
+                    return False
+            if (self.g2[i] - 2 + n) % n + 1 in self.g2:
+                ind = self.g2.index((self.g2[i] - 2 + n) % n + 1)
+                temp = abs(self.g1[i] - self.g1[ind])
+                if temp != 1 and temp != n - 1:
+                    # print("Not orthogonal")
+                    return False
         return True
     
     def T(self, i):
@@ -287,7 +287,7 @@ class BDTriple:
             g1 = self.g1
             g2 = self.g2
             excl = -1
-            for i in range(1, n+1):
+            for i in range(n, 0, -1):
                 if i not in g1:
                     excl = i
                     break
@@ -329,9 +329,9 @@ class BDTriple:
                 elif basis[j] in g1:
                     s -= sp.Rational(1, 2) * aux_inner(self, basis[j], basis[i]) * \
                         dual_basis_modified[i].tensor(dual_basis_modified[j])
-            return s + int(not only_return_s) * sp.Rational(1, 2) * mat2.casimir(n)
+            return s + int(not only_return_s) * sp.Rational(1, 2) * mat2.casimir_gl(n)
 
-    def C(self, alpha, beta):
+    def C(self, alpha, beta, num):
         """
         Computes the orientation indicator C_{αβ} for a given Belavin-Drinfeld triple 
             using the method described in Schedler, T. (2000). "Proof of the GGS Conjecture". 
@@ -349,32 +349,36 @@ class BDTriple:
         """
         if not self.valid():
             raise Exception("Triple not valid")
-
-        i, j = alpha
-        k, l = beta
+        
         n = self.n
+        T = self.T
+
+        def red(a, b):
+            return (a - 1) % b + 1
+        i, j = map(lambda x: red(x, n), alpha)
+        k, l = map(lambda x: red(x, n), beta)
+
+        
         components_1 = self.connected_components()
         components_2 = self.connected_components_img()
-        
+
         # First we check if \alpha is in \tilde{\Gamma_1} and if \beta is in \tilde{\Gamma_2}
         in_span_1 = False
         in_span_2 = False
         for connected_1 in components_1:
-            if j in connected_1 and (i - 2 + n) % n + 1 in connected_1:
+            if j in connected_1 and red(i - 1, n) in connected_1:
                 in_span_1 = True
                 break
         for connected_2 in components_2:
-            if l in connected_2 and (k - 2 + n) % n + 1 in connected_2:
+            if l in connected_2 and red(k - 1, n) in connected_2:
                 in_span_2 = True
                 break
         if not (in_span_1 and in_span_2):
             return None
-        # The check here is redundant as we already have an orientation check
-        # Yet this is probably better as we don't need to apply the check several times
-        if left_end(n, connected_2) == self.T(left_end(n, connected_1)):
+        l = left_end(n, connected_1)
+        for x in range(num):
+            l = T(l)
+        if left_end(n, connected_2) == l:
             return 0
         else:
             return 1
-
-    def passing_ord(self, i, j, k, l):
-        return 1 - self.choose_r0(only_return_s=True).root_action(i, j, k, l)
