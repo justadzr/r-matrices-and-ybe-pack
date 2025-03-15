@@ -361,7 +361,6 @@ class BDTriple:
         
         components_1 = self.connected_components()
         components_2 = self.connected_components_img()
-
         # First we check if \alpha is in \tilde{\Gamma_1} and if \beta is in \tilde{\Gamma_2}
         in_span_1 = False
         in_span_2 = False
@@ -375,10 +374,16 @@ class BDTriple:
                 break
         if not (in_span_1 and in_span_2):
             return None
-        l = left_end(n, connected_1)
+        temp1 = j
+        temp2 = red(i - 1, n)
         for x in range(num):
-            l = T(l)
-        if left_end(n, connected_2) == l:
+            temp1 = T(temp1)
+            temp2 = T(temp2)
+        if temp1 == 0 or temp2 == 0:
+            return None
+        if temp1 == l and red(temp2 + 1, n) == k:
             return 0
-        else:
+        elif red(temp1 + 1, n) == k and temp2 == l:
             return 1
+        else:
+            return None

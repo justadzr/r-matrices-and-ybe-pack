@@ -454,7 +454,8 @@ def ggs_conjecture_rat_new(trip: triple.BDTriple, x: sp.Symbol, q_nth: sp.Symbol
                         if indicator is None:
                             break
                         else:
-                            root_length = (a - b) % n
+                            # print(record)
+                            root_length = (i - j) % n
                             passed = 0
                             half_passed = 0
 
@@ -466,7 +467,7 @@ def ggs_conjecture_rat_new(trip: triple.BDTriple, x: sp.Symbol, q_nth: sp.Symbol
                                 (red(i + 1 - root_length, n), red(j + 1 - root_length, n))
                             root_right_to_alpha = \
                                 (red(i + 1 + root_length, n), red(j + 1 + root_length, n))
-                            
+
                             if root_left_to_beta == (i + 1, j + 1):
                                 half_passed += 1
                             if root_right_to_beta == (i + 1, j + 1):
@@ -474,48 +475,51 @@ def ggs_conjecture_rat_new(trip: triple.BDTriple, x: sp.Symbol, q_nth: sp.Symbol
 
                             if root_left_to_beta in record:
                                 ord_from_alpha_to_root = record.index(root_left_to_beta) + 1
-                                ord_from_root_to_beta = num - ord_from_alpha_to_root
-
+                                # print(ord_from_alpha_to_root)
                                 if root_length > 1:
-                                    if trip.C((i + 1, j + 1), root_left_to_alpha, 
-                                                    ord_from_alpha_to_root) == indicator:
+                                    # print((i + 1, j + 1), root_left_to_beta)
+                                    # print(trip.C((i + 1, j + 1), root_left_to_beta, 
+                                    #           ord_from_alpha_to_root))
+                                    if trip.C((i + 1, j + 1), root_left_to_beta, 
+                                              ord_from_alpha_to_root) == indicator:
                                         passed += 1
                                 else:
                                     C = None
                                     if root_left_to_alpha in record:
                                         C = trip.C((i + 1, j), (k_human, l_human - 1), 
-                                            ord_from_root_to_beta)
+                                                   ord_from_alpha_to_root)
                                     if C is None and root_right_to_alpha in record:
                                         C = trip.C((i + 2, j + 1), (k_human, l_human - 1), 
-                                            ord_from_root_to_beta)
+                                                   ord_from_alpha_to_root)
                                     if C is not None and C == 0:
                                         passed += 1
                             
-                            if root_right_to_beta in record:
+                            if root_right_to_beta in record:                                
                                 ord_from_alpha_to_root = record.index(root_right_to_beta) + 1
-                                ord_from_root_to_beta = num - ord_from_alpha_to_root
-
                                 if root_length > 1:
-                                    if trip.C((i + 1, j + 1), root_left_to_alpha, 
-                                                    ord_from_alpha_to_root) == indicator:
+                                    if trip.C((i + 1, j + 1), root_right_to_beta, 
+                                              ord_from_alpha_to_root) == indicator:
                                         passed += 1
                                 else:
                                     C = None
                                     if root_left_to_alpha in record:
                                         C = trip.C((i + 1, j), (k_human + 1, l_human), 
-                                            ord_from_root_to_beta)
+                                            ord_from_alpha_to_root)
                                     if C is None and root_right_to_alpha in record:
                                         C = trip.C((i + 2, j + 1), (k_human + 1, l_human), 
-                                            ord_from_root_to_beta)
+                                            ord_from_alpha_to_root)
                                     if C is not None and C == 0:
                                         passed += 1
                                     
                             passing_order = sp.Rational(1, 2) * half_passed + passed        
-                            # ps = 1 - coef_s[i, i, k, k] - coef_s[j, j, l, l] + coef_s[i, i, l, l] + coef_s[j, j, k, k]
-                            if True:
+                            
+                            ps = 1 - coef_s[i, i, k, k] - coef_s[j, j, l, l] + coef_s[i, i, l, l] + coef_s[j, j, k, k]
+                            if False:
                                 print(f"The passing order at alpha=({i+1},{j+1}) beta=({k+1}, {l+1}) is {passing_order}")
+                                print(f"PS is P{ps}")
                                 print(f"The s part is given by {coef_s[i, i, l, l] + coef_s[j, j, k, k]}")
                                 print(f"The indicator is {indicator}")
+                                print("=============================================")
                             
                             temp = sp.Rational(1, 2) * (passing_order 
                                                         - coef_s[i, i, l, l] - coef_s[j, j, k, k]

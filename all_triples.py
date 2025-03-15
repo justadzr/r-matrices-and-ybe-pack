@@ -1,12 +1,13 @@
 import random, triple
 from itertools import permutations
 
-def nonassociative_triples(n: int) -> list[triple.BDTriple]:
+def nonassociative_affine_triples(n: int) -> list[triple.BDTriple]:
     res = []
     temp = all_triples(n)
     print(len(temp))
     for trip in temp:
-        if trip.associative() is None:
+        temp = trip.tuple
+        if set([x + 1 for x in range(n) if temp[x] != 0]).union(set(temp)) >= set([x + 1 for x in range(n)]) and trip.associative() is None:
             res.append(trip)
     return res
 

@@ -12,10 +12,10 @@ qn = sp.Symbol("qn")
 # R = ybe.ggs_conjecture_aux_rat(trip, x, q_nth)
 # print(ybe.qybe_rat(R, x).simplify())
 
-# Wrong: [5, 4, 0, 1, 0, 0]
+# Wrong: [2, 0, 0, 5, 6, 1]
 # Correct: [0, 5, 0, 2, 3, 0]
 
-trip = triple.BDTriple([0, 6, 5, 0, 0, 3, 0])
+trip = triple.BDTriple([2, 0, 0, 5, 6, 1])
 n = trip.n
 # print(trip.valid())
 
@@ -61,7 +61,8 @@ n = trip.n
 # triples = all_triples.all_triples(5)
 # num = len(triples)
 # print([trip.tuple for trip in triples])
-
+# R = ybe.ggs_conjecture_rat(trip, x, qn)
+print("===================================================")
 R = ybe.ggs_conjecture_rat_new(trip, x, qn)
 r = ybe.to_constant_solution(trip, True)
 # R_coef = R.coef
@@ -71,10 +72,10 @@ r = ybe.to_constant_solution(trip, True)
 #         R_coef_new[i, j, k, l] = R_coef[j, i, l, k]
 # print("============================")
 # R = mat2.MatrixTensor2(n, R_coef_new, True)
-print(R)
-print(ybe.qybe_rat(R, x).simplify_rat())
-# print((R12 * R13 * R23 - R23 * R13 * R12).simplify())
-# attention = [0, 1, 0, 1, 2, 0]
+# print(R)
+# print(ybe.qybe_rat(R, x).simplify_rat())
+# # print((R12 * R13 * R23 - R23 * R13 * R12).simplify())
+# attention = [0, 0, 0, 2, 0, 2]
 # ybe.qybe1_rat_aux(R, x, attention)
 # ybe.qybe2_rat_aux(R, x, attention)
 # print("============================")
