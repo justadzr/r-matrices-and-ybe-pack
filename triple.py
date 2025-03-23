@@ -2,7 +2,7 @@ from operator import itemgetter
 from itertools import groupby
 from numpy import zeros
 from sympy.combinatorics import Permutation
-import sympy as sp, itertools, mat2, mat1
+import sympy as sp, itertools, mat2, mat1, affine_diagram as ad
 
 # Write a BD triple of the affine untwisted sl(n) as a list of length n, indicating the image
 # of \alpha_i under the transformation T: for instance
@@ -14,16 +14,6 @@ import sympy as sp, itertools, mat2, mat1
 # The code here is not optimal at all: nested loops and unnecessary if/else are everywhere.
 # But usually we don't need large triples (at least our matrix computation can't be too hard)
 # since otherwise Sympy.simplify() would be too slow. So I just leave it as it is.
-
-def left_end(n, connected):
-    for i in range(len(connected)):
-        if (connected[i] - 2 + n) % n + 1 not in connected:
-            return connected[i]
-
-def right_end(n, connected):
-    for i in range(len(connected)):
-        if connected[i] % n + 1 not in connected:
-            return connected[i]
 
 def dual_basis(basis):
     """
@@ -122,26 +112,48 @@ class BDTriple:
                 ind = self.g1.index(self.g1[i] % n + 1)
                 temp = abs(self.g2[i] - self.g2[ind])
                 if temp != 1 and temp != n - 1:
-                    # print("Not orthogonal")
+                    print("Not orthogonal")
                     return False
             if (self.g1[i] - 2 + n) % n + 1 in self.g1:
                 ind = self.g1.index((self.g1[i] - 2 + n) % n + 1)
                 temp = abs(self.g2[i] - self.g2[ind])
                 if temp != 1 and temp != n - 1:
-                    # print("Not orthogonal")
+                    print("Not orthogonal")
                     return False
             if self.g2[i] % n + 1 in self.g2:
                 ind = self.g2.index(self.g2[i] % n + 1)
                 temp = abs(self.g1[i] - self.g1[ind])
                 if temp != 1 and temp != n - 1:
-                    # print("Not orthogonal")
+                    print("Not orthogonal")
                     return False
             if (self.g2[i] - 2 + n) % n + 1 in self.g2:
                 ind = self.g2.index((self.g2[i] - 2 + n) % n + 1)
                 temp = abs(self.g1[i] - self.g1[ind])
                 if temp != 1 and temp != n - 1:
-                    # print("Not orthogonal")
+                    print("Not orthogonal")
                     return False
+        return True
+    
+    def valid_ortho(self) -> bool:
+        """
+        Checks if a Belavin-Drinfeld triple is valid.
+
+        Returns:
+            bool: True if the Belavin-Drinfeld triple is valid, False otherwise.
+        """
+        if len(set(self.g2)) != len(self.g1):
+            # print("Not bijective.")
+            return False
+        
+        for i in range(len(self.g1)):
+            temp = self.g1[i]
+            for k in range(self.n + 1):
+                temp = self.T(temp)
+                if temp == 0:
+                    break
+            if k >= self.n:
+                # print("Not nilpotent")
+                return False
         return True
     
     def T(self, i):
@@ -196,7 +208,7 @@ class BDTriple:
         Returns:
             list: A list of connected components.
         """
-        return self.connected_components_aux(self.g1)
+        return self.connected_components_aux(sorted(self.g1))
     
     def connected_components_img(self):
         """
@@ -221,8 +233,8 @@ class BDTriple:
     # 0 if preserves orientation, 1 o/w
     def orientation_check(self, connected, connected_img):
         n = self.n
-        l1 = left_end(n, connected)
-        l2 = left_end(n, connected_img)
+        l1 = ad.left_end(n, connected)
+        l2 = ad.left_end(n, connected_img)
         return int(l2 != self.T(l1))
 
     def associative(self) -> Permutation:

@@ -1,6 +1,7 @@
 import math, sympy as sp, triple, ybe, mat1
 from sympy.combinatorics import Permutation
-import mat2, time, all_triples
+import mat2, time, all_triples, nonassoc_affine
+from anytree import Node
 
 # Need to declare the variables first
 x = sp.Symbol("x")
@@ -15,7 +16,7 @@ qn = sp.Symbol("qn")
 # Wrong: [2, 0, 0, 5, 6, 1]
 # Correct: [0, 5, 0, 2, 3, 0]
 
-trip = triple.BDTriple([2, 0, 0, 5, 6, 1])
+trip = triple.BDTriple([4, 3, 0, 0])
 n = trip.n
 # print(trip.valid())
 
@@ -57,22 +58,22 @@ n = trip.n
 # attention = [0, 0, 3, 4, 6, 5]
 # ybe.qybe1_rat_aux(R, x, attention)
 # ybe.qybe2_rat_aux(R, x, attention)
-
+# nonassoc_affine.nonassoc_affine_triples(5)
 # triples = all_triples.all_triples(5)
 # num = len(triples)
 # print([trip.tuple for trip in triples])
 # R = ybe.ggs_conjecture_rat(trip, x, qn)
-print("===================================================")
-R = ybe.ggs_conjecture_rat_new(trip, x, qn)
-r = ybe.to_constant_solution(trip, True)
-# R_coef = R.coef
-# R_coef_new = mat2.to_sparray(n, [0] * pow(n, 4))
-# for i, j in [(x, y) for x in range(n) for y in range(n)]:
-#     for k, l in [(x, y) for x in range(n) for y in range(n)]:
-#         R_coef_new[i, j, k, l] = R_coef[j, i, l, k]
-# print("============================")
-# R = mat2.MatrixTensor2(n, R_coef_new, True)
-# print(R)
+# print("===================================================")
+# R = ybe.ggs_conjecture_rat_new(trip, x, qn)
+# r = ybe.to_constant_solution(trip, True)
+# # R_coef = R.coef
+# # R_coef_new = mat2.to_sparray(n, [0] * pow(n, 4))
+# # for i, j in [(x, y) for x in range(n) for y in range(n)]:
+# #     for k, l in [(x, y) for x in range(n) for y in range(n)]:
+# #         R_coef_new[i, j, k, l] = R_coef[j, i, l, k]
+# # print("============================")
+# # R = mat2.MatrixTensor2(n, R_coef_new, True)
+# # print(R)
 # print(ybe.qybe_rat(R, x).simplify_rat())
 # # print((R12 * R13 * R23 - R23 * R13 * R12).simplify())
 # attention = [0, 0, 0, 2, 0, 2]
@@ -129,3 +130,6 @@ r = ybe.to_constant_solution(trip, True)
 
 # print("The incorrect triples are:")
 # print(incorrect)
+
+trip = nonassoc_affine.nonassoc_affine_triples(6)[4]
+print(trip.connected_components())

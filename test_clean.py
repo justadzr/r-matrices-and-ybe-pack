@@ -1,15 +1,13 @@
-import math, sympy as sp, triple, ybe, mat1
-from sympy.combinatorics import Permutation
-import mat2, time, all_triples
+import sympy as sp, triple, ybe, mat1, mat2, nonassoc_affine
 
 # Need to declare the variables first
 x = sp.Symbol("x")
 h = sp.Symbol("h")
 qn = sp.Symbol("qn")
 
-triples = all_triples.nonassociative_affine_triples(8)
+triples = nonassoc_affine.nonassoc_affine_triples(7)
 num = len(triples)
-print([trip.tuple for trip in triples])
+print(f"There are {num} nonassociative affine triples.")
  
 incorrect = []
 i = 0
