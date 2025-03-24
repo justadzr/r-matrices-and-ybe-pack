@@ -40,6 +40,7 @@ def nonassoc_affine_triples(n : int) -> list[triple.BDTriple]:
         max_depth = len(g1_components)
         g2_shift = [[] for _ in range(max_depth)] 
         roots = [[] for _ in range(max_depth)]
+        where_g1_goes = [[] for _ in range(max_depth)]
         g1 = []
         g1_component_length = []
         g1_component_left_end = []
