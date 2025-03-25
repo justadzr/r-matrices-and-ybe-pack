@@ -5,13 +5,13 @@ x = sp.Symbol("x")
 h = sp.Symbol("h")
 qn = sp.Symbol("qn")
 
-x = 9
-triples = nonassoc_affine.nonassoc_affine_triples(x)
+n = 8
+triples = nonassoc_affine.nonassoc_affine_triples(n)
 num = len(triples)
-with open(f"nonassociative-affine-triples-{x}.txt", "a") as f:
+with open(f"nonassociative-affine-triples-{n}.txt", "w") as f:
     print([trip.tuple for trip in triples], file=f)
 
-print(f"There are {num} nonassociative affine triples.")
+print(f"There are {num} nonassociative affine triples when n={n}.")
  
 incorrect = []
 i = 0

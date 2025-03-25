@@ -104,15 +104,6 @@ n = trip.n
 # print("============================")
 # print(RBsl)
 
-# QYBER = ybe.qybe_rat(RB, x)
-# for i, j in [(x, y) for x in range(n) for y in range(n)]:
-#     for k, l in [(x, y) for x in range(n) for y in range(n)]:
-#         for p, q in [(x, y) for x in range(n) for y in range(n)]:
-#             temp = QYBER.coef[i,j,k,l,p,q].simplify()
-#             if str(temp) != "0":
-#                 print(f"i={i} j={j} k={k} l={l} p={p} q={q}:")
-#                 print(temp)
-
 
 # incorrect = []
 # i = 0
@@ -131,5 +122,16 @@ n = trip.n
 # print("The incorrect triples are:")
 # print(incorrect)
 
-trip = nonassoc_affine.nonassoc_affine_triples(6)[4]
-print(trip.connected_components())
+n = 4
+trip = triple.BDTriple([3, 4, 0, 0])
+R = ybe.ggs_conjecture_rat_new(trip, x, qn)
+QYBER = ybe.qybe_rat(R, x)
+print(QYBER)
+print("simplify starts")
+for i, j in [(x, y) for x in range(n) for y in range(n)]:
+    for k, l in [(x, y) for x in range(n) for y in range(n)]:
+        for p, q in [(x, y) for x in range(n) for y in range(n)]:
+            temp = QYBER.coef[i,j,k,l,p,q].ratsimp()
+            if str(temp) != "0":
+                print(f"i={i} j={j} k={k} l={l} p={p} q={q}:")
+                print(temp)

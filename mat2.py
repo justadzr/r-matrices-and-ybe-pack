@@ -71,7 +71,7 @@ class MatrixTensor2:
         for i, j in [(x, y) for x in range(dim) for y in range(dim)]:
             for k, l in [(x, y) for x in range(dim) for y in range(dim)]:
                 temp = coef[i, j, k, l]
-                term = f"e{i+1}{j+1}⊗e{k+1}{l+1}".translate(sub)
+                term = f"e{i+1},{j+1}⊗e{k+1},{l+1}".translate(sub)
                 if temp != 0:
                     result += "(" + str(temp) + ") * " + term + " + "
         if result == "":

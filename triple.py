@@ -236,6 +236,9 @@ class BDTriple:
         l1 = ad.left_end(n, connected)
         l2 = ad.left_end(n, connected_img)
         return int(l2 != self.T(l1))
+    
+    def nonassociative(self) -> bool:
+        pass
 
     def associative(self) -> Permutation:
         """

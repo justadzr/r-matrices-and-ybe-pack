@@ -40,7 +40,7 @@ class MatrixTensor3:
                 for p, q in [(x, y) for x in range(dim) for y in range(dim)]:
                     temp = coef[i, j, k, l, p, q]
                     sub = str.maketrans("0123456789", "₀₁₂₃₄₅₆₇₈₉")
-                    term = f"e{i+1}{j+1}⊗e{k+1}{l+1}⊗e{p+1}{q+1}".translate(sub)
+                    term = f"e{i+1},{j+1}⊗e{k+1},{l+1}⊗e{p+1},{q+1}".translate(sub)
                     if temp != 0:
                         result += "(" + str(sp.nsimplify(temp)) + ") * " + term + " + "
         if result == "":

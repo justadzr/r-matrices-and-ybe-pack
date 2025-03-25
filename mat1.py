@@ -49,7 +49,7 @@ class MatrixTensor1:
         result = ""
         for i, j in [(x, y) for x in range(dim) for y in range(dim)]:
             temp = coef[i, j]
-            term = f"e{i+1}{j+1}".translate(sub)
+            term = f"e{i+1},{j+1}".translate(sub)
             if temp != 0:
                 result += "(" + str(temp) + ") * " + term + " + "
         if result == "":

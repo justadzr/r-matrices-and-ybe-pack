@@ -421,9 +421,11 @@ def ggs_conjecture_rat_new(trip: triple.BDTriple, x: sp.Symbol, q_nth: sp.Symbol
     def take_out_ind(symb):
         s = str(symb)
         if s[0] == "-":
-            return int(s[-1]), int(s[2])
+            lst = s[1:].split(' + ')
+            return int(lst[1][1:]), int(lst[0][1:])
         else:
-            return int(s[1]), int(s[-1])
+            lst = s.split(' - ')
+            return int(lst[0][1:]), int(lst[1][1:])
 
     def red(a, b):
         return (a - 1) % b + 1
@@ -437,15 +439,13 @@ def ggs_conjecture_rat_new(trip: triple.BDTriple, x: sp.Symbol, q_nth: sp.Symbol
                 if (i - j) % n == m:
                     record = []
                     while in_one_component(i_human, j_human):
-                        
                         a = i_human - 1
                         b = j_human - 1
                         root = 0
 
                         p = (a - b) % n
                         for q in range(p):
-                            root += e[T(red(j_human + q, n)) % n] - e[T(red(j_human + q, n)) - 1]
-                        
+                            root += e[T(red(j_human + q, n)) % n] - e[T(red(j_human + q, n))-1]
                         k_human, l_human = take_out_ind(root)
                         num += 1
                         record.append((k_human, l_human))
@@ -473,6 +473,7 @@ def ggs_conjecture_rat_new(trip: triple.BDTriple, x: sp.Symbol, q_nth: sp.Symbol
                             if root_right_to_beta == (i + 1, j + 1):
                                 half_passed += 1
 
+                            # THIS IS INCORRECT
                             if root_left_to_beta in record:
                                 ord_from_alpha_to_root = record.index(root_left_to_beta) + 1
                                 # print(ord_from_alpha_to_root)
@@ -480,7 +481,7 @@ def ggs_conjecture_rat_new(trip: triple.BDTriple, x: sp.Symbol, q_nth: sp.Symbol
                                     # print((i + 1, j + 1), root_left_to_beta)
                                     # print(trip.C((i + 1, j + 1), root_left_to_beta, 
                                     #           ord_from_alpha_to_root))
-                                    if trip.C((i + 1, j + 1), root_left_to_beta, 
+                                    if trip.C(root_left_to_beta, (k_human, l_human), 
                                               ord_from_alpha_to_root) == indicator:
                                         passed += 1
                                 else:
@@ -497,7 +498,7 @@ def ggs_conjecture_rat_new(trip: triple.BDTriple, x: sp.Symbol, q_nth: sp.Symbol
                             if root_right_to_beta in record:                                
                                 ord_from_alpha_to_root = record.index(root_right_to_beta) + 1
                                 if root_length > 1:
-                                    if trip.C((i + 1, j + 1), root_right_to_beta, 
+                                    if trip.C(root_right_to_beta, (k_human, l_human), 
                                               ord_from_alpha_to_root) == indicator:
                                         passed += 1
                                 else:
@@ -514,16 +515,16 @@ def ggs_conjecture_rat_new(trip: triple.BDTriple, x: sp.Symbol, q_nth: sp.Symbol
                             passing_order = sp.Rational(1, 2) * half_passed + passed        
                             
                             ps = 1 - coef_s[i, i, k, k] - coef_s[j, j, l, l] + coef_s[i, i, l, l] + coef_s[j, j, k, k]
+                            temp = sp.Rational(1, 2) * (passing_order 
+                                                        - coef_s[i, i, l, l] - coef_s[j, j, k, k]
+                                                        + indicator * (root_length - 1))
                             if False:
                                 print(f"The passing order at alpha=({i+1},{j+1}) beta=({k+1}, {l+1}) is {passing_order}")
                                 print(f"PS is P{ps}")
                                 print(f"The s part is given by {coef_s[i, i, l, l] + coef_s[j, j, k, k]}")
                                 print(f"The indicator is {indicator}")
+                                print(f"The exponent is {temp}")
                                 print("=============================================")
-                            
-                            temp = sp.Rational(1, 2) * (passing_order 
-                                                        - coef_s[i, i, l, l] - coef_s[j, j, k, k]
-                                                        + indicator * (root_length - 1))
                             coef[k, l, j, i] -= (-1) ** (indicator * (root_length - 1)) * \
                                 q_nth ** (n * temp) * x ** m
                             coef[j, i, k, l] += (-1) ** (indicator * (root_length - 1)) * \
