@@ -175,10 +175,9 @@ def nonassoc_affine_triples(n : int) -> list[triple.BDTriple]:
         pretrip = equiv_class[0][0]
         g1 = pretrip.g1
         g2 = pretrip.g2
-        if pretrip.valid_ortho() and (equiv_class[1] or pretrip.associative() is None):
+
+        if pretrip.valid_ortho() and pretrip.affine_nonassociative():
             res.append(pretrip)
-        else:
-            continue
     t_new = time()
     print(f"Step 3 completed: nonassociative affine triple validation. Time passed: {t_new-t:.2f}s")
 

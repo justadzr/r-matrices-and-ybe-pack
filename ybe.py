@@ -476,13 +476,14 @@ def ggs_conjecture_rat_new(trip: triple.BDTriple, x: sp.Symbol, q_nth: sp.Symbol
                             # THIS IS INCORRECT
                             if root_left_to_beta in record:
                                 ord_from_alpha_to_root = record.index(root_left_to_beta) + 1
+                                ord_from_root_to_beta = num - ord_from_alpha_to_root
                                 # print(ord_from_alpha_to_root)
                                 if root_length > 1:
                                     # print((i + 1, j + 1), root_left_to_beta)
                                     # print(trip.C((i + 1, j + 1), root_left_to_beta, 
                                     #           ord_from_alpha_to_root))
                                     if trip.C(root_left_to_beta, (k_human, l_human), 
-                                              ord_from_alpha_to_root) == indicator:
+                                              ord_from_root_to_beta) == indicator:
                                         passed += 1
                                 else:
                                     C = None
@@ -497,9 +498,10 @@ def ggs_conjecture_rat_new(trip: triple.BDTriple, x: sp.Symbol, q_nth: sp.Symbol
                             
                             if root_right_to_beta in record:                                
                                 ord_from_alpha_to_root = record.index(root_right_to_beta) + 1
+                                ord_from_root_to_beta = num - ord_from_alpha_to_root
                                 if root_length > 1:
                                     if trip.C(root_right_to_beta, (k_human, l_human), 
-                                              ord_from_alpha_to_root) == indicator:
+                                              ord_from_root_to_beta) == indicator:
                                         passed += 1
                                 else:
                                     C = None
@@ -723,6 +725,8 @@ def to_constant_solution(trip: triple.BDTriple, standard_part: bool) \
 
     return mat2.MatrixTensor2(n, coef2, True) + int(standard_part) * (mat2.MatrixTensor2(n, coef1, True) + r0)
 
+# The PS here is not correct (see ggs_conjecture_rat_new). 
+# But I won't fix it because I only use this method for simple tests.
 def ggs_conjecture_constant(trip: triple.BDTriple, q_nth: sp.Symbol) \
     -> mat2.MatrixTensor2:
     n = trip.n
@@ -744,8 +748,8 @@ def ggs_conjecture_constant(trip: triple.BDTriple, q_nth: sp.Symbol) \
     s = trip.choose_r0(only_return_s=True)
     print(s)
     # saving some computation power by not twisting `std2`
-    standard_part = 1 / (q_nth ** n - q_nth ** (-n)) * (
-        (2 * s + std1).exp_rat(q_nth, n, q_exp_half=False)) + std2
+    standard_part = 1 / (q_nth ** sp.Rational(n, 2)- q_nth ** sp.Rational(-n, 2)) * (
+        (2 * s + std1).exp_rat(q_nth, n, q_exp_half=True)) + std2
 
     components = trip.connected_components()
     coef = mat2.to_sparray(n, [0] * pow(n, 4))
@@ -761,9 +765,11 @@ def ggs_conjecture_constant(trip: triple.BDTriple, q_nth: sp.Symbol) \
     def take_out_ind(symb):
         s = str(symb)
         if s[0] == "-":
-            return int(s[-1]), int(s[2])
+            lst = s[1:].split(' + ')
+            return int(lst[1][1:]), int(lst[0][1:])
         else:
-            return int(s[1]), int(s[-1])
+            lst = s.split(' - ')
+            return int(lst[0][1:]), int(lst[1][1:])
     
     def red(a, b):
         return (a - 1) % b + 1
@@ -792,15 +798,13 @@ def ggs_conjecture_constant(trip: triple.BDTriple, q_nth: sp.Symbol) \
                             break
                         elif i > j and i_human > j_human:
                             ps = 1 - coef_s[i, i, k, k] - coef_s[j, j, l, l] + coef_s[i, i, l, l] + coef_s[j, j, k, k]
-                            if True:
+                            if False:
                                 print(f"The passing order at alpha=({i+1},{j+1}) beta=({k+1}, {l+1}) is {ps}")
                                 print(f"The s part is given by {coef_s[i, i, l, l] + coef_s[j, j, k, k]}")
                                 print(f"The indicator is {indicator}")
                                 print(f"The other s part is given by {coef_s[i, i, k, k] + coef_s[j, j, l, l]}")
                             root_length = a - b
-                            temp = (1 - coef_s[i, i, k, k] 
-                                                            - coef_s[j, j, l, l]
-                                                            + indicator * (root_length - 1))
+                            temp = sp.Rational(1, 2) * (1 - coef_s[i, i, k, k] - coef_s[j, j, l, l] + indicator * (root_length - 1))
                             root_length = (a - b) % n
                             coef[k, l, j, i] -= (-1) ** (indicator * (root_length - 1)) *\
                                 q_nth ** (n * temp)

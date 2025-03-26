@@ -16,9 +16,9 @@ qn = sp.Symbol("qn")
 # Wrong: [2, 0, 0, 5, 6, 1]
 # Correct: [0, 5, 0, 2, 3, 0]
 
-trip = triple.BDTriple([4, 3, 0, 0])
+trip = triple.BDTriple([3, 4, 0, 0])
 n = trip.n
-# print(trip.valid())
+print(trip.nonassociative(True))
 
 # # s = trip.choose_r0(only_return_s=True)
 # # print(s)
@@ -61,10 +61,10 @@ n = trip.n
 # nonassoc_affine.nonassoc_affine_triples(5)
 # triples = all_triples.all_triples(5)
 # num = len(triples)
-# print([trip.tuple for trip in triples])
-# R = ybe.ggs_conjecture_rat(trip, x, qn)
-# print("===================================================")
+# # print([trip.tuple for trip in triples])
 # R = ybe.ggs_conjecture_rat_new(trip, x, qn)
+# # print("===================================================")
+R = ybe.ggs_conjecture_constant(trip, qn)
 # r = ybe.to_constant_solution(trip, True)
 # # R_coef = R.coef
 # # R_coef_new = mat2.to_sparray(n, [0] * pow(n, 4))
@@ -81,28 +81,32 @@ n = trip.n
 # ybe.qybe2_rat_aux(R, x, attention)
 # print("============================")
 # rb = 1 / (x ** n - 1) * (x **n * r + r.swap())
-# print(rb.simplify())
+# # print(rb.simplify())
 # print("============================")
-# RB = R + 1 / (x ** n - 1) * mat2.casimir_gl_not_proj(n)
-# print(ybe.qybe_rat(R, x).simplify())
+RB = R + 1 / (x ** n - 1) * mat2.casimir_gl_not_proj(n)
+print(ybe.qybe_rat(R, x).simplify())
 # print("============================")
 # conj = ybe.ggs_conjecture_rat(trip, x, qn)
 # print(ybe.qybe_rat(conj, x).simplify())
 # print("============================")
-# RB_coef = RB.coef
-# rb_coef = rb.coef
-# for i, j in [(x, y) for x in range(n) for y in range(n)]:
-#     for k, l in [(x, y) for x in range(n) for y in range(n)]:
-#         if i - j == l - k:
-#             RB_coef[i, j, k, l] *= x ** ((i - j))
-#             rb_coef[i, j, k, l] *= x ** ((i - j))
+RB_coef = RB.coef
+# # rb_coef = rb.coef
+for i, j in [(x, y) for x in range(n) for y in range(n)]:
+    for k, l in [(x, y) for x in range(n) for y in range(n)]:
+        if i - j == l - k:
+            RB_coef[i, j, k, l] *= x ** ((i - j))
+#             # rb_coef[i, j, k, l] *= x ** ((i - j))
 # # rtsl = ybe.to_trigonometric_solution(trip, x, True) #.pr_to_sln()
-# RBsl = mat2.MatrixTensor2(n, RB_coef, True).simplify()
-# rbsl = mat2.MatrixTensor2(n, rb_coef, True).simplify()
-# print("Generations done.")
-# print(rbsl)
-# print("============================")
-# print(RBsl)
+RB = mat2.MatrixTensor2(n, RB_coef, True).simplify()
+R = ybe.ggs_conjecture_rat_new(trip, x, qn)
+# # rbsl = mat2.MatrixTensor2(n, rb_coef, True).simplify()
+# # print("Generations done.")
+# # print(rbsl)
+print(RB)
+print("============================")
+print(R)
+print("============================")
+print((RB - R).simplify())
 
 
 # incorrect = []
@@ -122,16 +126,15 @@ n = trip.n
 # print("The incorrect triples are:")
 # print(incorrect)
 
-n = 4
-trip = triple.BDTriple([3, 4, 0, 0])
-R = ybe.ggs_conjecture_rat_new(trip, x, qn)
-QYBER = ybe.qybe_rat(R, x)
-print(QYBER)
-print("simplify starts")
-for i, j in [(x, y) for x in range(n) for y in range(n)]:
-    for k, l in [(x, y) for x in range(n) for y in range(n)]:
-        for p, q in [(x, y) for x in range(n) for y in range(n)]:
-            temp = QYBER.coef[i,j,k,l,p,q].ratsimp()
-            if str(temp) != "0":
-                print(f"i={i} j={j} k={k} l={l} p={p} q={q}:")
-                print(temp)
+# trip = triple.BDTriple([4, 3, 0, 6, 1, 0])
+# n = trip.n
+# R = ybe.ggs_conjecture_rat_new(trip, x, qn)
+# QYBER = ybe.qybe_rat(R, x)
+# print("simplify starts")
+# for i, j in [(x, y) for x in range(n) for y in range(n)]:
+#     for k, l in [(x, y) for x in range(n) for y in range(n)]:
+#         for p, q in [(x, y) for x in range(n) for y in range(n)]:
+#             temp = QYBER.coef[i,j,k,l,p,q].ratsimp()
+#             if str(temp) != "0":
+#                 print(f"i={i} j={j} k={k} l={l} p={p} q={q}:")
+#                 print(temp)

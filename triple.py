@@ -2,7 +2,7 @@ from operator import itemgetter
 from itertools import groupby
 from numpy import zeros
 from sympy.combinatorics import Permutation
-import sympy as sp, itertools, mat2, mat1, affine_diagram as ad
+import sympy as sp, itertools, mat2, mat1, affine_diagram as ad, copy
 
 # Write a BD triple of the affine untwisted sl(n) as a list of length n, indicating the image
 # of \alpha_i under the transformation T: for instance
@@ -236,9 +236,44 @@ class BDTriple:
         l1 = ad.left_end(n, connected)
         l2 = ad.left_end(n, connected_img)
         return int(l2 != self.T(l1))
-    
-    def nonassociative(self) -> bool:
-        pass
+
+    def affine_nonassociative(self) -> bool:
+        def red(a, b):
+                return (a - 1) % b + 1
+        g1 = copy.deepcopy(self.g1)
+        g2 = self.g2
+        g1.sort()
+        T = self.T
+        n = self.n
+        img = []
+        segments = []
+
+        for i in g1:
+            if i not in g2:
+                current = i
+                segments += [[current]]
+                img += [current]
+
+                while T(current) != 0:
+                    segments[-1] += [T(current)]
+                    img += [T(current)]
+                    current = T(current)
+
+        num_of_seg = len(segments)
+        perm_list = itertools.permutations([x for x in range(1, num_of_seg)])
+        for inds in perm_list:
+            num = 0
+            perm = copy.deepcopy(segments[0])
+            for i in inds:
+                perm += segments[i]
+            for i in g1:
+                if perm[(perm.index(red(i + 1, n)) + 1) % n] != red(T(i) + 1, n):
+                    break
+                else:
+                    num += 1
+            if num == len(g1):
+                return False
+        return True
 
     def associative(self) -> Permutation:
         """
@@ -249,35 +284,32 @@ class BDTriple:
             sympy.Permutation: the compatible permutation 
                                if the Belavin-Drinfeld triple is associative, None otherwise.
         """
-        if not self.valid():
-            raise Exception("Triple not valid")
-        else:
-            n = self.n
-            g1 = self.g1
-            T = self.T
-            l = list(range(n))
-            p0 = Permutation(l[1:] + l[:1])
-            all = list(itertools.permutations(range(n)))
-            perm = [0] * n
+        n = self.n
+        g1 = self.g1
+        T = self.T
+        l = list(range(n))
+        p0 = Permutation(l[1:] + l[:1])
+        all = list(itertools.permutations(range(n)))
+        perm = [0] * n
 
-            for lst in all:
-                temp = True
+        for lst in all:
+            temp = True
+            for i in range(n):
+                if lst[i] + 1 in g1 and T(lst[i] + 1) != lst[(i + 1) % n] + 1:
+                    temp = False
+                    break
+            
+            if temp:
                 for i in range(n):
-                    if lst[i] + 1 in g1 and T(lst[i] + 1) != lst[(i + 1) % n] + 1:
-                        temp = False
-                        break
-                
-                if temp:
-                    for i in range(n):
-                        perm[lst[i]] = lst[(i + 1) % n]
-                    p = Permutation(perm)
-                    assoc_check = True
+                    perm[lst[i]] = lst[(i + 1) % n]
+                p = Permutation(perm)
+                assoc_check = True
 
-                    for a_human in g1:
-                        if ((a_human - 1) ^ p0) ^ p != ((a_human - 1) ^ p) ^ p0:
-                            assoc_check = False
-                    if assoc_check:
-                        return p
+                for a_human in g1:
+                    if ((a_human - 1) ^ p0) ^ p != ((a_human - 1) ^ p) ^ p0:
+                        assoc_check = False
+                if assoc_check:
+                    return p
             return None
 
     def choose_r0(self, only_return_s: bool) -> mat2.MatrixTensor2:
