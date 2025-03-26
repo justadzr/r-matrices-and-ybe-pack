@@ -1,5 +1,10 @@
 ### A small package for classical r-matrices and quantum R-matrices in affine untwisted sl(n)
 ---
+#### How to use:
+Download all files or clone the repo in one folder. Open `test_clean.py` and run it. The output will be stored in: `verification-record-[n].txt` and `incorrect.txt`.
+
+
+---
 I just checked that this formula is correct for all triples of sl(n) for n <= 6, so it's likely to be true. Now it remains to write down a proof. The only plausible option is probably showing it's the value of a twisted universal R-matrix of U_q(affine sl(n)) in some representation as proposed by EV00.
 
 There is also the task of understanding if this quantization is unique, and moreover understand the second order term in the proposed formula.
