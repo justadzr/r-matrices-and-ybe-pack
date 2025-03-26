@@ -1,0 +1,5 @@
+There are 2 nonassociative affine triples when n = 4.
+Triple {α₁ -> α₃ α₂ -> α₄}:
+checked: 1/2
+Triple {α₁ -> α₄ α₂ -> α₃}:
+checked: 2/2

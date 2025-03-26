@@ -134,7 +134,6 @@ class MatrixTensor3:
                     temp = coef[i, j, k, l, p, q]
                     if isinstance(temp, sp.Expr):
                         coef[i, j, k, l, p, q] = temp.simplify()
-        print(f"It took us {(time() - start):0.2f} seconds to simplify.")
         return MatrixTensor3(dim, coef, self.ggs)
     
     def simplify_rat(self):
@@ -147,7 +146,6 @@ class MatrixTensor3:
                     temp = coef[i, j, k, l, p, q]
                     if isinstance(temp, sp.Expr):
                         coef[i, j, k, l, p, q] = temp.ratsimp()
-        print(f"It took us {(time() - start):0.2f} seconds to simplify.")
         return MatrixTensor3(dim, coef, self.ggs)
     
     def check_of_ggs_type(self):

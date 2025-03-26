@@ -112,25 +112,25 @@ class BDTriple:
                 ind = self.g1.index(self.g1[i] % n + 1)
                 temp = abs(self.g2[i] - self.g2[ind])
                 if temp != 1 and temp != n - 1:
-                    print("Not orthogonal")
+                    # print("Not orthogonal")
                     return False
             if (self.g1[i] - 2 + n) % n + 1 in self.g1:
                 ind = self.g1.index((self.g1[i] - 2 + n) % n + 1)
                 temp = abs(self.g2[i] - self.g2[ind])
                 if temp != 1 and temp != n - 1:
-                    print("Not orthogonal")
+                    # print("Not orthogonal")
                     return False
             if self.g2[i] % n + 1 in self.g2:
                 ind = self.g2.index(self.g2[i] % n + 1)
                 temp = abs(self.g1[i] - self.g1[ind])
                 if temp != 1 and temp != n - 1:
-                    print("Not orthogonal")
+                    # print("Not orthogonal")
                     return False
             if (self.g2[i] - 2 + n) % n + 1 in self.g2:
                 ind = self.g2.index((self.g2[i] - 2 + n) % n + 1)
                 temp = abs(self.g1[i] - self.g1[ind])
                 if temp != 1 and temp != n - 1:
-                    print("Not orthogonal")
+                    # print("Not orthogonal")
                     return False
         return True
     

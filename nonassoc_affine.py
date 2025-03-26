@@ -135,7 +135,6 @@ def nonassoc_affine_triples(n : int) -> list[triple.BDTriple]:
                             affine = False
                             break
                     if affine:
-                        nonassoc = False
                         for j in range(max_depth):
                             shift = int(explicit[j][1:-1].split(', ')[0])
                             orient = int(explicit[j][1:-1].split(', ')[1])
@@ -147,7 +146,7 @@ def nonassoc_affine_triples(n : int) -> list[triple.BDTriple]:
                                 left = temp.index(ad.left_end(n, temp))
                                 temp = (temp[left:] + temp[:left])[::-1]
                                 g2 += temp[-left:] + temp[:-left]
-                        pretrip = (triple.BDTriple(None, n=n, g1=g1, g2=g2), nonassoc)
+                        pretrip = triple.BDTriple(None, n=n, g1=g1, g2=g2)
                         pretriples += [pretrip]
         else:
             continue
@@ -160,11 +159,10 @@ def nonassoc_affine_triples(n : int) -> list[triple.BDTriple]:
     i = 0
     while pretriples:
         # print(f"The {i}th reduction leaves {len(pretriples)} triples")
-        trip = pretriples[0][0]
-        nonassoc = pretriples[0][1]
+        trip = pretriples[0]
         equiv_class = dihedral_action(trip)
-        group.append((equiv_class, nonassoc))
-        pretriples = [pretrip for pretrip in pretriples if pretrip[0] not in equiv_class]
+        group.append(equiv_class)
+        pretriples = [pretrip for pretrip in pretriples if pretrip not in equiv_class]
         i += 1
     t_new = time()
     print(f"Step 2 completed: equivalence classes. Time passed: {t_new-t:.2f}s")
@@ -172,10 +170,9 @@ def nonassoc_affine_triples(n : int) -> list[triple.BDTriple]:
     t = t_new
     res = []
     for equiv_class in group:
-        pretrip = equiv_class[0][0]
+        pretrip = equiv_class[0]
         g1 = pretrip.g1
         g2 = pretrip.g2
-
         if pretrip.valid_ortho() and pretrip.affine_nonassociative():
             res.append(pretrip)
     t_new = time()

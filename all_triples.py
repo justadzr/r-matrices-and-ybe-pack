@@ -23,11 +23,11 @@ def all_triples(n : int) -> list[triple.BDTriple]:
         sublists.extend(permutations(lst, i))
         for temp1 in sublists:
             for temp2 in sublists:
-                if set(temp1).union(set(temp2)) >= set([x + 1 for x in range(n)]) and temp1 != temp2:
+                if temp1 != temp2:
                         trip_temp = triple.BDTriple(None, n=n, g1=temp1, g2=temp2)
                         if trip_temp.valid():
                             res.append(trip_temp)
-    print(f"Number of all possible triples: {len(res)}")
+
     group = []
     i = 0
     while res:
