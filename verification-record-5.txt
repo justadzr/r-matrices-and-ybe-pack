@@ -1,1 +1,0 @@
-There are 0 nonassociative affine triples when n = 5.
