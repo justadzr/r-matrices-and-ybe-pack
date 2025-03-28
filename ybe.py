@@ -472,6 +472,27 @@ def qybe1_rat(R: mat2.MatrixTensor2, x: sp.Symbol) -> mat3.MatrixTensor3:
         R23 = R.subs(x, u2 / u3).to_matrixtensor3_23
         return R12 * R13 * R23
     
+def qybe1_rat_no_eval(R: mat2.MatrixTensor2, x: sp.Symbol) -> mat3.MatrixTensor3:
+    if R.ggs:
+        dim = R.dim
+        c1 = R.coef
+        c = sp.MutableDenseNDimArray(zeros((dim,)*6).astype(int))
+        for i, j in [(x, y) for x in range(dim) for y in range(dim)]:
+            for k, l in [(x, y) for x in range(dim) for y in range(dim)]:
+                for m in range(dim):
+                    n = (i + k + m - j - l) % dim
+                    for p in range(dim):
+                        q = (k + i + m - p - j) % dim
+                        c[i, j, k, l, m, n] += sp.Mul(sp.Mul(sp.Subs(c1[i, (k + i - p) % dim, k, p], x, u1 / u2, evaluate=False), 
+                                                      sp.Subs(c1[(k + i - p) % dim, j, m, q], x, u1 / u3, evaluate=False), evaluate=False), 
+                                                      sp.Subs(c1[p, l, q, n], x, u2 / u3, evaluate=False), evaluate=False)
+        return mat3.MatrixTensor3(dim, c, True)
+    else:
+        R12 = R.subs(x, u1 / u2).to_matrixtensor3_12
+        R13 = R.subs(x, u1 / u3).to_matrixtensor3_13
+        R23 = R.subs(x, u2 / u3).to_matrixtensor3_23
+        return R12 * R13 * R23
+    
 def qybe2_rat(R: mat2.MatrixTensor2, x: sp.Symbol) -> mat3.MatrixTensor3:
     if R.ggs:
         dim = R.dim
@@ -492,9 +513,33 @@ def qybe2_rat(R: mat2.MatrixTensor2, x: sp.Symbol) -> mat3.MatrixTensor3:
         R23 = R.subs(x, u2 / u3).to_matrixtensor3_23
         return R23 * R13 * R12
     
+def qybe2_rat_no_eval(R: mat2.MatrixTensor2, x: sp.Symbol) -> mat3.MatrixTensor3:
+    if R.ggs:
+        dim = R.dim
+        c1 = R.coef
+        c = sp.MutableDenseNDimArray(zeros((dim,)*6).astype(int))
+        for i, j in [(x, y) for x in range(dim) for y in range(dim)]:
+            for k, l in [(x, y) for x in range(dim) for y in range(dim)]:
+                for m in range(dim):
+                    n = (i + k + m - j - l) % dim
+                    for p in range(dim):
+                        c[i, j, k, l, m, n] += sp.Mul(sp.Mul(sp.Subs(c1[k, p, m, (k + m - p) % dim], x, u2 / u3, evaluate=False), 
+                                                             sp.Subs(c1[i, (j + l - p) % dim, (k + m - p) % dim, n], x, u1 / u3, evaluate=False), evaluate=False),
+                                                             sp.Subs(c1[(j + l - p) % dim, j, p, l], x, u1 / u2, evaluate=False), evaluate=False)
+        return mat3.MatrixTensor3(dim, c, True)
+    else:
+        R12 = R.subs(x, u1 / u2).to_matrixtensor3_12
+        R13 = R.subs(x, u1 / u3).to_matrixtensor3_13
+        R23 = R.subs(x, u2 / u3).to_matrixtensor3_23
+        return R23 * R13 * R12
+
 def qybe_rat(R: mat3.MatrixTensor3, x: sp.Symbol) -> mat3.MatrixTensor3:
     # print("Computing the QYBE of the given R-matrix......")
     return qybe1_rat(R, x) - qybe2_rat(R, x)
+
+def qybe_rat_no_eval(R: mat3.MatrixTensor3, x: sp.Symbol) -> mat3.MatrixTensor3:
+    # print("Computing the QYBE of the given R-matrix......")
+    return qybe1_rat_no_eval(R, x) - qybe2_rat_no_eval(R, x)
 
 def qybe1_rat_aux(R: mat2.MatrixTensor2, x: sp.Symbol, attention: list) -> mat3.MatrixTensor3:
     if R.ggs:
