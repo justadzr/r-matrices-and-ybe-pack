@@ -4,7 +4,7 @@ import networkx as nx, matplotlib.pyplot as plt
 def red(a, b):
     return (a - 1) % b + 1
 
-n=12
+n=4
 with open(f"nonassociative-affine-triples-{n}.txt", "r") as f:
     unclean_triples = f.read()[2:-2].split('], [')
 triples = []
