@@ -169,3 +169,13 @@ class MatrixTensor3:
                         (e(dim, i, j).pr_to_sln().tensor(e(dim, k, l).pr_to_sln())).tensor(e(dim, p, q).pr_to_sln())
 
         return res
+    
+    def subs(self, x, y):
+        dim = self.dim
+        coef = self.coef
+        coef1 = deepcopy(coef)
+        for i, j in [(x, y) for x in range(dim) for y in range(dim)]:
+            for k, l in [(x, y) for x in range(dim) for y in range(dim)]:
+                for p, q in [(x, y) for x in range(dim) for y in range(dim)]:
+                    coef1[i, j, k, l, p, q].subs(x, y)
+        return MatrixTensor3(dim, coef1, self.ggs)

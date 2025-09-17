@@ -294,3 +294,21 @@ class MatrixTensor2:
                         B = mat1.e(dim, k, l)
                     res += coef[i, j, k, l] * A.tensor(B)
         return res
+    
+    def transpose(self):
+        coef1 = self.coef
+        dim = self.dim
+        coef = sp.MutableDenseNDimArray(zeros((dim,)*4).astype(int))
+        for i, j in [(x, y) for x in range(dim) for y in range(dim)]:
+                for k, l in [(x, y) for x in range(dim) for y in range(dim)]:
+                    coef[j, i, l, k] = coef1[k, l, i, j]
+        return MatrixTensor2(dim, coef, self.ggs)
+
+    # def subs(self, x, y):
+    #     dim = self.dim
+    #     coef = self.coef
+    #     coef1 = deepcopy(coef)
+    #     for i, j in [(x, y) for x in range(dim) for y in range(dim)]:
+    #         for k, l in [(x, y) for x in range(dim) for y in range(dim)]:
+    #             coef1[i, j, k, l].subs(x, y)
+    #     return MatrixTensor2(dim, coef1, self.ggs)
