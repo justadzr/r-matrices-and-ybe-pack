@@ -7,6 +7,10 @@ from copy import deepcopy
 def hash(dim, i, j):
     return int(i * dim + j)
 
+def np_to_mat1(dim, np_matrix):
+    coef = sp.MutableDenseNDimArray(np_matrix.astype(int))
+    return MatrixTensor1(dim, coef)
+
 def to_sparray(dim, coef):
     temp = sp.MutableDenseNDimArray(zeros((dim,)*2).astype(int))
     for i, j in [(x, y) for x in range(dim) for y in range(dim)]:

@@ -1,0 +1,2 @@
+For n = 6, our formula is incorrect for:
+[]

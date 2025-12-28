@@ -303,6 +303,25 @@ class MatrixTensor2:
                 for k, l in [(x, y) for x in range(dim) for y in range(dim)]:
                     coef[j, i, l, k] = coef1[k, l, i, j]
         return MatrixTensor2(dim, coef, self.ggs)
+    
+    def expand(self, expand_var, center, o_degree):
+        coef1 = self.coef
+        dim = self.dim
+        coef = sp.MutableDenseNDimArray(zeros((dim,)*4).astype(int))
+        for i, j in [(x, y) for x in range(dim) for y in range(dim)]:
+                for k, l in [(x, y) for x in range(dim) for y in range(dim)]:
+                    coef[i, j, k, l] = sp.series(coef1[i, j, k, l], expand_var, center, o_degree + 1)
+        return MatrixTensor2(dim, coef, self.ggs)
+    
+    def extract_coeff(self, var_name, power):
+        coef1 = self.coef
+        dim = self.dim
+        coef = sp.MutableDenseNDimArray(zeros((dim,)*4).astype(int))
+        for i, j in [(x, y) for x in range(dim) for y in range(dim)]:
+                for k, l in [(x, y) for x in range(dim) for y in range(dim)]:
+                    coef[i, j, k, l] = coef1[i, j, k, l].removeO().coeff(var_name, power)
+
+        return MatrixTensor2(dim, coef, self.ggs)
 
     # def subs(self, x, y):
     #     dim = self.dim

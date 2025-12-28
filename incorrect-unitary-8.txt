@@ -1,0 +1,2 @@
+For n = 8, our formula is incorrect for:
+[]
