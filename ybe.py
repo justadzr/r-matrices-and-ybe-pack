@@ -437,7 +437,7 @@ def ggs_conjecture_rat(trip: triple.BDTriple, x: sp.Symbol, q_nth: sp.Symbol) \
                             temp = sp.Rational(1, 2) * (passing_order 
                                                         - coef_s[i, i, l, l] - coef_s[j, j, k, k]
                                                         + indicator * (root_length - 1))
-                            if passing_order >= 1:
+                            if passing_order > 1:
                                 print(f"For the triple: {trip.to_latex()}:")
                                 print(f"The passing order at alpha=({i+1},{j+1}) beta=({k+1}, {l+1}) for T^{num} is {passing_order}")
                                 print("=============================================")
