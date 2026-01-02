@@ -158,13 +158,7 @@ class BDTriple:
     
     def T(self, i):
         """
-        Returns the index of T(α_i).
-
-        Args:
-            i (int): The index for which T(α_i) is to be retrieved.
-
-        Returns:
-            int: The index of T(α_i).
+        Returns T(\alpha_i). If \alpha_i is not in \Gamma_1, then returns 0.
         """
         return self.tuple[i - 1]
 
@@ -178,6 +172,15 @@ class BDTriple:
             res += f"\u03B1{self.g1[i]} -> \u03B1{self.g2[i]} ".translate(sub)
         if res != "":
             return "{" + res[:-1] + "}"
+        else:
+            return "Empty triple."
+        
+    def to_latex(self):
+        res = ""
+        for i in range(len(self.g1)):
+            res += f"\\alpha_{self.g1[i]}\\mapsto \\alpha_{self.g2[i]}, "
+        if res != "":
+            return "\\{" + res[:-2] + "\\}"
         else:
             return "Empty triple."
 
@@ -434,3 +437,5 @@ class BDTriple:
             return 1
         else:
             return None
+        
+    

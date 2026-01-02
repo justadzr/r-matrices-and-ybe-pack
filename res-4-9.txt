@@ -1,0 +1,712 @@
+========================================
+When n = 4
+For the triple {α₁ -> α₃ α₂ -> α₄} we have: 
+Same signs compatible pairs: 
+[((-α2, α2), (-α1, α3)), ((-α2, α4), (-α1, α1))]
+Opposite signs compatible pairs: 
+[]
+Opposite pairs with the same lengths: 
+[]
+Opposite matrices with the same lengths: 
+[]
+--------------------------------------------------------
+For the triple {α₁ -> α₄ α₂ -> α₃} we have: 
+Same signs compatible pairs: 
+[((α3, -α2), (α4, -α1)), ((-α2, α3), (-α1, α4))]
+Opposite signs compatible pairs: 
+[]
+Opposite pairs with the same lengths: 
+[]
+Opposite matrices with the same lengths: 
+[]
+--------------------------------------------------------
+========================================
+When n = 5
+========================================
+When n = 6
+For the triple {α₁ -> α₄ α₂ -> α₅ α₃ -> α₆} we have: 
+Same signs compatible pairs: 
+[((-α3, α3), (-α1 - α2, α4 + α5)), ((-α2 - α3, α2 + α3), (-α1, α4)), ((-α3, α6), (-α1 - α2, α1 + α2)), ((-α2 - α3, α5 + α6), (-α1, α1))]
+Opposite signs compatible pairs: 
+[]
+Opposite pairs with the same lengths: 
+[]
+Opposite matrices with the same lengths: 
+[]
+--------------------------------------------------------
+For the triple {α₁ -> α₆ α₂ -> α₅ α₃ -> α₄} we have: 
+Same signs compatible pairs: 
+[((α5, -α2), (α6, -α1)), ((α4, -α3), (α5, -α2)), ((α4, -α3), (α5 + α6, -α1 - α2)), ((α4 + α5, -α2 - α3), (α6, -α1)), ((-α2, α5), (-α1, α6)), ((-α3, α4), (-α2, α5)), ((-α3, α4), (-α1 - α2, α5 + α6)), ((-α2 - α3, α4 + α5), (-α1, α6))]
+Opposite signs compatible pairs: 
+[]
+Opposite pairs with the same lengths: 
+[]
+Opposite matrices with the same lengths: 
+[]
+--------------------------------------------------------
+For the triple {α₁ -> α₅ α₂ -> α₆ α₄ -> α₃} we have: 
+Same signs compatible pairs: 
+[((-α2, α6), (-α1, α1))]
+Opposite signs compatible pairs: 
+[]
+Opposite pairs with the same lengths: 
+[]
+Opposite matrices with the same lengths: 
+[]
+--------------------------------------------------------
+For the triple {α₁ -> α₆ α₂ -> α₅ α₄ -> α₃} we have: 
+Same signs compatible pairs: 
+[((α5, -α2), (α6, -α1)), ((-α2, α5), (-α1, α6))]
+Opposite signs compatible pairs: 
+[]
+Opposite pairs with the same lengths: 
+[]
+Opposite matrices with the same lengths: 
+[]
+--------------------------------------------------------
+For the triple {α₁ -> α₄ α₃ -> α₆ α₅ -> α₂} we have: 
+Same signs compatible pairs: 
+[]
+Opposite signs compatible pairs: 
+[]
+Opposite pairs with the same lengths: 
+[]
+Opposite matrices with the same lengths: 
+[]
+--------------------------------------------------------
+For the triple {α₁ -> α₃ α₂ -> α₄ α₃ -> α₅ α₄ -> α₆} we have: 
+Same signs compatible pairs: 
+[((α4, -α2), (α5, -α1)), ((α5, -α3), (α6, -α2)), ((-α2, α2), (-α1, α3)), ((-α3, α3), (-α2, α4)), ((-α4, α4), (-α3, α5)), ((-α3 - α4, α3 + α4), (-α1 - α2, α5 + α6)), ((-α2 - α3 - α4, α2 + α3 + α4), (-α1, α5)), ((-α2, α4), (-α1, α5)), ((-α2, α6), (-α1, α1)), ((-α3, α5), (-α2, α6)), ((-α4, α6), (-α1 - α2 - α3, α1 + α2 + α3)), ((-α3 - α4, α5 + α6), (-α1 - α2, α1 + α2)), ((-α2 - α3 - α4, α4 + α5 + α6), (-α1, α1))]
+Opposite signs compatible pairs: 
+[((α3, -α1), (-α1 - α2 - α3, α1 + α2 + α3)), ((α4, -α2), (-α2 - α3 - α4, α2 + α3 + α4)), ((α3 + α4, -α1 - α2), (-α1 - α2 - α3 - α4, α1 + α2 + α3 + α4)), ((-α3, α3), (α3 + α4 + α5, -α1 - α2 - α3)), ((-α4, α4), (α4 + α5 + α6, -α2 - α3 - α4)), ((-α3 - α4, α3 + α4), (α3 + α4 + α5 + α6, -α1 - α2 - α3 - α4))]
+Opposite pairs with the same lengths: 
+[]
+Opposite matrices with the same lengths: 
+[]
+--------------------------------------------------------
+For the triple {α₁ -> α₃ α₂ -> α₄ α₄ -> α₆ α₅ -> α₁} we have: 
+Same signs compatible pairs: 
+[((-α2, α2), (-α1, α3)), ((-α5, α5), (-α4, α6)), ((-α2, α6), (-α1, α1)), ((-α5, α3), (-α4, α4))]
+Opposite signs compatible pairs: 
+[]
+Opposite pairs with the same lengths: 
+[]
+Opposite matrices with the same lengths: 
+[]
+--------------------------------------------------------
+For the triple {α₁ -> α₄ α₂ -> α₃ α₄ -> α₆ α₅ -> α₁} we have: 
+Same signs compatible pairs: 
+[((α3, -α2), (α4, -α1)), ((-α5, α5), (-α4, α6)), ((-α2, α3), (-α1, α4))]
+Opposite signs compatible pairs: 
+[((-α4 - α5, α4 + α5), (α4, -α5))]
+Opposite pairs with the same lengths: 
+[]
+Opposite matrices with the same lengths: 
+[]
+--------------------------------------------------------
+========================================
+When n = 7
+For the triple {α₁ -> α₂ α₂ -> α₃ α₄ -> α₆ α₅ -> α₇} we have: 
+Same signs compatible pairs: 
+[((-α2, α2), (-α1, α3)), ((-α5, α5), (-α4, α6))]
+Opposite signs compatible pairs: 
+[((α2, -α1), (-α1 - α2, α1 + α2)), ((-α2, α2), (α2 + α3, -α1 - α2))]
+Opposite pairs with the same lengths: 
+[]
+Opposite matrices with the same lengths: 
+[]
+--------------------------------------------------------
+For the triple {α₁ -> α₄ α₂ -> α₃ α₄ -> α₆ α₅ -> α₇} we have: 
+Same signs compatible pairs: 
+[((α3, -α2), (α4, -α1)), ((-α5, α5), (-α4, α6)), ((-α2, α3), (-α1, α4))]
+Opposite signs compatible pairs: 
+[]
+Opposite pairs with the same lengths: 
+[]
+Opposite matrices with the same lengths: 
+[]
+--------------------------------------------------------
+For the triple {α₁ -> α₂ α₂ -> α₃ α₄ -> α₇ α₅ -> α₆} we have: 
+Same signs compatible pairs: 
+[((α6, -α5), (α7, -α4)), ((-α2, α2), (-α1, α3)), ((-α5, α6), (-α4, α7))]
+Opposite signs compatible pairs: 
+[((α2, -α1), (-α1 - α2, α1 + α2)), ((-α2, α2), (α2 + α3, -α1 - α2))]
+Opposite pairs with the same lengths: 
+[]
+Opposite matrices with the same lengths: 
+[]
+--------------------------------------------------------
+For the triple {α₁ -> α₄ α₂ -> α₃ α₄ -> α₇ α₅ -> α₆} we have: 
+Same signs compatible pairs: 
+[((α3, -α2), (α4, -α1)), ((α6, -α5), (α7, -α4)), ((-α2, α3), (-α1, α4)), ((-α5, α6), (-α4, α7))]
+Opposite signs compatible pairs: 
+[]
+Opposite pairs with the same lengths: 
+[]
+Opposite matrices with the same lengths: 
+[]
+--------------------------------------------------------
+========================================
+When n = 8
+For the triple {α₁ -> α₅ α₂ -> α₆ α₃ -> α₇ α₄ -> α₈} we have: 
+Same signs compatible pairs: 
+[((-α4, α4), (-α1 - α2 - α3, α5 + α6 + α7)), ((-α3 - α4, α3 + α4), (-α1 - α2, α5 + α6)), ((-α2 - α3 - α4, α2 + α3 + α4), (-α1, α5)), ((-α4, α8), (-α1 - α2 - α3, α1 + α2 + α3)), ((-α3 - α4, α7 + α8), (-α1 - α2, α1 + α2)), ((-α2 - α3 - α4, α6 + α7 + α8), (-α1, α1))]
+Opposite signs compatible pairs: 
+[]
+Opposite pairs with the same lengths: 
+[]
+Opposite matrices with the same lengths: 
+[]
+--------------------------------------------------------
+For the triple {α₁ -> α₈ α₂ -> α₇ α₃ -> α₆ α₄ -> α₅} we have: 
+Same signs compatible pairs: 
+[((α7, -α2), (α8, -α1)), ((α6, -α3), (α7, -α2)), ((α6, -α3), (α7 + α8, -α1 - α2)), ((α5, -α4), (α6, -α3)), ((α5, -α4), (α6 + α7, -α2 - α3)), ((α5, -α4), (α6 + α7 + α8, -α1 - α2 - α3)), ((α6 + α7, -α2 - α3), (α8, -α1)), ((α5 + α6, -α3 - α4), (α7, -α2)), ((α5 + α6, -α3 - α4), (α7 + α8, -α1 - α2)), ((α5 + α6 + α7, -α2 - α3 - α4), (α8, -α1)), ((-α2, α7), (-α1, α8)), ((-α3, α6), (-α2, α7)), ((-α3, α6), (-α1 - α2, α7 + α8)), ((-α4, α5), (-α3, α6)), ((-α4, α5), (-α2 - α3, α6 + α7)), ((-α4, α5), (-α1 - α2 - α3, α6 + α7 + α8)), ((-α2 - α3, α6 + α7), (-α1, α8)), ((-α3 - α4, α5 + α6), (-α2, α7)), ((-α3 - α4, α5 + α6), (-α1 - α2, α7 + α8)), ((-α2 - α3 - α4, α5 + α6 + α7), (-α1, α8))]
+Opposite signs compatible pairs: 
+[]
+Opposite pairs with the same lengths: 
+[]
+Opposite matrices with the same lengths: 
+[]
+--------------------------------------------------------
+For the triple {α₁ -> α₆ α₂ -> α₇ α₃ -> α₈ α₅ -> α₄} we have: 
+Same signs compatible pairs: 
+[((-α3, α8), (-α1 - α2, α1 + α2)), ((-α2 - α3, α7 + α8), (-α1, α1))]
+Opposite signs compatible pairs: 
+[]
+Opposite pairs with the same lengths: 
+[]
+Opposite matrices with the same lengths: 
+[]
+--------------------------------------------------------
+For the triple {α₁ -> α₈ α₂ -> α₇ α₃ -> α₆ α₅ -> α₄} we have: 
+Same signs compatible pairs: 
+[((α7, -α2), (α8, -α1)), ((α6, -α3), (α7, -α2)), ((α6, -α3), (α7 + α8, -α1 - α2)), ((α6 + α7, -α2 - α3), (α8, -α1)), ((-α2, α7), (-α1, α8)), ((-α3, α6), (-α2, α7)), ((-α3, α6), (-α1 - α2, α7 + α8)), ((-α2 - α3, α6 + α7), (-α1, α8))]
+Opposite signs compatible pairs: 
+[]
+Opposite pairs with the same lengths: 
+[]
+Opposite matrices with the same lengths: 
+[]
+--------------------------------------------------------
+For the triple {α₁ -> α₇ α₂ -> α₈ α₄ -> α₅ α₆ -> α₃} we have: 
+Same signs compatible pairs: 
+[((-α2, α8), (-α1, α1))]
+Opposite signs compatible pairs: 
+[]
+Opposite pairs with the same lengths: 
+[]
+Opposite matrices with the same lengths: 
+[]
+--------------------------------------------------------
+For the triple {α₁ -> α₈ α₂ -> α₇ α₄ -> α₅ α₆ -> α₃} we have: 
+Same signs compatible pairs: 
+[((α7, -α2), (α8, -α1)), ((-α2, α7), (-α1, α8))]
+Opposite signs compatible pairs: 
+[]
+Opposite pairs with the same lengths: 
+[]
+Opposite matrices with the same lengths: 
+[]
+--------------------------------------------------------
+For the triple {α₁ -> α₇ α₂ -> α₈ α₄ -> α₃ α₆ -> α₅} we have: 
+Same signs compatible pairs: 
+[((-α2, α8), (-α1, α1))]
+Opposite signs compatible pairs: 
+[]
+Opposite pairs with the same lengths: 
+[]
+Opposite matrices with the same lengths: 
+[]
+--------------------------------------------------------
+For the triple {α₁ -> α₈ α₂ -> α₇ α₄ -> α₃ α₆ -> α₅} we have: 
+Same signs compatible pairs: 
+[((α7, -α2), (α8, -α1)), ((-α2, α7), (-α1, α8))]
+Opposite signs compatible pairs: 
+[]
+Opposite pairs with the same lengths: 
+[]
+Opposite matrices with the same lengths: 
+[]
+--------------------------------------------------------
+For the triple {α₁ -> α₅ α₂ -> α₆ α₄ -> α₃ α₇ -> α₈} we have: 
+Same signs compatible pairs: 
+[]
+Opposite signs compatible pairs: 
+[]
+Opposite pairs with the same lengths: 
+[]
+Opposite matrices with the same lengths: 
+[]
+--------------------------------------------------------
+For the triple {α₁ -> α₆ α₂ -> α₅ α₄ -> α₃ α₇ -> α₈} we have: 
+Same signs compatible pairs: 
+[((α5, -α2), (α6, -α1)), ((-α2, α5), (-α1, α6))]
+Opposite signs compatible pairs: 
+[]
+Opposite pairs with the same lengths: 
+[]
+Opposite matrices with the same lengths: 
+[]
+--------------------------------------------------------
+For the triple {α₁ -> α₅ α₂ -> α₆ α₄ -> α₈ α₇ -> α₃} we have: 
+Same signs compatible pairs: 
+[]
+Opposite signs compatible pairs: 
+[]
+Opposite pairs with the same lengths: 
+[]
+Opposite matrices with the same lengths: 
+[]
+--------------------------------------------------------
+For the triple {α₁ -> α₆ α₂ -> α₅ α₄ -> α₈ α₇ -> α₃} we have: 
+Same signs compatible pairs: 
+[((α5, -α2), (α6, -α1)), ((-α2, α5), (-α1, α6))]
+Opposite signs compatible pairs: 
+[]
+Opposite pairs with the same lengths: 
+[]
+Opposite matrices with the same lengths: 
+[]
+--------------------------------------------------------
+For the triple {α₁ -> α₃ α₂ -> α₄ α₅ -> α₇ α₆ -> α₈} we have: 
+Same signs compatible pairs: 
+[((-α2, α2), (-α1, α3)), ((-α6, α6), (-α5, α7))]
+Opposite signs compatible pairs: 
+[]
+Opposite pairs with the same lengths: 
+[]
+Opposite matrices with the same lengths: 
+[]
+--------------------------------------------------------
+For the triple {α₁ -> α₄ α₂ -> α₃ α₅ -> α₇ α₆ -> α₈} we have: 
+Same signs compatible pairs: 
+[((α3, -α2), (α4, -α1)), ((-α6, α6), (-α5, α7)), ((-α2, α3), (-α1, α4))]
+Opposite signs compatible pairs: 
+[]
+Opposite pairs with the same lengths: 
+[]
+Opposite matrices with the same lengths: 
+[]
+--------------------------------------------------------
+For the triple {α₁ -> α₄ α₂ -> α₃ α₅ -> α₈ α₆ -> α₇} we have: 
+Same signs compatible pairs: 
+[((α3, -α2), (α4, -α1)), ((α7, -α6), (α8, -α5)), ((-α2, α3), (-α1, α4)), ((-α6, α7), (-α5, α8))]
+Opposite signs compatible pairs: 
+[]
+Opposite pairs with the same lengths: 
+[]
+Opposite matrices with the same lengths: 
+[]
+--------------------------------------------------------
+For the triple {α₁ -> α₄ α₃ -> α₆ α₅ -> α₂ α₇ -> α₈} we have: 
+Same signs compatible pairs: 
+[]
+Opposite signs compatible pairs: 
+[]
+Opposite pairs with the same lengths: 
+[]
+Opposite matrices with the same lengths: 
+[]
+--------------------------------------------------------
+For the triple {α₁ -> α₈ α₂ -> α₇ α₃ -> α₆ α₄ -> α₅ α₆ -> α₂} we have: 
+Same signs compatible pairs: 
+[((α7, -α2), (α8, -α1)), ((α6, -α3), (α7, -α2)), ((α6, -α3), (α7 + α8, -α1 - α2)), ((α5, -α4), (α6, -α3)), ((α5, -α4), (α6 + α7, -α2 - α3)), ((α5, -α4), (α6 + α7 + α8, -α1 - α2 - α3)), ((α6 + α7, -α2 - α3), (α8, -α1)), ((α5 + α6, -α3 - α4), (α7, -α2)), ((α5 + α6, -α3 - α4), (α7 + α8, -α1 - α2)), ((α5 + α6 + α7, -α2 - α3 - α4), (α8, -α1)), ((-α2, α7), (-α1, α8)), ((-α3, α6), (-α2, α7)), ((-α3, α6), (-α1 - α2, α7 + α8)), ((-α4, α5), (-α3, α6)), ((-α4, α5), (-α2 - α3, α6 + α7)), ((-α4, α5), (-α1 - α2 - α3, α6 + α7 + α8)), ((-α2 - α3, α6 + α7), (-α1, α8)), ((-α3 - α4, α5 + α6), (-α2, α7)), ((-α3 - α4, α5 + α6), (-α1 - α2, α7 + α8)), ((-α2 - α3 - α4, α5 + α6 + α7), (-α1, α8))]
+Opposite signs compatible pairs: 
+[((-α2 - α3, α2 + α3), (α2, -α3))]
+Opposite pairs with the same lengths: 
+[]
+Opposite matrices with the same lengths: 
+[]
+--------------------------------------------------------
+For the triple {α₁ -> α₅ α₂ -> α₆ α₃ -> α₇ α₄ -> α₈ α₆ -> α₃} we have: 
+Same signs compatible pairs: 
+[((-α4, α4), (-α1 - α2 - α3, α5 + α6 + α7)), ((-α3 - α4, α3 + α4), (-α1 - α2, α5 + α6)), ((-α2 - α3 - α4, α2 + α3 + α4), (-α1, α5)), ((-α4, α8), (-α1 - α2 - α3, α1 + α2 + α3)), ((-α3 - α4, α7 + α8), (-α1 - α2, α1 + α2)), ((-α2 - α3 - α4, α6 + α7 + α8), (-α1, α1))]
+Opposite signs compatible pairs: 
+[((α3, -α2), (-α2 - α3, α2 + α3)), ((α3, -α6), (-α2 - α3, α6 + α7)), ((-α6, α3), (α6 + α7, -α2 - α3))]
+Opposite pairs with the same lengths: 
+[]
+Opposite matrices with the same lengths: 
+[]
+--------------------------------------------------------
+For the triple {α₁ -> α₇ α₂ -> α₈ α₃ -> α₁ α₄ -> α₂ α₆ -> α₅} we have: 
+Same signs compatible pairs: 
+[((α7, -α3), (α8, -α2)), ((α8, -α4), (α1, -α3)), ((-α2, α8), (-α1, α1)), ((-α3, α1), (-α2, α2)), ((-α3, α7), (-α2, α8)), ((-α4, α2), (-α3, α3)), ((-α4, α8), (-α1 - α2 - α3, α1 + α2 + α3)), ((-α4, α8), (-α3, α1)), ((-α3 - α4, α7 + α8), (-α1 - α2, α1 + α2))]
+Opposite signs compatible pairs: 
+[((-α1 - α2 - α3, α1 + α2 + α3), (α1, -α3)), ((-α2 - α3 - α4, α2 + α3 + α4), (α2, -α4)), ((-α1 - α2 - α3 - α4, α1 + α2 + α3 + α4), (α1 + α2, -α3 - α4))]
+Opposite pairs with the same lengths: 
+[]
+Opposite matrices with the same lengths: 
+[]
+--------------------------------------------------------
+For the triple {α₁ -> α₂ α₂ -> α₃ α₃ -> α₄ α₅ -> α₇ α₆ -> α₈} we have: 
+Same signs compatible pairs: 
+[((α3, -α2), (α4, -α1)), ((-α2, α2), (-α1, α3)), ((-α3, α3), (-α2, α4)), ((-α6, α6), (-α5, α7)), ((-α2 - α3, α2 + α3), (-α1, α4)), ((-α2, α3), (-α1, α4))]
+Opposite signs compatible pairs: 
+[((α2, -α1), (-α1 - α2, α1 + α2)), ((α3, -α1), (-α1 - α2 - α3, α1 + α2 + α3)), ((α3, -α2), (-α2 - α3, α2 + α3)), ((α3, -α2), (-α1 - α2 - α3, α2 + α3 + α4)), ((α2 + α3, -α1 - α2), (-α1 - α2 - α3, α1 + α2 + α3)), ((-α2, α2), (α2 + α3, -α1 - α2)), ((-α3, α3), (α3 + α4, -α2 - α3)), ((-α2 - α3, α2 + α3), (α2 + α3 + α4, -α1 - α2 - α3)), ((-α2, α3), (α2 + α3 + α4, -α1 - α2 - α3))]
+Opposite pairs with the same lengths: 
+[]
+Opposite matrices with the same lengths: 
+[]
+--------------------------------------------------------
+For the triple {α₁ -> α₃ α₂ -> α₄ α₃ -> α₅ α₅ -> α₇ α₆ -> α₈} we have: 
+Same signs compatible pairs: 
+[((α4, -α2), (α5, -α1)), ((-α2, α2), (-α1, α3)), ((-α3, α3), (-α2, α4)), ((-α6, α6), (-α5, α7)), ((-α2, α4), (-α1, α5))]
+Opposite signs compatible pairs: 
+[((α3, -α1), (-α1 - α2 - α3, α1 + α2 + α3)), ((-α3, α3), (α3 + α4 + α5, -α1 - α2 - α3))]
+Opposite pairs with the same lengths: 
+[]
+Opposite matrices with the same lengths: 
+[]
+--------------------------------------------------------
+For the triple {α₁ -> α₂ α₂ -> α₃ α₃ -> α₄ α₅ -> α₈ α₆ -> α₇} we have: 
+Same signs compatible pairs: 
+[((α3, -α2), (α4, -α1)), ((α7, -α6), (α8, -α5)), ((-α2, α2), (-α1, α3)), ((-α3, α3), (-α2, α4)), ((-α2 - α3, α2 + α3), (-α1, α4)), ((-α2, α3), (-α1, α4)), ((-α6, α7), (-α5, α8))]
+Opposite signs compatible pairs: 
+[((α2, -α1), (-α1 - α2, α1 + α2)), ((α3, -α1), (-α1 - α2 - α3, α1 + α2 + α3)), ((α3, -α2), (-α2 - α3, α2 + α3)), ((α3, -α2), (-α1 - α2 - α3, α2 + α3 + α4)), ((α2 + α3, -α1 - α2), (-α1 - α2 - α3, α1 + α2 + α3)), ((-α2, α2), (α2 + α3, -α1 - α2)), ((-α3, α3), (α3 + α4, -α2 - α3)), ((-α2 - α3, α2 + α3), (α2 + α3 + α4, -α1 - α2 - α3)), ((-α2, α3), (α2 + α3 + α4, -α1 - α2 - α3))]
+Opposite pairs with the same lengths: 
+[]
+Opposite matrices with the same lengths: 
+[]
+--------------------------------------------------------
+For the triple {α₁ -> α₃ α₂ -> α₄ α₃ -> α₅ α₅ -> α₈ α₆ -> α₇} we have: 
+Same signs compatible pairs: 
+[((α4, -α2), (α5, -α1)), ((α7, -α6), (α8, -α5)), ((-α2, α2), (-α1, α3)), ((-α3, α3), (-α2, α4)), ((-α2, α4), (-α1, α5)), ((-α3, α8), (-α1 - α2, α1 + α2)), ((-α6, α7), (-α5, α8))]
+Opposite signs compatible pairs: 
+[((α3, -α1), (-α1 - α2 - α3, α1 + α2 + α3)), ((-α3, α3), (α3 + α4 + α5, -α1 - α2 - α3))]
+Opposite pairs with the same lengths: 
+[]
+Opposite matrices with the same lengths: 
+[]
+--------------------------------------------------------
+For the triple {α₁ -> α₆ α₂ -> α₇ α₃ -> α₈ α₅ -> α₃ α₆ -> α₄} we have: 
+Same signs compatible pairs: 
+[((-α2 - α3, α2 + α3), (-α1, α4)), ((-α3, α8), (-α1 - α2, α1 + α2)), ((-α6, α4), (-α5, α5)), ((-α2 - α3, α7 + α8), (-α1, α1))]
+Opposite signs compatible pairs: 
+[]
+Opposite pairs with the same lengths: 
+[]
+Opposite matrices with the same lengths: 
+[]
+--------------------------------------------------------
+For the triple {α₁ -> α₈ α₂ -> α₇ α₃ -> α₆ α₅ -> α₃ α₆ -> α₄} we have: 
+Same signs compatible pairs: 
+[((α7, -α2), (α8, -α1)), ((α6, -α3), (α7, -α2)), ((α6, -α3), (α7 + α8, -α1 - α2)), ((α6 + α7, -α2 - α3), (α8, -α1)), ((-α2, α7), (-α1, α8)), ((-α3, α6), (-α2, α7)), ((-α3, α6), (-α1 - α2, α7 + α8)), ((-α6, α4), (-α5, α5)), ((-α2 - α3, α6 + α7), (-α1, α8))]
+Opposite signs compatible pairs: 
+[((α6, -α3), (-α5 - α6, α3 + α4)), ((α6, -α5), (-α5 - α6, α5 + α6)), ((-α3, α6), (α3 + α4, -α5 - α6))]
+Opposite pairs with the same lengths: 
+[]
+Opposite matrices with the same lengths: 
+[]
+--------------------------------------------------------
+For the triple {α₁ -> α₆ α₂ -> α₇ α₃ -> α₈ α₅ -> α₄ α₆ -> α₃} we have: 
+Same signs compatible pairs: 
+[((α7, -α2), (α8, -α1)), ((α3, -α6), (α4, -α5)), ((-α2, α2), (-α1, α3)), ((-α2, α7), (-α1, α8)), ((-α3, α8), (-α1 - α2, α1 + α2)), ((-α6, α3), (-α5, α4)), ((-α2 - α3, α7 + α8), (-α1, α1))]
+Opposite signs compatible pairs: 
+[((α3, -α1), (-α1 - α2 - α3, α1 + α2 + α3)), ((α3, -α6), (-α1 - α2 - α3, α6 + α7 + α8)), ((-α6, α3), (α6 + α7 + α8, -α1 - α2 - α3))]
+Opposite pairs with the same lengths: 
+[]
+Opposite matrices with the same lengths: 
+[]
+--------------------------------------------------------
+For the triple {α₁ -> α₆ α₂ -> α₅ α₃ -> α₄ α₅ -> α₈ α₇ -> α₂} we have: 
+Same signs compatible pairs: 
+[((α5, -α2), (α6, -α1)), ((α4, -α3), (α5, -α2)), ((α4, -α3), (α5 + α6, -α1 - α2)), ((α4 + α5, -α2 - α3), (α6, -α1)), ((-α2, α5), (-α1, α6)), ((-α2, α8), (-α1, α1)), ((-α3, α4), (-α2, α5)), ((-α3, α4), (-α1 - α2, α5 + α6)), ((-α2 - α3, α4 + α5), (-α1, α6))]
+Opposite signs compatible pairs: 
+[]
+Opposite pairs with the same lengths: 
+[]
+Opposite matrices with the same lengths: 
+[]
+--------------------------------------------------------
+For the triple {α₁ -> α₅ α₂ -> α₆ α₄ -> α₂ α₅ -> α₃ α₇ -> α₈} we have: 
+Same signs compatible pairs: 
+[((-α2, α2), (-α1, α3)), ((-α5, α5), (-α4, α6)), ((-α5, α3), (-α4, α4))]
+Opposite signs compatible pairs: 
+[]
+Opposite pairs with the same lengths: 
+[]
+Opposite matrices with the same lengths: 
+[]
+--------------------------------------------------------
+For the triple {α₁ -> α₆ α₂ -> α₅ α₄ -> α₂ α₅ -> α₃ α₇ -> α₈} we have: 
+Same signs compatible pairs: 
+[((α5, -α2), (α6, -α1)), ((-α2, α5), (-α1, α6)), ((-α5, α3), (-α4, α4))]
+Opposite signs compatible pairs: 
+[((α5, -α2), (-α4 - α5, α2 + α3)), ((α5, -α4), (-α4 - α5, α4 + α5)), ((-α2, α5), (α2 + α3, -α4 - α5))]
+Opposite pairs with the same lengths: 
+[]
+Opposite matrices with the same lengths: 
+[]
+--------------------------------------------------------
+For the triple {α₁ -> α₅ α₂ -> α₆ α₄ -> α₃ α₅ -> α₂ α₇ -> α₈} we have: 
+Same signs compatible pairs: 
+[((α2, -α5), (α3, -α4)), ((-α5, α2), (-α4, α3))]
+Opposite signs compatible pairs: 
+[((α2, -α1), (-α1 - α2, α1 + α2)), ((α2, -α5), (-α1 - α2, α5 + α6)), ((-α5, α2), (α5 + α6, -α1 - α2))]
+Opposite pairs with the same lengths: 
+[]
+Opposite matrices with the same lengths: 
+[]
+--------------------------------------------------------
+For the triple {α₁ -> α₆ α₂ -> α₅ α₄ -> α₈ α₅ -> α₁ α₇ -> α₃} we have: 
+Same signs compatible pairs: 
+[((α5, -α2), (α6, -α1)), ((-α2, α5), (-α1, α6))]
+Opposite signs compatible pairs: 
+[((-α1 - α2, α1 + α2), (α1, -α2))]
+Opposite pairs with the same lengths: 
+[]
+Opposite matrices with the same lengths: 
+[]
+--------------------------------------------------------
+For the triple {α₁ -> α₆ α₂ -> α₅ α₄ -> α₁ α₅ -> α₈ α₇ -> α₃} we have: 
+Same signs compatible pairs: 
+[((α5, -α2), (α6, -α1)), ((α8, -α5), (α1, -α4)), ((-α5, α5), (-α4, α6)), ((-α2, α5), (-α1, α6)), ((-α2, α8), (-α1, α1)), ((-α5, α8), (-α4, α1))]
+Opposite signs compatible pairs: 
+[]
+Opposite pairs with the same lengths: 
+[]
+Opposite matrices with the same lengths: 
+[]
+--------------------------------------------------------
+For the triple {α₁ -> α₃ α₂ -> α₄ α₃ -> α₅ α₄ -> α₆ α₅ -> α₇ α₆ -> α₈} we have: 
+Same signs compatible pairs: 
+[((α4, -α2), (α5, -α1)), ((α6, -α2), (α7, -α1)), ((α5, -α3), (α6, -α2)), ((α7, -α3), (α8, -α2)), ((α6, -α4), (α7, -α3)), ((α7, -α5), (α8, -α4)), ((α5 + α6, -α3 - α4), (α7 + α8, -α1 - α2)), ((α4 + α5 + α6, -α2 - α3 - α4), (α7, -α1)), ((α5 + α6 + α7, -α3 - α4 - α5), (α8, -α2)), ((-α2, α2), (-α1, α3)), ((-α3, α3), (-α2, α4)), ((-α4, α4), (-α3, α5)), ((-α4, α4), (-α1 - α2 - α3, α5 + α6 + α7)), ((-α5, α5), (-α4, α6)), ((-α5, α5), (-α2 - α3 - α4, α6 + α7 + α8)), ((-α6, α6), (-α5, α7)), ((-α3 - α4, α3 + α4), (-α1 - α2, α5 + α6)), ((-α4 - α5, α4 + α5), (-α2 - α3, α6 + α7)), ((-α5 - α6, α5 + α6), (-α3 - α4, α7 + α8)), ((-α2 - α3 - α4, α2 + α3 + α4), (-α1, α5)), ((-α3 - α4 - α5, α3 + α4 + α5), (-α2, α6)), ((-α4 - α5 - α6, α4 + α5 + α6), (-α3, α7)), ((-α3 - α4 - α5 - α6, α3 + α4 + α5 + α6), (-α1 - α2, α7 + α8)), ((-α2 - α3 - α4 - α5 - α6, α2 + α3 + α4 + α5 + α6), (-α1, α7)), ((-α2, α4), (-α1, α5)), ((-α2, α6), (-α1, α7)), ((-α2, α8), (-α1, α1)), ((-α3, α5), (-α2, α6)), ((-α3, α7), (-α2, α8)), ((-α4, α6), (-α3, α7)), ((-α4, α8), (-α1 - α2 - α3, α1 + α2 + α3)), ((-α5, α7), (-α4, α8)), ((-α6, α8), (-α1 - α2 - α3 - α4 - α5, α1 + α2 + α3 + α4 + α5)), ((-α3 - α4, α5 + α6), (-α1 - α2, α7 + α8)), ((-α3 - α4, α7 + α8), (-α1 - α2, α1 + α2)), ((-α5 - α6, α7 + α8), (-α1 - α2 - α3 - α4, α1 + α2 + α3 + α4)), ((-α2 - α3 - α4, α4 + α5 + α6), (-α1, α7)), ((-α2 - α3 - α4, α6 + α7 + α8), (-α1, α1)), ((-α3 - α4 - α5, α5 + α6 + α7), (-α2, α8)), ((-α4 - α5 - α6, α6 + α7 + α8), (-α1 - α2 - α3, α1 + α2 + α3)), ((-α3 - α4 - α5 - α6, α5 + α6 + α7 + α8), (-α1 - α2, α1 + α2)), ((-α2 - α3 - α4 - α5 - α6, α4 + α5 + α6 + α7 + α8), (-α1, α1))]
+Opposite signs compatible pairs: 
+[((α3, -α1), (-α1 - α2 - α3, α1 + α2 + α3)), ((α5, -α1), (-α1 - α2 - α3 - α4 - α5, α1 + α2 + α3 + α4 + α5)), ((α4, -α2), (-α2 - α3 - α4, α2 + α3 + α4)), ((α6, -α2), (-α2 - α3 - α4 - α5 - α6, α2 + α3 + α4 + α5 + α6)), ((α5, -α3), (-α3 - α4 - α5, α3 + α4 + α5)), ((α5, -α3), (-α1 - α2 - α3 - α4 - α5, α3 + α4 + α5 + α6 + α7)), ((α6, -α4), (-α4 - α5 - α6, α4 + α5 + α6)), ((α6, -α4), (-α2 - α3 - α4 - α5 - α6, α4 + α5 + α6 + α7 + α8)), ((α3 + α4, -α1 - α2), (-α1 - α2 - α3 - α4, α1 + α2 + α3 + α4)), ((α5 + α6, -α1 - α2), (-α1 - α2 - α3 - α4 - α5 - α6, α1 + α2 + α3 + α4 + α5 + α6)), ((α4 + α5, -α2 - α3), (-α2 - α3 - α4 - α5, α2 + α3 + α4 + α5)), ((α5 + α6, -α3 - α4), (-α3 - α4 - α5 - α6, α3 + α4 + α5 + α6)), ((α5 + α6, -α3 - α4), (-α1 - α2 - α3 - α4 - α5 - α6, α3 + α4 + α5 + α6 + α7 + α8)), ((α3 + α4 + α5, -α1 - α2 - α3), (-α1 - α2 - α3 - α4 - α5, α1 + α2 + α3 + α4 + α5)), ((α4 + α5 + α6, -α2 - α3 - α4), (-α2 - α3 - α4 - α5 - α6, α2 + α3 + α4 + α5 + α6)), ((α3 + α4 + α5 + α6, -α1 - α2 - α3 - α4), (-α1 - α2 - α3 - α4 - α5 - α6, α1 + α2 + α3 + α4 + α5 + α6)), ((-α3, α3), (α3 + α4 + α5, -α1 - α2 - α3)), ((-α4, α4), (α4 + α5 + α6, -α2 - α3 - α4)), ((-α5, α5), (α5 + α6 + α7, -α3 - α4 - α5)), ((-α6, α6), (α6 + α7 + α8, -α4 - α5 - α6)), ((-α3 - α4, α3 + α4), (α3 + α4 + α5 + α6, -α1 - α2 - α3 - α4)), ((-α4 - α5, α4 + α5), (α4 + α5 + α6 + α7, -α2 - α3 - α4 - α5)), ((-α5 - α6, α5 + α6), (α5 + α6 + α7 + α8, -α3 - α4 - α5 - α6)), ((-α3 - α4 - α5, α3 + α4 + α5), (α3 + α4 + α5 + α6 + α7, -α1 - α2 - α3 - α4 - α5)), ((-α4 - α5 - α6, α4 + α5 + α6), (α4 + α5 + α6 + α7 + α8, -α2 - α3 - α4 - α5 - α6)), ((-α3 - α4 - α5 - α6, α3 + α4 + α5 + α6), (α3 + α4 + α5 + α6 + α7 + α8, -α1 - α2 - α3 - α4 - α5 - α6)), ((-α3, α5), (α3 + α4 + α5 + α6 + α7, -α1 - α2 - α3 - α4 - α5)), ((-α4, α6), (α4 + α5 + α6 + α7 + α8, -α2 - α3 - α4 - α5 - α6)), ((-α3 - α4, α5 + α6), (α3 + α4 + α5 + α6 + α7 + α8, -α1 - α2 - α3 - α4 - α5 - α6))]
+Opposite pairs with the same lengths: 
+[]
+Opposite matrices with the same lengths: 
+[]
+--------------------------------------------------------
+For the triple {α₁ -> α₃ α₂ -> α₄ α₃ -> α₅ α₄ -> α₆ α₆ -> α₈ α₇ -> α₁} we have: 
+Same signs compatible pairs: 
+[((α4, -α2), (α5, -α1)), ((α5, -α3), (α6, -α2)), ((-α2, α2), (-α1, α3)), ((-α3, α3), (-α2, α4)), ((-α4, α4), (-α3, α5)), ((-α7, α7), (-α6, α8)), ((-α3 - α4, α3 + α4), (-α1 - α2, α5 + α6)), ((-α2 - α3 - α4, α2 + α3 + α4), (-α1, α5)), ((-α2, α4), (-α1, α5)), ((-α2, α8), (-α1, α1)), ((-α3, α5), (-α2, α6)), ((-α4, α8), (-α1 - α2 - α3, α1 + α2 + α3)), ((-α7, α5), (-α6, α6))]
+Opposite signs compatible pairs: 
+[((α3, -α1), (-α1 - α2 - α3, α1 + α2 + α3)), ((α4, -α2), (-α2 - α3 - α4, α2 + α3 + α4)), ((α3 + α4, -α1 - α2), (-α1 - α2 - α3 - α4, α1 + α2 + α3 + α4)), ((-α3, α3), (α3 + α4 + α5, -α1 - α2 - α3)), ((-α4, α4), (α4 + α5 + α6, -α2 - α3 - α4)), ((-α3 - α4, α3 + α4), (α3 + α4 + α5 + α6, -α1 - α2 - α3 - α4))]
+Opposite pairs with the same lengths: 
+[]
+Opposite matrices with the same lengths: 
+[]
+--------------------------------------------------------
+For the triple {α₁ -> α₃ α₂ -> α₄ α₃ -> α₅ α₄ -> α₆ α₆ -> α₁ α₇ -> α₈} we have: 
+Same signs compatible pairs: 
+[((α4, -α2), (α5, -α1)), ((α5, -α3), (α6, -α2)), ((α3, -α4), (α4 + α5, -α2 - α3)), ((α8, -α7), (α1, -α6)), ((-α2, α2), (-α1, α3)), ((-α3, α3), (-α2, α4)), ((-α4, α4), (-α3, α5)), ((-α3 - α4, α3 + α4), (-α2, α5)), ((-α3 - α4, α3 + α4), (-α1 - α2, α5 + α6)), ((-α2 - α3 - α4, α2 + α3 + α4), (-α1, α5)), ((-α2, α4), (-α1, α5)), ((-α3, α5), (-α2, α6)), ((-α4, α1), (-α2 - α3, α2 + α3)), ((-α4, α3), (-α2 - α3, α4 + α5)), ((-α7, α8), (-α6, α1))]
+Opposite signs compatible pairs: 
+[((α3, -α1), (-α1 - α2 - α3, α1 + α2 + α3)), ((α4, -α2), (-α2 - α3 - α4, α2 + α3 + α4)), ((α3, -α2), (-α2 - α3, α2 + α3)), ((α3, -α4), (-α2 - α3, α4 + α5)), ((α3 + α4, -α1 - α2), (-α1 - α2 - α3 - α4, α1 + α2 + α3 + α4)), ((α3 + α4, -α1 - α2), (-α4, α1)), ((α5 + α6, -α1 - α2), (-α6, α1)), ((α5 + α6, -α3 - α4), (-α6, α3)), ((α3 + α4 + α5 + α6, -α1 - α2 - α3 - α4), (-α6, α1)), ((-α3, α3), (α3 + α4 + α5, -α1 - α2 - α3)), ((-α4, α4), (α4 + α5 + α6, -α2 - α3 - α4)), ((-α1 - α2, α1 + α2), (α1, -α2)), ((-α3 - α4, α3 + α4), (α3, -α4)), ((-α3 - α4, α3 + α4), (α3 + α4 + α5 + α6, -α1 - α2 - α3 - α4)), ((-α1 - α2 - α3 - α4, α1 + α2 + α3 + α4), (α1, -α4)), ((-α4, α3), (α4 + α5, -α2 - α3)), ((-α1 - α2, α3 + α4), (α1, -α4)), ((-α1 - α2, α5 + α6), (α1, -α6)), ((-α3 - α4, α5 + α6), (α3, -α6)), ((-α1 - α2 - α3 - α4, α3 + α4 + α5 + α6), (α1, -α6))]
+Opposite pairs with the same lengths: 
+[]
+Opposite matrices with the same lengths: 
+[]
+--------------------------------------------------------
+========================================
+When n = 9
+For the triple {α₁ -> α₉ α₂ -> α₈ α₃ -> α₇ α₅ -> α₃ α₆ -> α₄} we have: 
+Same signs compatible pairs: 
+[((α8, -α2), (α9, -α1)), ((α7, -α3), (α8, -α2)), ((α7, -α3), (α8 + α9, -α1 - α2)), ((α7 + α8, -α2 - α3), (α9, -α1)), ((-α6, α6), (-α5, α7)), ((-α2, α8), (-α1, α9)), ((-α3, α7), (-α2, α8)), ((-α3, α7), (-α1 - α2, α8 + α9)), ((-α6, α4), (-α5, α5)), ((-α2 - α3, α7 + α8), (-α1, α9))]
+Opposite signs compatible pairs: 
+[]
+Opposite pairs with the same lengths: 
+[]
+Opposite matrices with the same lengths: 
+[]
+--------------------------------------------------------
+For the triple {α₁ -> α₇ α₂ -> α₈ α₃ -> α₉ α₅ -> α₄ α₆ -> α₃} we have: 
+Same signs compatible pairs: 
+[((α3, -α6), (α4, -α5)), ((-α3, α9), (-α1 - α2, α1 + α2)), ((-α6, α3), (-α5, α4)), ((-α2 - α3, α8 + α9), (-α1, α1))]
+Opposite signs compatible pairs: 
+[]
+Opposite pairs with the same lengths: 
+[]
+Opposite matrices with the same lengths: 
+[]
+--------------------------------------------------------
+For the triple {α₁ -> α₉ α₂ -> α₈ α₃ -> α₇ α₅ -> α₄ α₆ -> α₃} we have: 
+Same signs compatible pairs: 
+[((α8, -α2), (α9, -α1)), ((α7, -α3), (α8, -α2)), ((α7, -α3), (α8 + α9, -α1 - α2)), ((α3, -α6), (α4, -α5)), ((α7 + α8, -α2 - α3), (α9, -α1)), ((-α2, α8), (-α1, α9)), ((-α3, α7), (-α2, α8)), ((-α3, α7), (-α1 - α2, α8 + α9)), ((-α6, α3), (-α5, α4)), ((-α2 - α3, α7 + α8), (-α1, α9))]
+Opposite signs compatible pairs: 
+[]
+Opposite pairs with the same lengths: 
+[]
+Opposite matrices with the same lengths: 
+[]
+--------------------------------------------------------
+For the triple {α₁ -> α₇ α₂ -> α₈ α₃ -> α₉ α₅ -> α₄ α₆ -> α₅} we have: 
+Same signs compatible pairs: 
+[((-α3, α9), (-α1 - α2, α1 + α2)), ((-α6, α4), (-α5, α5)), ((-α2 - α3, α8 + α9), (-α1, α1))]
+Opposite signs compatible pairs: 
+[((α4 + α5, -α5 - α6), (-α5, α5)), ((-α5 - α6, α5 + α6), (α5, -α6))]
+Opposite pairs with the same lengths: 
+[]
+Opposite matrices with the same lengths: 
+[]
+--------------------------------------------------------
+For the triple {α₁ -> α₉ α₂ -> α₈ α₃ -> α₇ α₅ -> α₄ α₆ -> α₅} we have: 
+Same signs compatible pairs: 
+[((α8, -α2), (α9, -α1)), ((α7, -α3), (α8, -α2)), ((α7, -α3), (α8 + α9, -α1 - α2)), ((α7 + α8, -α2 - α3), (α9, -α1)), ((-α2, α8), (-α1, α9)), ((-α3, α7), (-α2, α8)), ((-α3, α7), (-α1 - α2, α8 + α9)), ((-α6, α4), (-α5, α5)), ((-α2 - α3, α7 + α8), (-α1, α9))]
+Opposite signs compatible pairs: 
+[((α4 + α5, -α5 - α6), (-α5, α5)), ((-α5 - α6, α5 + α6), (α5, -α6))]
+Opposite pairs with the same lengths: 
+[]
+Opposite matrices with the same lengths: 
+[]
+--------------------------------------------------------
+For the triple {α₁ -> α₃ α₂ -> α₄ α₃ -> α₅ α₆ -> α₉ α₇ -> α₈} we have: 
+Same signs compatible pairs: 
+[((α4, -α2), (α5, -α1)), ((α8, -α7), (α9, -α6)), ((-α2, α2), (-α1, α3)), ((-α3, α3), (-α2, α4)), ((-α2, α4), (-α1, α5)), ((-α7, α8), (-α6, α9))]
+Opposite signs compatible pairs: 
+[((α3, -α1), (-α1 - α2 - α3, α1 + α2 + α3)), ((-α3, α3), (α3 + α4 + α5, -α1 - α2 - α3))]
+Opposite pairs with the same lengths: 
+[]
+Opposite matrices with the same lengths: 
+[]
+--------------------------------------------------------
+For the triple {α₁ -> α₈ α₂ -> α₉ α₄ -> α₅ α₅ -> α₆ α₇ -> α₃} we have: 
+Same signs compatible pairs: 
+[((-α5, α5), (-α4, α6)), ((-α2, α9), (-α1, α1))]
+Opposite signs compatible pairs: 
+[((α5, -α4), (-α4 - α5, α4 + α5)), ((-α5, α5), (α5 + α6, -α4 - α5))]
+Opposite pairs with the same lengths: 
+[]
+Opposite matrices with the same lengths: 
+[]
+--------------------------------------------------------
+For the triple {α₁ -> α₉ α₂ -> α₈ α₄ -> α₅ α₅ -> α₆ α₇ -> α₃} we have: 
+Same signs compatible pairs: 
+[((α8, -α2), (α9, -α1)), ((-α5, α5), (-α4, α6)), ((-α2, α8), (-α1, α9))]
+Opposite signs compatible pairs: 
+[((α5, -α4), (-α4 - α5, α4 + α5)), ((-α5, α5), (α5 + α6, -α4 - α5))]
+Opposite pairs with the same lengths: 
+[]
+Opposite matrices with the same lengths: 
+[]
+--------------------------------------------------------
+For the triple {α₁ -> α₅ α₂ -> α₆ α₄ -> α₈ α₅ -> α₉ α₇ -> α₃} we have: 
+Same signs compatible pairs: 
+[]
+Opposite signs compatible pairs: 
+[]
+Opposite pairs with the same lengths: 
+[]
+Opposite matrices with the same lengths: 
+[]
+--------------------------------------------------------
+For the triple {α₁ -> α₆ α₂ -> α₅ α₄ -> α₈ α₅ -> α₉ α₇ -> α₃} we have: 
+Same signs compatible pairs: 
+[((α5, -α2), (α6, -α1)), ((-α2, α5), (-α1, α6)), ((-α2, α9), (-α1, α1))]
+Opposite signs compatible pairs: 
+[]
+Opposite pairs with the same lengths: 
+[]
+Opposite matrices with the same lengths: 
+[]
+--------------------------------------------------------
+For the triple {α₁ -> α₆ α₂ -> α₅ α₄ -> α₉ α₅ -> α₈ α₇ -> α₃} we have: 
+Same signs compatible pairs: 
+[((α5, -α2), (α6, -α1)), ((α8, -α5), (α9, -α4)), ((-α2, α5), (-α1, α6)), ((-α5, α8), (-α4, α9))]
+Opposite signs compatible pairs: 
+[]
+Opposite pairs with the same lengths: 
+[]
+Opposite matrices with the same lengths: 
+[]
+--------------------------------------------------------
+For the triple {α₁ -> α₂ α₂ -> α₃ α₄ -> α₈ α₅ -> α₉ α₇ -> α₆} we have: 
+Same signs compatible pairs: 
+[((-α2, α2), (-α1, α3))]
+Opposite signs compatible pairs: 
+[((α2, -α1), (-α1 - α2, α1 + α2)), ((-α2, α2), (α2 + α3, -α1 - α2))]
+Opposite pairs with the same lengths: 
+[]
+Opposite matrices with the same lengths: 
+[]
+--------------------------------------------------------
+For the triple {α₁ -> α₄ α₂ -> α₃ α₄ -> α₈ α₅ -> α₉ α₇ -> α₆} we have: 
+Same signs compatible pairs: 
+[((α3, -α2), (α4, -α1)), ((-α2, α3), (-α1, α4))]
+Opposite signs compatible pairs: 
+[]
+Opposite pairs with the same lengths: 
+[]
+Opposite matrices with the same lengths: 
+[]
+--------------------------------------------------------
+For the triple {α₁ -> α₂ α₂ -> α₃ α₄ -> α₉ α₅ -> α₈ α₇ -> α₆} we have: 
+Same signs compatible pairs: 
+[((α8, -α5), (α9, -α4)), ((-α2, α2), (-α1, α3)), ((-α5, α8), (-α4, α9))]
+Opposite signs compatible pairs: 
+[((α2, -α1), (-α1 - α2, α1 + α2)), ((-α2, α2), (α2 + α3, -α1 - α2))]
+Opposite pairs with the same lengths: 
+[]
+Opposite matrices with the same lengths: 
+[]
+--------------------------------------------------------
+For the triple {α₁ -> α₃ α₂ -> α₄ α₄ -> α₉ α₅ -> α₈ α₇ -> α₆} we have: 
+Same signs compatible pairs: 
+[((α8, -α5), (α9, -α4)), ((-α2, α2), (-α1, α3)), ((-α2, α9), (-α1, α1)), ((-α5, α8), (-α4, α9))]
+Opposite signs compatible pairs: 
+[]
+Opposite pairs with the same lengths: 
+[]
+Opposite matrices with the same lengths: 
+[]
+--------------------------------------------------------
+For the triple {α₁ -> α₄ α₂ -> α₃ α₄ -> α₉ α₅ -> α₈ α₇ -> α₆} we have: 
+Same signs compatible pairs: 
+[((α3, -α2), (α4, -α1)), ((α8, -α5), (α9, -α4)), ((-α2, α3), (-α1, α4)), ((-α5, α8), (-α4, α9))]
+Opposite signs compatible pairs: 
+[]
+Opposite pairs with the same lengths: 
+[]
+Opposite matrices with the same lengths: 
+[]
+--------------------------------------------------------
+For the triple {α₁ -> α₉ α₂ -> α₈ α₄ -> α₂ α₅ -> α₃ α₇ -> α₆} we have: 
+Same signs compatible pairs: 
+[((α8, -α2), (α9, -α1)), ((-α2, α8), (-α1, α9)), ((-α5, α3), (-α4, α4))]
+Opposite signs compatible pairs: 
+[]
+Opposite pairs with the same lengths: 
+[]
+Opposite matrices with the same lengths: 
+[]
+--------------------------------------------------------
+For the triple {α₁ -> α₉ α₂ -> α₈ α₄ -> α₃ α₅ -> α₂ α₇ -> α₆} we have: 
+Same signs compatible pairs: 
+[((α8, -α2), (α9, -α1)), ((α2, -α5), (α3, -α4)), ((-α2, α8), (-α1, α9)), ((-α5, α2), (-α4, α3))]
+Opposite signs compatible pairs: 
+[]
+Opposite pairs with the same lengths: 
+[]
+Opposite matrices with the same lengths: 
+[]
+--------------------------------------------------------
+For the triple {α₁ -> α₈ α₂ -> α₉ α₄ -> α₃ α₅ -> α₄ α₇ -> α₆} we have: 
+Same signs compatible pairs: 
+[((-α2, α9), (-α1, α1)), ((-α5, α3), (-α4, α4))]
+Opposite signs compatible pairs: 
+[((α3 + α4, -α4 - α5), (-α4, α4)), ((-α4 - α5, α4 + α5), (α4, -α5))]
+Opposite pairs with the same lengths: 
+[]
+Opposite matrices with the same lengths: 
+[]
+--------------------------------------------------------
+For the triple {α₁ -> α₉ α₂ -> α₈ α₄ -> α₃ α₅ -> α₄ α₇ -> α₆} we have: 
+Same signs compatible pairs: 
+[((α8, -α2), (α9, -α1)), ((-α2, α8), (-α1, α9)), ((-α5, α3), (-α4, α4))]
+Opposite signs compatible pairs: 
+[((α3 + α4, -α4 - α5), (-α4, α4)), ((-α4 - α5, α4 + α5), (α4, -α5))]
+Opposite pairs with the same lengths: 
+[]
+Opposite matrices with the same lengths: 
+[]
+--------------------------------------------------------
+For the triple {α₁ -> α₂ α₂ -> α₃ α₄ -> α₇ α₆ -> α₉ α₈ -> α₅} we have: 
+Same signs compatible pairs: 
+[((-α2, α2), (-α1, α3))]
+Opposite signs compatible pairs: 
+[((α2, -α1), (-α1 - α2, α1 + α2)), ((-α2, α2), (α2 + α3, -α1 - α2))]
+Opposite pairs with the same lengths: 
+[]
+Opposite matrices with the same lengths: 
+[]
+--------------------------------------------------------

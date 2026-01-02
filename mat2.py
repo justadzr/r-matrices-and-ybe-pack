@@ -322,6 +322,16 @@ class MatrixTensor2:
                     coef[i, j, k, l] = coef1[i, j, k, l].removeO().coeff(var_name, power)
 
         return MatrixTensor2(dim, coef, self.ggs)
+    
+    def limit(self, var_name, var_limit):
+        coef1 = self.coef
+        dim = self.dim
+        coef = sp.MutableDenseNDimArray(zeros((dim,)*4).astype(int))
+        for i, j in [(x, y) for x in range(dim) for y in range(dim)]:
+                for k, l in [(x, y) for x in range(dim) for y in range(dim)]:
+                    coef[i, j, k, l] = coef1[i, j, k, l].limit(var_name, var_limit)
+
+        return MatrixTensor2(dim, coef, self.ggs)
 
     # def subs(self, x, y):
     #     dim = self.dim

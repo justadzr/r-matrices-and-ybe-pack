@@ -83,8 +83,8 @@ class MatrixTensor1:
             coef2 = other.coef
             coef = sp.MutableDenseNDimArray(zeros((dim,)*2).astype(int))
             for i, j in [(x, y) for x in range(dim) for y in range(dim)]:
-                for p, q in [(x, y) for x in range(dim) for y in range(dim)]:
-                    coef[i, j] += coef1[i, p] * coef2[q, j]
+                for p in range(dim):
+                    coef[i, j] += coef1[i, p] * coef2[p, j]
             return MatrixTensor1(dim, coef)
         else: 
             raise(ValueError, "Cannot multiply matrices of different dimensions")
@@ -157,3 +157,12 @@ class MatrixTensor1:
     
     def pr(self, w):
         return sp.Rational((self * w).trace(), (w * w).trace()) * w
+    
+    def transpose(self):
+        coef1 = self.coef
+        dim = self.dim
+        coef = sp.MutableDenseNDimArray(zeros((dim,)*2).astype(int))
+        for i, j in [(x, y) for x in range(dim) for y in range(dim)]:
+            coef[j, i] = coef1[i, j]
+
+        return MatrixTensor1(dim, coef)
