@@ -91,7 +91,7 @@ def to_root_human(n, alpha, a):
 
 print("Job starts...")
 
-for n in range(4, 18):
+for n in range(4, 13):
     print("========================================")
     print(f"When n = {n}")
     intervals = all_cyclic_intervals(n, include_empty=False, include_full=False)
@@ -127,7 +127,7 @@ for n in range(4, 18):
 
                 tpp_r = sum([a[i-1] for i in I])
                 tpp_l = sum([a[i-1] for i in target])
-        
+
         PTP = [(y, x, z) for (x, y, z) in T_pairs]
         NTP = neutral + T_pairs[:]
 
@@ -184,6 +184,6 @@ for n in range(4, 18):
                     print(f"The passing order at {(tp11, tp12)} in the compatible quadruple {((tp11, tp12), (tp21, tp22))} is > 1")
                 if tp21 != tp22 and dic[(tp21, tp22)] > 1:
                     print(f"The passing order at {(tp21, tp22)} in the compatible quadruple {((tp11, tp12), (tp21, tp22))} is > 1")
-            
+        
 
 

@@ -433,15 +433,13 @@ def ggs_conjecture_rat_passing_ord(trip: triple.BDTriple, x: sp.Symbol, q_nth: s
                                         passed += 1
                                                                 
                             passing_order = sp.Rational(1, 2) * half_passed + passed
-                            dic[((i+1, j+1), (k+1, l+1))] = passing_order      
-                            print(((i+1, j+1), (k+1, l+1)))
+                            dic[((i+1, j+1), (k+1, l+1))] = passing_order
                             
                             ps = 1 - coef_s[i, i, k, k] - coef_s[j, j, l, l] + coef_s[i, i, l, l] + coef_s[j, j, k, k]
                             temp = sp.Rational(1, 2) * (passing_order 
                                                         - coef_s[i, i, l, l] - coef_s[j, j, k, k]
                                                         + indicator * (root_length - 1))
                             if passing_order > 1:
-                                print(f"For the triple: {trip.to_latex()}:")
                                 print(f"The passing order at alpha=({i+1},{j+1}) beta=({k+1}, {l+1}) for T^{num} is {passing_order}")
                                 print("=============================================")
                             coef[k, l, j, i] -= (-1) ** (indicator * (root_length - 1)) * \
