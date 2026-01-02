@@ -91,6 +91,8 @@ def to_root_human(n, alpha, a):
         res += a[i-1]
     return res
 
+print("Job starts...")
+
 for n in range(8, 11):
     print("========================================")
     print(f"When n = {n}")
