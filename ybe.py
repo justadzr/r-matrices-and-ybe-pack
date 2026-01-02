@@ -302,6 +302,156 @@ def to_trigonometric_solution(trip: triple.BDTriple, x: sp.Symbol, standard_part
     return  mat2.MatrixTensor2(n, coef2, True) + int(standard_part) * \
         (mat2.MatrixTensor2(n, coef1, True) + (1 / (x ** n - 1)) * mat2.casimir_gl(n) + r0)
 
+def ggs_conjecture_rat_passing_ord(trip: triple.BDTriple, x: sp.Symbol, q_nth: sp.Symbol) \
+    -> mat2.MatrixTensor2:
+    dic = {}
+    n = trip.n
+    T = trip.T
+    coef1 = mat2.to_sparray(n, [0] * pow(n, 4))
+    for i, j in [(x, y) for x in range(n) for y in range(n)]:
+            if i != j:
+                coef1[i, i, j, j] += 1 / (q_nth ** sp.Rational(n, 2) - q_nth ** sp.Rational(-n, 2))
+    for i in range(n):
+        coef1[i, i, i, i] += 1 / (q_nth ** n - 1) + 1 / (1 - x ** (-n))
+    
+    coef2 = mat2.to_sparray(n, [0] * pow(n, 4))
+    for m_human in range(1, n):
+        for i in range(n):
+            coef2[(i + m_human) % n, i, i, (i + m_human) % n] += \
+                x ** m_human / (x ** n - 1)
+    std1, std2 = mat2.MatrixTensor2(n, coef1, True), mat2.MatrixTensor2(n, coef2, True)
+
+    s = trip.choose_r0(only_return_s=True)
+    # saving some computation power by not twisting `std2`
+    standard_part = s.exp_rat(q_nth, n, True) * std1 * s.exp_rat(q_nth, n, True) + std2
+
+    components = trip.connected_components()
+    coef = mat2.to_sparray(n, [0] * pow(n, 4))
+    coef_s = s.coef
+    
+    def in_one_component(i, j):
+        for connected in components:
+            p = (i - j) % n
+            if set([red(j + k, n) for k in range(p)]).issubset(connected):
+                return True
+        return False
+
+    def take_out_ind(symb):
+        s = str(symb)
+        if s[0] == "-":
+            lst = s[1:].split(' + ')
+            return int(lst[1][1:]), int(lst[0][1:])
+        else:
+            lst = s.split(' - ')
+            return int(lst[0][1:]), int(lst[1][1:])
+
+    def red(a, b):
+        return (a - 1) % b + 1
+
+    e = sp.symbols(f"e1:{n + 1}")
+    for m in range(1, n):
+        for i, j in [(x, y) for x in range(n) for y in range(n)]:
+                num = 0
+                i_human = i + 1
+                j_human = j + 1
+                if (i - j) % n == m:
+                    record = []
+                    while in_one_component(i_human, j_human):
+                        a = i_human - 1
+                        b = j_human - 1
+                        root = 0
+
+                        p = (a - b) % n
+                        for q in range(p):
+                            root += e[T(red(j_human + q, n)) % n] - e[T(red(j_human + q, n))-1]
+                        k_human, l_human = take_out_ind(root)
+                        num += 1
+                        record.append((k_human, l_human))
+                        k, l = k_human - 1, l_human - 1
+                        indicator = trip.C((i + 1, j + 1), (k_human, l_human), num)
+                        if indicator is None:
+                            break
+                        else:
+                            # print(record)
+                            root_length = (i - j) % n
+                            passed = 0
+                            half_passed = 0
+
+                            root_left_to_beta = \
+                                (red(k_human - root_length, n), red(l_human - root_length, n))
+                            root_right_to_beta = \
+                                (red(k_human + root_length, n), red(l_human + root_length, n))
+                            root_left_to_alpha = \
+                                (red(i + 1 - root_length, n), red(j + 1 - root_length, n))
+                            root_right_to_alpha = \
+                                (red(i + 1 + root_length, n), red(j + 1 + root_length, n))
+
+                            if root_left_to_beta == (i + 1, j + 1):
+                                half_passed += 1
+                            if root_right_to_beta == (i + 1, j + 1):
+                                half_passed += 1
+
+                            # THIS IS INCORRECT
+                            if root_left_to_beta in record:
+                                ord_from_alpha_to_root = record.index(root_left_to_beta) + 1
+                                ord_from_root_to_beta = num - ord_from_alpha_to_root
+                                # print(ord_from_alpha_to_root)
+                                if root_length > 1:
+                                    # print((i + 1, j + 1), root_left_to_beta)
+                                    # print(trip.C((i + 1, j + 1), root_left_to_beta, 
+                                    #           ord_from_alpha_to_root))
+                                    if trip.C(root_left_to_beta, (k_human, l_human), 
+                                              ord_from_root_to_beta) == indicator:
+                                        passed += 1
+                                else:
+                                    C = None
+                                    if root_left_to_alpha in record:
+                                        C = trip.C((i + 1, j), (k_human, l_human - 1), 
+                                                   ord_from_alpha_to_root)
+                                    if C is None and root_right_to_alpha in record:
+                                        C = trip.C((i + 2, j + 1), (k_human, l_human - 1), 
+                                                   ord_from_alpha_to_root)
+                                    if C is not None and C == 0:
+                                        passed += 1
+                            
+                            if root_right_to_beta in record:                                
+                                ord_from_alpha_to_root = record.index(root_right_to_beta) + 1
+                                ord_from_root_to_beta = num - ord_from_alpha_to_root
+                                if root_length > 1:
+                                    if trip.C(root_right_to_beta, (k_human, l_human), 
+                                              ord_from_root_to_beta) == indicator:
+                                        passed += 1
+                                else:
+                                    C = None
+                                    if root_left_to_alpha in record:
+                                        C = trip.C((i + 1, j), (k_human + 1, l_human), 
+                                            ord_from_alpha_to_root)
+                                    if C is None and root_right_to_alpha in record:
+                                        C = trip.C((i + 2, j + 1), (k_human + 1, l_human), 
+                                            ord_from_alpha_to_root)
+                                    if C is not None and C == 0:
+                                        passed += 1
+                                                                
+                            passing_order = sp.Rational(1, 2) * half_passed + passed
+                            dic[((i+1, j+1), (k+1, l+1))] = passing_order      
+                            print(((i+1, j+1), (k+1, l+1)))
+                            
+                            ps = 1 - coef_s[i, i, k, k] - coef_s[j, j, l, l] + coef_s[i, i, l, l] + coef_s[j, j, k, k]
+                            temp = sp.Rational(1, 2) * (passing_order 
+                                                        - coef_s[i, i, l, l] - coef_s[j, j, k, k]
+                                                        + indicator * (root_length - 1))
+                            if passing_order > 1:
+                                print(f"For the triple: {trip.to_latex()}:")
+                                print(f"The passing order at alpha=({i+1},{j+1}) beta=({k+1}, {l+1}) for T^{num} is {passing_order}")
+                                print("=============================================")
+                            coef[k, l, j, i] -= (-1) ** (indicator * (root_length - 1)) * \
+                                q_nth ** (n * temp) * x ** m
+                            coef[j, i, k, l] += (-1) ** (indicator * (root_length - 1)) * \
+                                q_nth ** (-n * temp) / (x ** m)
+                            i_human, j_human = k_human, l_human
+    return dic, (standard_part + mat2.MatrixTensor2(n, coef, True))
+
+
 def ggs_conjecture_rat(trip: triple.BDTriple, x: sp.Symbol, q_nth: sp.Symbol) \
     -> mat2.MatrixTensor2:
     n = trip.n

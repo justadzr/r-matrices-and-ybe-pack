@@ -79,10 +79,8 @@ def e_root(n, alpha, sgn):
         return res
     else:
         return res.transpose()
-    
-print(mat1.e(5, 2, 3) * mat1.e(5, 1, 0))
 
-x = sp.Symbol('x')
+xx = sp.Symbol('x')
 qn = sp.Symbol('qn')
 
 def to_root_human(n, alpha, a):
@@ -93,12 +91,12 @@ def to_root_human(n, alpha, a):
 
 print("Job starts...")
 
-for n in range(8, 11):
+for n in range(4, 9):
     print("========================================")
     print(f"When n = {n}")
-    # intervals = all_cyclic_intervals(n, include_empty=False, include_full=False)
+    intervals = all_cyclic_intervals(n, include_empty=False, include_full=False)
 
-    with open(f"nonassociative-affine-triples-{n}.txt", "r") as f:
+    with open(f"codes\\nonassociative-affine-triples-{n}.txt", "r") as f:
         unclean_triples = f.read()[2:-2].split('], [')
         triples = []
         for unclean in unclean_triples:
@@ -106,72 +104,86 @@ for n in range(8, 11):
             lst = list(map(int, unclean.translate(t).split()))
             if lst:
                 triples += [triple.BDTriple(lst)]
+    intersection_pairs = []
+    a = sp.symbols([f"α{i}" for i in range(1, n + 1)])
     for trip in triples:
-        ybe.ggs_conjecture_rat(trip, x, qn)
+        T_pairs = []
+        neutral = []
+        printed = False
+        g1 = set(trip.g1)
+        T = trip.T
+        for I in intervals:
+            if set(I).issubset(g1):
+                neutral += [(list(I), list(I), 0)]
+                expo = None
+                temp = I[:]
+                for k in range(1, n + 1):
+                    if 0 in list(map(T, temp)):
+                        break
+                    else:
+                        target = list(map(T, temp))
+                        T_pairs.append((list(I), target, k))
+                        temp = list(map(T, temp))
 
-# intersection_pairs = []
-# a = sp.symbols([f"α{i}" for i in range(1, n + 1)])
-# triples = [triple.BDTriple([2, 3, 4, 0])]
-# for trip in triples:
-#     T_pairs = []
-#     neutral = []
-#     printed = False
-#     g1 = set(trip.g1)
-#     T = trip.T
-#     for I in intervals:
-#         if set(I).issubset(g1):
-#             neutral += [(list(I), list(I), 0)]
-#             expo = None
-#             temp = I[:]
-#             for k in range(1, n + 1):
-#                 if 0 in list(map(T, temp)):
-#                     break
-#                 else:
-#                     target = list(map(T, temp))
-#                     T_pairs.append((list(I), target, k))
-#                     temp = list(map(T, temp))
+                tpp_r = sum([a[i-1] for i in I])
+                tpp_l = sum([a[i-1] for i in target])
+        
+        PTP = [(y, x, z) for (x, y, z) in T_pairs]
+        NTP = neutral + T_pairs[:]
 
-#             tpp_r = sum([a[i-1] for i in I])
-#             tpp_l = sum([a[i-1] for i in target])
-    
-#     PTP = [(y, x, z) for (x, y, z) in T_pairs]
-#     NTP = neutral + T_pairs[:]
+        CTQo = []
+        CTQo_a_aux = []
+        CTQs = []
+        CTQo_a = []
+        CTQo_machine = []
 
-#     CTQo = []
-#     CTQo_a_aux = []
-#     CTQs = []
-#     CTQo_a = []
+        dic = {1: PTP, -1: NTP}
+        signs = [(1, 1), (1, -1), (-1, 1), (-1, -1)]
 
-#     dic = {1: PTP, -1: NTP}
-#     signs = [(1, 1), (1, -1), (-1, 1), (-1, -1)]
+        for x, y in signs:
+            p1 = dic[x]
+            p2 = dic[y]
+            for alpha, beta, k in p1:
+                for gamma, delta, k in p2:
+                    e1 = e_root(n, alpha, x)
+                    e2 = e_root(n, beta, -x)
+                    e3 = e_root(n, gamma, y)
+                    e4 = e_root(n, delta, -y)
 
-#     for x, y in signs:
-#         p1 = dic[x]
-#         p2 = dic[y]
-#         for alpha, beta, k in p1:
-#             for gamma, delta, k in p2:
-#                 e1 = e_root(n, alpha, x)
-#                 e2 = e_root(n, beta, -x)
-#                 e3 = e_root(n, gamma, y)
-#                 e4 = e_root(n, delta, -y)
+                    if str(e1 * e3) != '0' and str(e2 * e4) != '0':
+                        if x == y:
+                            CTQs.append(((x * to_root_human(n, alpha, a), (-x) * to_root_human(n, beta, a)), (y * to_root_human(n, gamma, a), (-y) * to_root_human(n, delta, a))))
+                        else:
+                            CTQo.append(((x * to_root_human(n, alpha, a), (-x) * to_root_human(n, beta, a)), (y * to_root_human(n, gamma, a), (-y) * to_root_human(n, delta, a))))
+                            if x > 0:
+                                CTQo_machine.append(((red(n, beta[-1]+2-1), beta[0]), (red(n, alpha[-1]+2-1), alpha[0]), (red(n, gamma[-1]+2-1), gamma[0]), (red(n, delta[-1]+2-1), delta[0])))
+                            else:
+                                CTQo_machine.append(((red(n, alpha[-1]+2-1), alpha[0]), (red(n, beta[-1]+2-1), beta[0]), (red(n, delta[-1]+2-1), delta[0]), (red(n, gamma[-1]+2-1), gamma[0])))
 
-#                 if str(e1 * e3) != '0' and str(e2 * e4) != '0':
-#                     if x == y:
-#                         CTQs.append(((x * to_root_human(n, alpha, a), (-x) * to_root_human(n, beta, a)), (y * to_root_human(n, gamma, a), (-y) * to_root_human(n, delta, a))))
-#                     else:
-#                         CTQo.append(((x * to_root_human(n, alpha, a), (-x) * to_root_human(n, beta, a)), (y * to_root_human(n, gamma, a), (-y) * to_root_human(n, delta, a))))
-#                         if len(alpha) == len(gamma):
-#                             CTQo_a.append(((x * to_root_human(n, alpha, a), (-x) * to_root_human(n, beta, a)), (y * to_root_human(n, gamma, a), (-y) * to_root_human(n, delta, a))))
-#                             CTQo_a_aux.append((e1.tensor(e2), e3.tensor(e4)))
+                            if len(alpha) == len(gamma):
+                                CTQo_a.append(((x * to_root_human(n, alpha, a), (-x) * to_root_human(n, beta, a)), (y * to_root_human(n, gamma, a), (-y) * to_root_human(n, delta, a))))
+                                CTQo_a_aux.append((e1.tensor(e2), e3.tensor(e4)))
 
-#     print(f"For the triple {trip} we have: ")
-#     print("Same signs compatible pairs: ")
-#     print(CTQs)
-#     print("Opposite signs compatible pairs: ")
-#     print(CTQo)
-#     print("Opposite pairs with the same lengths: ")
-#     print(CTQo_a)
-#     print("Opposite matrices with the same lengths: ")
-#     print(CTQo_a_aux)
-#     print("--------------------------------------------------------")
+        print(f"For the triple {trip} we have: ")
+        print("Same signs compatible pairs: ")
+        print(CTQs)
+        print("Opposite signs compatible pairs: ")
+        print(CTQo)
+        print("Opposite pairs with the same lengths: ")
+        print(CTQo_a)
+        print("Opposite matrices with the same lengths: ")
+        print(CTQo_a_aux)
+        print("--------------------------------------------------------")
+
+        if len(CTQo) > 0:
+
+            dic, _ = ybe.ggs_conjecture_rat_passing_ord(trip, xx, qn)
+
+            for tp11, tp12, tp21, tp22 in CTQo_machine:
+                if tp11 != tp12 and dic[(tp11, tp12)] > 1:
+                    print(f"The passing order at {(tp11, tp12)} in the compatible quadruple {((tp11, tp12), (tp21, tp22))} is > 1")
+                if tp21 != tp22 and dic[(tp21, tp22)] > 1:
+                    print(f"The passing order at {(tp21, tp22)} in the compatible quadruple {((tp11, tp12), (tp21, tp22))} is > 1")
+            
+
 
