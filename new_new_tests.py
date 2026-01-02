@@ -96,7 +96,7 @@ for n in range(8, 11):
     print(f"When n = {n}")
     # intervals = all_cyclic_intervals(n, include_empty=False, include_full=False)
 
-    with open(f"codes\\nonassociative-affine-triples-{n}.txt", "r") as f:
+    with open(f"nonassociative-affine-triples-{n}.txt", "r") as f:
         unclean_triples = f.read()[2:-2].split('], [')
         triples = []
         for unclean in unclean_triples:
