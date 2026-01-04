@@ -1,7 +1,7 @@
 import triple
 import sympy as sp
 from typing import List, Tuple, Iterable
-import nonassoc_affine
+import nonassoc_affine, ybe, mat2
 
 def cyclic_interval(n: int, start: int, length: int) -> Tuple[int, ...]:
     """
@@ -66,81 +66,46 @@ def all_cyclic_intervals(
 
     return intervals
 
-for n in range(4, 13):
-    print("========================================")
-    print(f"When n = {n}")
-    intervals = all_cyclic_intervals(n, include_empty=False, include_full=False)
-    a = sp.symbols([f"α{i}" for i in range(1, n + 1)])
+trip = triple.BDTriple([4, 3, 0, 0])
+trip_t = triple.BDTriple([0, 0, 2, 1])
 
-    with open(f"nonassociative-affine-triples-{n}.txt", "r") as f:
-        unclean_triples = f.read()[2:-2].split('], [')
-        triples = []
-        for unclean in unclean_triples:
-            t = str.maketrans({',': ' ', '[': ' ', ']': ' '})
-            lst = list(map(int, unclean.translate(t).split()))
-            if lst:
-                triples += [triple.BDTriple(lst)]
-    intersection_pairs = []
-    a = sp.symbols([f"α{i}" for i in range(1, n + 1)])
-    for trip in triples:
-        intersection_pairs = []
-        printed = False
-        g1 = set(trip.g1)
-        T = trip.T
-        for I in intervals:
-            if set(I).issubset(g1):
-                expo = None
-                temp = I[:]
-                for k in range(1, n + 1):
-                    if 0 in map(T, temp):
-                        break
-                    elif n in map(T, temp):
-                        target = map(T, temp)
-                        expo = k
-                        break
-                    else:
-                        temp = map(T, temp)
+xx = sp.Symbol('x')
+qn = sp.Symbol('qn', positive=True)
+n = trip.n
+qq = qn ** (sp.Rational(n, 2))
+twist, twist_s = ybe.ess_twist(trip_t, xx, qn)
+formula = ybe.ggs_conjecture_rat(trip, xx, qn)
+s = trip.choose_r0(only_return_s=True)
+s_t = trip_t.choose_r0(only_return_s=True)
 
-                if expo is None:
-                    continue
-                
-                tpp_r = sum([a[i-1] for i in I])
-                tpp_l = sum([a[i-1] for i in target])
+# _, twist_const = ybe.ess_twist_const(trip, qn)
+# formula_const = (-s).exp_rat(qn, n, True) * ybe.ggs_conjecture_constant(trip, qn) * (-s).exp_rat(qn, n, True)
+# print((twist_const - formula_const).simplify())
+# print("Formula: ===================================================================")
+# print(((-s).exp_rat(qn, n, True) * formula * (-s).exp_rat(qn, n, True)).simplify())
+# print("Twist: =====================================================================")
+# 
+# print(to_test.simplify())
+# print("===========================================================================")
+# print(to_test.subs(xx, 1/xx).subs(qn, 1/qn).transpose().simplify())
 
-                temp2 = tpp_l.subs(a[n-1], -sum([a[i] for i in range(0, n-1)]))
+to_test = 1 / (qq - qq ** (-1)) * twist_s
+temp1 = to_test.subs(xx, 1/xx).subs(qn, 1/qn).transpose()
+temp2 = (-s).exp_rat(qn, n, True) * formula * (-s).exp_rat(qn, n, True)
+for i, j in [(x, y) for x in range(n) for y in range(n)]:
+    for k, l in [(x, y) for x in range(n) for y in range(n)]:
+        if (temp1.coef[i, j, k, l] + temp2.coef[i, j, k, l]).simplify() != 0:
+            print((i+1, j+1, k+1, l+1))
+            print((temp1.coef[i, j, k, l] / temp2.coef[i, j, k, l]).simplify())
+            
+print(f"Formula twist difference for {trip} ===================================================")
+print(( temp1 + temp2  ).simplify())
 
-                J = []
-                for i in range(1, n + 1):
-                    if temp2.subs(a[i-1], 0) != temp2:
-                        J += [i]
+# print("Rearranged twist=====================================")
+# twist_new = (-s).exp_rat(qn, n, True) * (twist) * (-s).exp_rat(qn, n, True)
+# twist_new_new = 1/(qq - qq ** (-1)) * twist_new.transpose()
 
-                if set(J).issubset(g1):
-                    expo2 = None
-                    temp = J[:]
-                    for k in range(1, n + 1):
-                        if 0 in map(T, temp):
-                            break
-                        elif n in map(T, temp):
-                            target2 = map(T, temp)
-                            expo2 = k
-                            break
-                        else:
-                            temp = map(T, temp)
+# print(twist_new_new.simplify())
+# print("Difference ======================================")
 
-                    if expo2 is None:
-                        continue
-                    tpm_r = sum([a[i-1] for i in target2])
-                    tpm_l = sum([a[i-1] for i in J])
-
-                    intersection_pairs.append((expo, expo2, tpp_l, tpp_r, tpm_l, tpm_r))
-        if len(intersection_pairs) > 0:
-                print("-----------------------------------------------")
-                print(f"For triple: {trip}")
-                for xxx in intersection_pairs:
-                    expo, expo2, tpp_l, tpp_r, tpm_l, tpm_r = xxx
-                    print("TP+ pair:")
-                    print(f"k = {expo}")
-                    print(f"({tpp_l}, {-tpp_r})")
-                    print("TP- pair:")
-                    print(f"l = {expo2}")
-                    print(f"({-tpm_l}, {tpm_r})")
+# print((twist_new_new - formula).simplify())

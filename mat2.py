@@ -301,7 +301,7 @@ class MatrixTensor2:
         coef = sp.MutableDenseNDimArray(zeros((dim,)*4).astype(int))
         for i, j in [(x, y) for x in range(dim) for y in range(dim)]:
                 for k, l in [(x, y) for x in range(dim) for y in range(dim)]:
-                    coef[j, i, l, k] = coef1[k, l, i, j]
+                    coef[j, i, l, k] = coef1[i, j, k, l]
         return MatrixTensor2(dim, coef, self.ggs)
     
     def expand(self, expand_var, center, o_degree):
