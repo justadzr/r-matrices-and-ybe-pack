@@ -33,10 +33,11 @@ def worker(n: int, lst):
 
     trip = triple.BDTriple(lst)
 
-    trip_t = [0] * n
+    tuple_temp = [0] * n
     for i in range(n):
-        if trip[i] != 0:
-            trip_t[trip[i] - 1] = i + 1
+        if trip.tuple[i] != 0:
+            tuple_temp[trip.tuple[i] - 1] = i + 1
+    trip_t = triple.BDTriple(tuple_temp)
 
     _, twist_s = ybe.ess_twist(trip_t, xx, qn)
     formula = ybe.ggs_conjecture_rat(trip, xx, qn)
