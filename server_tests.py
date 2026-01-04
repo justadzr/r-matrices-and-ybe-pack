@@ -61,7 +61,7 @@ def run_all(n_min=4, n_max=12, max_workers=150):
         print("========================================")
         print(f"When n = {n}")
 
-        triples_as_lists = parse_triples_file(f"codes\\nonassociative-affine-triples-{n}.txt")
+        triples_as_lists = parse_triples_file(f"nonassociative-affine-triples-{n}.txt")
         success_path = f"server-output\\success-{n}.out"
         failed_path = f"server-output\\failed-{n}.err"
 
