@@ -564,7 +564,7 @@ def ess_twist(trip: triple.BDTriple, x: sp.Symbol, q_nth: sp.Symbol) \
                                     
                             a_passing_order = sp.Rational(1, 2) * half_passed + passed
 
-                            print(f"The APS at alpha=({i+1},{j+1}) beta=({k+1}, {l+1}) for T^{num} is {a_passing_order}")
+                            # print(f"The APS at alpha=({i+1},{j+1}) beta=({k+1}, {l+1}) for T^{num} is {a_passing_order}")
 
                             coef_j21 = mat2.to_sparray(n, [0] * pow(n, 4))
                             coef_j21[j, i, k, l] = (-qq) ** (-indicator * (root_length - 1)) * qq ** (a_passing_order) * (qq - qq ** (-1)) * x ** (-m)
@@ -630,15 +630,15 @@ def ess_twist(trip: triple.BDTriple, x: sp.Symbol, q_nth: sp.Symbol) \
     # print(J_inv)
     # print("All J21 factors: =================================================")
     # print(J21)
-    print("Inverse check: =================================================")
-    for i in range(n):
-        print((J21_inv[i] * J21[i] - mat2.identity(n)).simplify())
-    print("J21 check: =================================================")
-    for i in range(n):
-        print((J21[i] - J[i].subs(x, 1/x).swap()).simplify())
-    # print("Standard R")
-    # print(std)
-    print("Done printing in the method ess_twist ==========================")
+    # print("Inverse check: =================================================")
+    # for i in range(n):
+    #     print((J21_inv[i] * J21[i] - mat2.identity(n)).simplify())
+    # print("J21 check: =================================================")
+    # for i in range(n):
+    #     print((J21[i] - J[i].subs(x, 1/x).swap()).simplify())
+    # # print("Standard R")
+    # # print(std)
+    # print("Done printing in the method ess_twist ==========================")
                 
     return res, res_schedler
 
@@ -971,10 +971,10 @@ def ggs_conjecture_rat(trip: triple.BDTriple, x: sp.Symbol, q_nth: sp.Symbol) \
                             temp = sp.Rational(1, 2) * (passing_order 
                                                         - coef_s[i, i, l, l] - coef_s[j, j, k, k]
                                                         + indicator * (root_length - 1))
-                            if passing_order > 1:
-                                print(f"For the triple: {trip.to_latex()}:")
-                                print(f"The passing order at alpha=({i+1},{j+1}) beta=({k+1}, {l+1}) for T^{num} is {passing_order}")
-                                print("=============================================")
+                            # if passing_order > 1:
+                            #     print(f"For the triple: {trip.to_latex()}:")
+                            #     print(f"The passing order at alpha=({i+1},{j+1}) beta=({k+1}, {l+1}) for T^{num} is {passing_order}")
+                            #     print("=============================================")
                             coef[k, l, j, i] -= (-1) ** (indicator * (root_length - 1)) * \
                                 q_nth ** (n * temp) * x ** m
                             coef[j, i, k, l] += (-1) ** (indicator * (root_length - 1)) * \

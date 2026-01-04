@@ -12,7 +12,7 @@ os.environ.setdefault("OPENBLAS_NUM_THREADS", "1")
 os.environ.setdefault("NUMEXPR_NUM_THREADS", "1")
 
 xx = sp.Symbol("x")
-qn = sp.Symbol("q")   
+qn = sp.Symbol("qn", positive=True)   
 
 
 def parse_triples_file(path: str):
@@ -54,16 +54,16 @@ def worker(n: int, lst):
     return n, str(trip), ok, str(res)
 
 
-def run_all(n_min=4, n_max=12, max_workers=90):
+def run_all(n_min=4, n_max=12, max_workers=2):
     workers = min(max_workers, os.cpu_count() or max_workers)
 
     for n in range(n_min, n_max + 1):
         print("========================================")
         print(f"When n = {n}")
 
-        triples_as_lists = parse_triples_file(f"nonassociative-affine-triples-{n}.txt")
-        success_path = f"success-{n}.out"
-        failed_path = f"failed-{n}.err"
+        triples_as_lists = parse_triples_file(f"codes\\nonassociative-affine-triples-{n}.txt")
+        success_path = f"server-output\\success-{n}.out"
+        failed_path = f"server-output\\failed-{n}.err"
 
         with open(success_path, "w") as f_ok, open(failed_path, "w") as f_bad:
             with ProcessPoolExecutor(max_workers=workers) as ex:

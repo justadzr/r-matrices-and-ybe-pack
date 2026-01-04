@@ -24,7 +24,7 @@ for n in range(4, 13):
     print(f"When n = {n}")
     qq = qn ** (sp.Rational(n, 2))
 
-    with open(f"nonassociative-affine-triples-{n}.txt", "r") as f:
+    with open(f"codes\\nonassociative-affine-triples-{n}.txt", "r") as f:
         unclean_triples = f.read()[2:-2].split('], [')
         triples = []
         for unclean in unclean_triples:
@@ -33,11 +33,12 @@ for n in range(4, 13):
             if lst:
                 triples += [triple.BDTriple(lst)]
         for trip in triples:
-            trip_t = [0] * n
+            tuple_temp = [0] * n
             for i in range(n):
-                if trip[i] != 0:
-                    trip_t[trip[i]-1] = i + 1
-            twist, twist_s = ybe.ess_twist(trip_t, xx, qn)
+                if trip.tuple[i] != 0:
+                    tuple_temp[trip.tuple[i] - 1] = i + 1
+            trip_t = triple.BDTriple(tuple_temp)
+            _, twist_s = ybe.ess_twist(trip_t, xx, qn)
             formula = ybe.ggs_conjecture_rat(trip, xx, qn)
             s = trip.choose_r0(only_return_s=True)
             s_t = trip_t.choose_r0(only_return_s=True)
@@ -46,8 +47,8 @@ for n in range(4, 13):
             temp2 = (-s).exp_rat(qn, n, True) * formula * (-s).exp_rat(qn, n, True)
             res = ( temp1 + temp2  ).simplify()
             if str(res) != '0':
-                print(f"Formula twist difference for {trip} FAILED!", file=sys.stderr)
-                print(( temp1 + temp2  ).simplify(), file=sys.stderr)
+                print(f"Formula twist difference for {trip} FAILED!")
+                print(( temp1 + temp2  ).simplify())
             else:
                 print(f"Formula twist difference for {trip} SUCCESS!")
                 print(( temp1 + temp2  ).simplify())
