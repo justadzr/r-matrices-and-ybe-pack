@@ -44,7 +44,7 @@ def worker(n: int, lst):
 
     s = trip.choose_r0(only_return_s=True)
 
-    to_test = twist_s / (qq - qq**(-1))
+    to_test = 1 / (qq - qq**(-1)) * twist_s
     temp1 = to_test.subs(xx, 1/xx).subs(qn, 1/qn).transpose()
     temp2 = (-s).exp_rat(qn, n, True) * formula * (-s).exp_rat(qn, n, True)
 
