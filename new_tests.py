@@ -19,20 +19,23 @@ qn = sp.Symbol('qn', positive=True)
 # print("===========================================================================")
 # print(to_test.subs(xx, 1/xx).subs(qn, 1/qn).transpose().simplify())
 
-for n in range(4, 13):
-    print("========================================")
-    print(f"When n = {n}")
-    qq = qn ** (sp.Rational(n, 2))
+# for n in range(4, 13):
+#     print("========================================")
+#     print(f"When n = {n}")
+#     qq = qn ** (sp.Rational(n, 2))
 
-    with open(f"codes\\nonassociative-affine-triples-{n}.txt", "r") as f:
-        unclean_triples = f.read()[2:-2].split('], [')
-        triples = []
-        for unclean in unclean_triples:
-            t = str.maketrans({',': ' ', '[': ' ', ']': ' '})
-            lst = list(map(int, unclean.translate(t).split()))
-            if lst:
-                triples += [triple.BDTriple(lst)]
-        for trip in triples:
+#     with open(f"codes\\nonassociative-affine-triples-{n}.txt", "r") as f:
+#         unclean_triples = f.read()[2:-2].split('], [')
+#         triples = []
+#         for unclean in unclean_triples:
+#             t = str.maketrans({',': ' ', '[': ' ', ']': ' '})
+#             lst = list(map(int, unclean.translate(t).split()))
+#             if lst:
+#                 triples += [triple.BDTriple(lst)]
+triples = [triple.BDTriple([0, 0, 0, 3, 2, 1])]
+n = triples[0].n
+qq = qn ** (sp.Rational(n, 2))
+for trip in triples:
             tuple_temp = [0] * n
             for i in range(n):
                 if trip.tuple[i] != 0:
