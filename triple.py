@@ -437,5 +437,3 @@ class BDTriple:
             return 1
         else:
             return None
-        
-    
