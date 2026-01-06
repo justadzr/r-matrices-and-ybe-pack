@@ -32,26 +32,36 @@ qn = sp.Symbol('qn', positive=True)
 #             lst = list(map(int, unclean.translate(t).split()))
 #             if lst:
 #                 triples += [triple.BDTriple(lst)]
-triples = [triple.BDTriple([0, 0, 0, 3, 2, 1])]
-n = triples[0].n
-qq = qn ** (sp.Rational(n, 2))
-for trip in triples:
-            tuple_temp = [0] * n
-            for i in range(n):
-                if trip.tuple[i] != 0:
-                    tuple_temp[trip.tuple[i] - 1] = i + 1
-            trip_t = triple.BDTriple(tuple_temp)
-            _, twist_s = ybe.ess_twist(trip_t, xx, qn)
-            formula = ybe.ggs_conjecture_rat(trip, xx, qn)
-            s = trip.choose_r0(only_return_s=True)
-            s_t = trip_t.choose_r0(only_return_s=True)
-            to_test = 1 / (qq - qq ** (-1)) * twist_s
-            temp1 = to_test.subs(xx, 1/xx).subs(qn, 1/qn).transpose()
-            temp2 = (-s).exp_rat(qn, n, True) * formula * (-s).exp_rat(qn, n, True)
-            res = ( temp1 + temp2  ).simplify()
-            if str(res) != '0':
-                print(f"Formula twist difference for {trip} FAILED!")
-                print(( temp1 + temp2  ).simplify())
-            else:
-                print(f"Formula twist difference for {trip} SUCCESS!")
-                print(( temp1 + temp2  ).simplify())
+# triples = [triple.BDTriple([0, 0, 0, 3, 2, 1])]
+# n = triples[0].n
+# qq = qn ** (sp.Rational(n, 2))
+# for trip in triples:
+#             tuple_temp = [0] * n
+#             for i in range(n):
+#                 if trip.tuple[i] != 0:
+#                     tuple_temp[trip.tuple[i] - 1] = i + 1
+#             trip_t = triple.BDTriple(tuple_temp)
+#             _, twist_s = ybe.ess_twist(trip_t, xx, qn)
+#             formula = ybe.ggs_conjecture_rat(trip, xx, qn)
+#             s = trip.choose_r0(only_return_s=True)
+#             s_t = trip_t.choose_r0(only_return_s=True)
+#             to_test = 1 / (qq - qq ** (-1)) * twist_s
+#             temp1 = to_test.subs(xx, 1/xx).subs(qn, 1/qn).transpose()
+#             temp2 = (-s).exp_rat(qn, n, True) * formula * (-s).exp_rat(qn, n, True)
+#             res = ( temp1 + temp2  ).simplify()
+#             if str(res) != '0':
+#                 print(f"Formula twist difference for {trip} FAILED!")
+#                 print(( temp1 + temp2  ).simplify())
+#             else:
+#                 print(f"Formula twist difference for {trip} SUCCESS!")
+#                 print(( temp1 + temp2  ).simplify())
+
+# trip = triple.BDTriple([7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 0, 0, 0, 3, 2, 1, 24, 23, 22, 0, 0, 0])
+
+trip = triple.BDTriple([3, 4, 5, 6, 0, 1, 8, 0])
+print(trip.n)
+print(trip.connected_components())
+PL, PR = trip.passing_orders()
+for i in PR:
+    if PR[i] > 0:
+        print(i, PR[i])

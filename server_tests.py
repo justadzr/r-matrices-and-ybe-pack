@@ -54,7 +54,7 @@ def worker(n: int, lst):
     return n, str(trip), ok, str(res)
 
 
-def run_all(n_min=4, n_max=12, max_workers=150):
+def run_all(n_min=4, n_max=12, max_workers=10):
     workers = min(max_workers, os.cpu_count() or max_workers)
 
     for n in range(n_min, n_max + 1):
