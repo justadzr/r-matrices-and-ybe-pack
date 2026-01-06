@@ -116,10 +116,11 @@ def worker_const(n: int, lst):
     print(res)
     print("==============================================")
 
-# print(triple.BDTriple([2, 3, 0]).passing_orders())
+# print(triple.BDTriple([4, 3, 1, 0]).passing_orders())
 
-# trip_lst = [2,3,4,5, 6, 0]
-# worker(len(trip_lst), trip_lst)
+trip_lst = [7, 8, 9, 10, 11, 12, 13, 14, 15, 16,17,18,0,0,0,3, 2, 1, 0]
+# print(triple.BDTriple(trip_lst).valid())
+worker(len(trip_lst), trip_lst)
 
 
 # for n in range(4, 9):
@@ -129,32 +130,32 @@ def worker_const(n: int, lst):
 #         worker(n, trip)
 
 
-def run_all(n_min=4, n_max=12, max_workers=50):
-    workers = min(max_workers, os.cpu_count() or max_workers)
+# def run_all(n_min=4, n_max=12, max_workers=50):
+#     workers = min(max_workers, os.cpu_count() or max_workers)
 
-    for n in range(n_min, n_max + 1):
-        print("========================================")
-        print(f"When n = {n}")
+#     for n in range(n_min, n_max + 1):
+#         print("========================================")
+#         print(f"When n = {n}")
 
-        triples_as_lists = parse_triples_file(f"nonassociative-affine-triples-{n}.txt")
-        success_path = f"server-output/success-{n}.out"
-        failed_path = f"server-output/failed-{n}.err"
+#         triples_as_lists = parse_triples_file(f"nonassociative-affine-triples-{n}.txt")
+#         success_path = f"server-output/success-{n}.out"
+#         failed_path = f"server-output/failed-{n}.err"
 
-        with open(success_path, "w") as f_ok, open(failed_path, "w") as f_bad:
-            with ProcessPoolExecutor(max_workers=workers) as ex:
-                futures = [ex.submit(worker, n, lst) for lst in triples_as_lists]
+#         with open(success_path, "w") as f_ok, open(failed_path, "w") as f_bad:
+#             with ProcessPoolExecutor(max_workers=workers) as ex:
+#                 futures = [ex.submit(worker, n, lst) for lst in triples_as_lists]
 
-                for fut in as_completed(futures):
-                    trip_str, ok, res_str = fut.result()
-                    if ok:
-                        msg = f"Formula twist difference for {trip_str} SUCCESS!\n{res_str}\n"
-                        print(msg, end="")
-                        f_ok.write(msg + "\n")
-                    else:
-                        msg = f"Formula twist difference for {trip_str} FAILED!\n{res_str}\n"
-                        print(msg, end="", file=sys.stderr)
-                        f_bad.write(msg + "\n")
+#                 for fut in as_completed(futures):
+#                     trip_str, ok, res_str = fut.result()
+#                     if ok:
+#                         msg = f"Formula twist difference for {trip_str} SUCCESS!\n{res_str}\n"
+#                         print(msg, end="")
+#                         f_ok.write(msg + "\n")
+#                     else:
+#                         msg = f"Formula twist difference for {trip_str} FAILED!\n{res_str}\n"
+#                         print(msg, end="", file=sys.stderr)
+#                         f_bad.write(msg + "\n")
 
 
-if __name__ == "__main__":
-    run_all()
+# if __name__ == "__main__":
+#     run_all()
