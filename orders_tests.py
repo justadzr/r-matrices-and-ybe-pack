@@ -159,7 +159,9 @@ def Phi(n, conv):
 print("Job starts...")
 
 for n in range(8, 9):
-    n = 6
+    trip_lst = [7, 8, 9, 10, 11, 12, 13, 14, 15, 16,17,18,0,0,0,3, 2, 1, 0]
+    trip = triple.BDTriple(trip_lst)
+    n = trip.n
     print("========================================")
     print(f"When n = {n}")
     intervals = all_cyclic_intervals(n, include_empty=False, include_full=False)
@@ -173,7 +175,7 @@ for n in range(8, 9):
     #         if lst:
     #             triples += [triple.BDTriple(lst)]
 
-    triples = [triple.BDTriple([3, 4, 5, 6, 0, 0])]
+    triples = [trip]
     intersection_pairs = []
     a = sp.symbols([f"α{i}" for i in range(1, n + 1)])
     for trip in triples:
