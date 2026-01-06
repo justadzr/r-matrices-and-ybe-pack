@@ -1,0 +1,6 @@
+Formula twist difference for {α₁ -> α₃ α₂ -> α₄ α₃ -> α₅ α₄ -> α₆} FAILED!
+(x**2*(qn**6 - 1)/qn**(3/2)) * e₁,₅⊗e₁,₃
+
+Formula twist difference for {α₁ -> α₄ α₂ -> α₃ α₄ -> α₆ α₅ -> α₁} FAILED!
+((qn**6 - 1)/(qn**(9/2)*x)) * e₅,₆⊗e₁,₆
+

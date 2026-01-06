@@ -158,22 +158,22 @@ def Phi(n, conv):
 
 print("Job starts...")
 
-for n in range(8, 13):
-    # n = 11
+for n in range(8, 9):
+    n = 6
     print("========================================")
     print(f"When n = {n}")
     intervals = all_cyclic_intervals(n, include_empty=False, include_full=False)
 
-    with open(f"codes\\nonassociative-affine-triples-{n}.txt", "r") as f:
-        unclean_triples = f.read()[2:-2].split('], [')
-        triples = []
-        for unclean in unclean_triples:
-            t = str.maketrans({',': ' ', '[': ' ', ']': ' '})
-            lst = list(map(int, unclean.translate(t).split()))
-            if lst:
-                triples += [triple.BDTriple(lst)]
+    # with open(f"codes\\nonassociative-affine-triples-{n}.txt", "r") as f:
+    #     unclean_triples = f.read()[2:-2].split('], [')
+    #     triples = []
+    #     for unclean in unclean_triples:
+    #         t = str.maketrans({',': ' ', '[': ' ', ']': ' '})
+    #         lst = list(map(int, unclean.translate(t).split()))
+    #         if lst:
+    #             triples += [triple.BDTriple(lst)]
 
-    # triples = [triple.BDTriple([5, 6, 7, 0, 9, 10, 11, 0, 0, 0, 0])]
+    triples = [triple.BDTriple([3, 4, 5, 6, 0, 0])]
     intersection_pairs = []
     a = sp.symbols([f"α{i}" for i in range(1, n + 1)])
     for trip in triples:

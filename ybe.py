@@ -451,6 +451,7 @@ def ggs_conjecture_rat_passing_ord(trip: triple.BDTriple, x: sp.Symbol, q_nth: s
 
 def ess_twist(trip: triple.BDTriple, x: sp.Symbol, q_nth: sp.Symbol) \
     -> mat2.MatrixTensor2:
+    print(f"Computing the twist using the inverse triple: {trip}")
     n = trip.n
     T = trip.T
     J_inv = [mat2.identity(n)] * n
@@ -497,16 +498,17 @@ def ess_twist(trip: triple.BDTriple, x: sp.Symbol, q_nth: sp.Symbol) \
                         for q in range(p):
                             root += e[T(red(j_human + q, n)) % n] - e[T(red(j_human + q, n))-1]
                         k_human, l_human = take_out_ind(root)
+                        
                         num += 1
                         record.append((k_human, l_human))
                         k, l = k_human - 1, l_human - 1
                         indicator = trip.C((i + 1, j + 1), (k_human, l_human), num)
                         if indicator is None:
                             break
-                        else: 
+                        else:
                             a_passing_order = -PR[((i+1, j+1), (k_human, l_human))] + PL[((i+1, j+1), (k_human, l_human))]
                             root_length = (i - j) % n
-                            print(f"The APS at alpha=({i+1},{j+1}) beta=({k+1}, {l+1}) for T^{num} is {a_passing_order}")
+                            # print(f"The APS at alpha=({i+1},{j+1}) beta=({k+1}, {l+1}) for T^{num} is {a_passing_order} with orientation C = {indicator}")
 
                             coef_j21 = mat2.to_sparray(n, [0] * pow(n, 4))
                             coef_j21[j, i, k, l] = (-qq) ** (-indicator * (root_length - 1)) * qq ** (a_passing_order) * (qq - qq ** (-1)) * x ** (-m)
@@ -563,15 +565,23 @@ def ess_twist(trip: triple.BDTriple, x: sp.Symbol, q_nth: sp.Symbol) \
 
     res_schedler = mat2.identity(n)
     for j in J_inv[::-1]:
+        
         res_schedler = res_schedler * j
+        # print(f"After factor {j-mat2.identity(n)} + I")
+        # print(f"To be e15e13: {(1 / (qq  ** (-1) - qq)*res_schedler.coef[4, 0, 2, 0]).simplify()}")
     res_schedler = res_schedler * std.subs(x, 1/x).swap()
+    # print(std.subs(x, 1/x).swap())
+    # print("After standard")
+    # print(f"To be e15e13: {(1 / (qq  ** (-1) - qq)*res_schedler.coef[4, 0, 2, 0]).simplify()}")
     for j in J21:
         res_schedler = res_schedler * j
+        # print(f"After factor {j-mat2.identity(n)} + I")
+        # print(f"To be e15e13: {(1 / (qq  ** (-1) - qq)*res_schedler.coef[4, 0, 2, 0]).simplify()}")
     
     # print("All J^-1 factors: ==============================================")
-    # print(J_inv)
+    # print([(j - mat2.identity(n)).simplify() for j in J_inv])
     # print("All J21 factors: =================================================")
-    # print(J21)
+    # print([(j - mat2.identity(n)).simplify() for j in J21])
     # print("Inverse check: =================================================")
     # for i in range(n):
     #     print((J21_inv[i] * J21[i] - mat2.identity(n)).simplify())
@@ -582,18 +592,21 @@ def ess_twist(trip: triple.BDTriple, x: sp.Symbol, q_nth: sp.Symbol) \
     # # print(std)
     # print("Done printing in the method ess_twist ==========================")
                 
-    return res, res_schedler
+    return J_inv, J21, res, res_schedler
 
 
 def ess_twist_const(trip: triple.BDTriple, q_nth: sp.Symbol) \
     -> mat2.MatrixTensor2:
     n = trip.n
     T = trip.T
+    
     J_inv = [mat2.identity(n)] * n
     J21 = [mat2.identity(n)] * n
     J21_inv = [mat2.identity(n)] * n
     J = [mat2.identity(n)] * n
     components = trip.connected_components()
+
+    PL, PR = trip.passing_orders()
     
     def in_one_component(i, j):
         for connected in components:
@@ -632,6 +645,7 @@ def ess_twist_const(trip: triple.BDTriple, q_nth: sp.Symbol) \
                         for q in range(p):
                             root += e[T(red(j_human + q, n)) % n] - e[T(red(j_human + q, n))-1]
                         k_human, l_human = take_out_ind(root)
+                        
                         num += 1
                         record.append((k_human, l_human))
                         k, l = k_human - 1, l_human - 1
@@ -639,66 +653,8 @@ def ess_twist_const(trip: triple.BDTriple, q_nth: sp.Symbol) \
                         if indicator is None:
                             break
                         else:
-                            # print(record)
+                            a_passing_order = -PR[((i+1, j+1), (k_human, l_human))] + PL[((i+1, j+1), (k_human, l_human))]
                             root_length = (i - j) % n
-                            passed = 0
-                            half_passed = 0
-
-                            root_left_to_beta = \
-                                (red(k_human - root_length, n), red(l_human - root_length, n))
-                            root_right_to_beta = \
-                                (red(k_human + root_length, n), red(l_human + root_length, n))
-                            root_left_to_alpha = \
-                                (red(i + 1 - root_length, n), red(j + 1 - root_length, n))
-                            root_right_to_alpha = \
-                                (red(i + 1 + root_length, n), red(j + 1 + root_length, n))
-
-                            if root_left_to_beta == (i + 1, j + 1):
-                                half_passed -= 1
-                            if root_right_to_beta == (i + 1, j + 1):
-                                half_passed += 1
-
-                            if root_left_to_beta in record:
-                                ord_from_alpha_to_root = record.index(root_left_to_beta) + 1
-                                ord_from_root_to_beta = num - ord_from_alpha_to_root
-                                # print(ord_from_alpha_to_root)
-                                if root_length > 1:
-                                    # print((i + 1, j + 1), root_left_to_beta)
-                                    # print(trip.C((i + 1, j + 1), root_left_to_beta, 
-                                    #           ord_from_alpha_to_root))
-                                    if trip.C(root_left_to_beta, (k_human, l_human), 
-                                              ord_from_root_to_beta) == indicator:
-                                        passed -= 1
-                                else:
-                                    C = None
-                                    if root_left_to_alpha in record:
-                                        C = trip.C((i + 1, j), (k_human, l_human - 1), 
-                                                   ord_from_alpha_to_root)
-                                    if C is None and root_right_to_alpha in record:
-                                        C = trip.C((i + 2, j + 1), (k_human, l_human - 1), 
-                                                   ord_from_alpha_to_root)
-                                    if C is not None and C == 0:
-                                        passed -= 1
-                            
-                            if root_right_to_beta in record:                                
-                                ord_from_alpha_to_root = record.index(root_right_to_beta) + 1
-                                ord_from_root_to_beta = num - ord_from_alpha_to_root
-                                if root_length > 1:
-                                    if trip.C(root_right_to_beta, (k_human, l_human), 
-                                              ord_from_root_to_beta) == indicator:
-                                        passed += 1
-                                else:
-                                    C = None
-                                    if root_left_to_alpha in record:
-                                        C = trip.C((i + 1, j), (k_human + 1, l_human), 
-                                            ord_from_alpha_to_root)
-                                    if C is None and root_right_to_alpha in record:
-                                        C = trip.C((i + 2, j + 1), (k_human + 1, l_human), 
-                                            ord_from_alpha_to_root)
-                                    if C is not None and C == 0:
-                                        passed += 1
-                                    
-                            a_passing_order = sp.Rational(1, 2) * half_passed + passed
 
                             print(f"The APS at alpha=({i+1},{j+1}) beta=({k+1}, {l+1}) for T^{num} is {a_passing_order}")
 
@@ -757,31 +713,35 @@ def ess_twist_const(trip: triple.BDTriple, q_nth: sp.Symbol) \
     res_schedler = mat2.identity(n)
     for j in J_inv[::-1]:
         res_schedler = res_schedler * j
+        
     res_schedler = res_schedler * std
     for j in J21:
         res_schedler = res_schedler * j
+        
     
-    print("All J^-1 factors: ==============================================")
-    print(J_inv)
-    print("All J21 factors: =================================================")
-    print(J21)
-    print("Inverse check: =================================================")
-    for i in range(n):
-        print((J_inv[i] * J[i] - mat2.identity(n)).simplify())
-    print("J21 check: =================================================")
-    for i in range(n):
-        print((J21[i] - J[i].swap()).simplify())
-    # print("Standard R")
-    # print(std)
-    print("Done printing in the method ess_twist ==========================")
+    # print("All J^-1 factors: ==============================================")
+    # print(J_inv)
+    # print("All J21 factors: =================================================")
+    # print(J21)
+    # print("Inverse check: =================================================")
+    # for i in range(n):
+    #     print((J_inv[i] * J[i] - mat2.identity(n)).simplify())
+    # print("J21 check: =================================================")
+    # for i in range(n):
+    #     print((J21[i] - J[i].swap()).simplify())
+    # # print("Standard R")
+    # # print(std)
+    # print("Done printing in the method ess_twist ==========================")
                 
     return res, res_schedler
 
 
 def ggs_conjecture_rat(trip: triple.BDTriple, x: sp.Symbol, q_nth: sp.Symbol) \
     -> mat2.MatrixTensor2:
+    # print(f"Computing the formula using the original triple: {trip}")
     n = trip.n
     T = trip.T
+    PL, PR = trip.passing_orders()
     coef1 = mat2.to_sparray(n, [0] * pow(n, 4))
     for i, j in [(x, y) for x in range(n) for y in range(n)]:
             if i != j:
@@ -840,6 +800,7 @@ def ggs_conjecture_rat(trip: triple.BDTriple, x: sp.Symbol, q_nth: sp.Symbol) \
                         for q in range(p):
                             root += e[T(red(j_human + q, n)) % n] - e[T(red(j_human + q, n))-1]
                         k_human, l_human = take_out_ind(root)
+                        
                         num += 1
                         record.append((k_human, l_human))
                         k, l = k_human - 1, l_human - 1
@@ -849,74 +810,72 @@ def ggs_conjecture_rat(trip: triple.BDTriple, x: sp.Symbol, q_nth: sp.Symbol) \
                         else:
                             # print(record)
                             root_length = (i - j) % n
-                            passed = 0
-                            half_passed = 0
+                            # passed = 0
+                            # half_passed = 0
 
-                            root_left_to_beta = \
-                                (red(k_human - root_length, n), red(l_human - root_length, n))
-                            root_right_to_beta = \
-                                (red(k_human + root_length, n), red(l_human + root_length, n))
-                            root_left_to_alpha = \
-                                (red(i + 1 - root_length, n), red(j + 1 - root_length, n))
-                            root_right_to_alpha = \
-                                (red(i + 1 + root_length, n), red(j + 1 + root_length, n))
+                            # root_left_to_beta = \
+                            #     (red(k_human - root_length, n), red(l_human - root_length, n))
+                            # root_right_to_beta = \
+                            #     (red(k_human + root_length, n), red(l_human + root_length, n))
+                            # root_left_to_alpha = \
+                            #     (red(i + 1 - root_length, n), red(j + 1 - root_length, n))
+                            # root_right_to_alpha = \
+                            #     (red(i + 1 + root_length, n), red(j + 1 + root_length, n))
 
-                            if root_left_to_beta == (i + 1, j + 1):
-                                half_passed += 1
-                            if root_right_to_beta == (i + 1, j + 1):
-                                half_passed += 1
+                            # if root_left_to_beta == (i + 1, j + 1):
+                            #     half_passed += 1
+                            # if root_right_to_beta == (i + 1, j + 1):
+                            #     half_passed += 1
 
-                            # THIS IS INCORRECT
-                            if root_left_to_beta in record:
-                                ord_from_alpha_to_root = record.index(root_left_to_beta) + 1
-                                ord_from_root_to_beta = num - ord_from_alpha_to_root
-                                # print(ord_from_alpha_to_root)
-                                if root_length > 1:
-                                    # print((i + 1, j + 1), root_left_to_beta)
-                                    # print(trip.C((i + 1, j + 1), root_left_to_beta, 
-                                    #           ord_from_alpha_to_root))
-                                    if trip.C(root_left_to_beta, (k_human, l_human), 
-                                              ord_from_root_to_beta) == indicator:
-                                        passed += 1
-                                else:
-                                    C = None
-                                    if root_left_to_alpha in record:
-                                        C = trip.C((i + 1, j), (k_human, l_human - 1), 
-                                                   ord_from_alpha_to_root)
-                                    if C is None and root_right_to_alpha in record:
-                                        C = trip.C((i + 2, j + 1), (k_human, l_human - 1), 
-                                                   ord_from_alpha_to_root)
-                                    if C is not None and C == 0:
-                                        passed += 1
+                            # # THIS IS INCORRECT
+                            # if root_left_to_beta in record:
+                            #     ord_from_alpha_to_root = record.index(root_left_to_beta) + 1
+                            #     ord_from_root_to_beta = num - ord_from_alpha_to_root
+                            #     # print(ord_from_alpha_to_root)
+                            #     if root_length > 1:
+                            #         # print((i + 1, j + 1), root_left_to_beta)
+                            #         # print(trip.C((i + 1, j + 1), root_left_to_beta, 
+                            #         #           ord_from_alpha_to_root))
+                            #         if trip.C(root_left_to_beta, (k_human, l_human), 
+                            #                   ord_from_root_to_beta) == indicator:
+                            #             passed += 1
+                            #     else:
+                            #         C = None
+                            #         if root_left_to_alpha in record:
+                            #             C = trip.C((i + 1, j), (k_human, l_human - 1), 
+                            #                        ord_from_alpha_to_root)
+                            #         if C is None and root_right_to_alpha in record:
+                            #             C = trip.C((i + 2, j + 1), (k_human, l_human - 1), 
+                            #                        ord_from_alpha_to_root)
+                            #         if C is not None and C == 0:
+                            #             passed += 1
                             
-                            if root_right_to_beta in record:                                
-                                ord_from_alpha_to_root = record.index(root_right_to_beta) + 1
-                                ord_from_root_to_beta = num - ord_from_alpha_to_root
-                                if root_length > 1:
-                                    if trip.C(root_right_to_beta, (k_human, l_human), 
-                                              ord_from_root_to_beta) == indicator:
-                                        passed += 1
-                                else:
-                                    C = None
-                                    if root_left_to_alpha in record:
-                                        C = trip.C((i + 1, j), (k_human + 1, l_human), 
-                                            ord_from_alpha_to_root)
-                                    if C is None and root_right_to_alpha in record:
-                                        C = trip.C((i + 2, j + 1), (k_human + 1, l_human), 
-                                            ord_from_alpha_to_root)
-                                    if C is not None and C == 0:
-                                        passed += 1
+                            # if root_right_to_beta in record:                                
+                            #     ord_from_alpha_to_root = record.index(root_right_to_beta) + 1
+                            #     ord_from_root_to_beta = num - ord_from_alpha_to_root
+                            #     if root_length > 1:
+                            #         if trip.C(root_right_to_beta, (k_human, l_human), 
+                            #                   ord_from_root_to_beta) == indicator:
+                            #             passed += 1
+                            #     else:
+                            #         C = None
+                            #         if root_left_to_alpha in record:
+                            #             C = trip.C((i + 1, j), (k_human + 1, l_human), 
+                            #                 ord_from_alpha_to_root)
+                            #         if C is None and root_right_to_alpha in record:
+                            #             C = trip.C((i + 2, j + 1), (k_human + 1, l_human), 
+                            #                 ord_from_alpha_to_root)
+                            #         if C is not None and C == 0:
+                            #             passed += 1
                                     
-                            passing_order = sp.Rational(1, 2) * half_passed + passed        
+                            passing_order = PR[((i+1, j+1), (k_human, l_human))] + PL[((i+1, j+1), (k_human, l_human))]      
                             
-                            ps = 1 - coef_s[i, i, k, k] - coef_s[j, j, l, l] + coef_s[i, i, l, l] + coef_s[j, j, k, k]
+                            # ps = 1 - coef_s[i, i, k, k] - coef_s[j, j, l, l] + coef_s[i, i, l, l] + coef_s[j, j, k, k]
                             temp = sp.Rational(1, 2) * (passing_order 
                                                         - coef_s[i, i, l, l] - coef_s[j, j, k, k]
                                                         + indicator * (root_length - 1))
-                            # if passing_order > 1:
-                            #     print(f"For the triple: {trip.to_latex()}:")
-                            #     print(f"The passing order at alpha=({i+1},{j+1}) beta=({k+1}, {l+1}) for T^{num} is {passing_order}")
-                            #     print("=============================================")
+                            
+                            # print(f"The passing order at alpha=({i+1},{j+1}) beta=({k+1}, {l+1}) for T^{num} is {passing_order}")
                             coef[k, l, j, i] -= (-1) ** (indicator * (root_length - 1)) * \
                                 q_nth ** (n * temp) * x ** m
                             coef[j, i, k, l] += (-1) ** (indicator * (root_length - 1)) * \
@@ -1470,6 +1429,7 @@ def ggs_conjecture_constant(trip: triple.BDTriple, q_nth: sp.Symbol) \
     -> mat2.MatrixTensor2:
     n = trip.n
     T = trip.T
+    PL, PR = trip.passing_orders()
     qq = q_nth ** sp.Rational(n, 2)
     coef1 = mat2.to_sparray(n, [0] * pow(n, 4))
     for i, j in [(x, y) for x in range(n) for y in range(n)]:
@@ -1537,65 +1497,8 @@ def ggs_conjecture_constant(trip: triple.BDTriple, q_nth: sp.Symbol) \
                         else:
                             # print(record)
                             root_length = (i - j) % n
-                            passed = 0
-                            half_passed = 0
-
-                            root_left_to_beta = \
-                                (red(k_human - root_length, n), red(l_human - root_length, n))
-                            root_right_to_beta = \
-                                (red(k_human + root_length, n), red(l_human + root_length, n))
-                            root_left_to_alpha = \
-                                (red(i + 1 - root_length, n), red(j + 1 - root_length, n))
-                            root_right_to_alpha = \
-                                (red(i + 1 + root_length, n), red(j + 1 + root_length, n))
-
-                            if root_left_to_beta == (i + 1, j + 1):
-                                half_passed += 1
-                            if root_right_to_beta == (i + 1, j + 1):
-                                half_passed += 1
-
-                            # THIS IS INCORRECT
-                            if root_left_to_beta in record:
-                                ord_from_alpha_to_root = record.index(root_left_to_beta) + 1
-                                ord_from_root_to_beta = num - ord_from_alpha_to_root
-                                # print(ord_from_alpha_to_root)
-                                if root_length > 1:
-                                    # print((i + 1, j + 1), root_left_to_beta)
-                                    # print(trip.C((i + 1, j + 1), root_left_to_beta, 
-                                    #           ord_from_alpha_to_root))
-                                    if trip.C(root_left_to_beta, (k_human, l_human), 
-                                              ord_from_root_to_beta) == indicator:
-                                        passed += 1
-                                else:
-                                    C = None
-                                    if root_left_to_alpha in record:
-                                        C = trip.C((i + 1, j), (k_human, l_human - 1), 
-                                                   ord_from_alpha_to_root)
-                                    if C is None and root_right_to_alpha in record:
-                                        C = trip.C((i + 2, j + 1), (k_human, l_human - 1), 
-                                                   ord_from_alpha_to_root)
-                                    if C is not None and C == 0:
-                                        passed += 1
-                            
-                            if root_right_to_beta in record:                                
-                                ord_from_alpha_to_root = record.index(root_right_to_beta) + 1
-                                ord_from_root_to_beta = num - ord_from_alpha_to_root
-                                if root_length > 1:
-                                    if trip.C(root_right_to_beta, (k_human, l_human), 
-                                              ord_from_root_to_beta) == indicator:
-                                        passed += 1
-                                else:
-                                    C = None
-                                    if root_left_to_alpha in record:
-                                        C = trip.C((i + 1, j), (k_human + 1, l_human), 
-                                            ord_from_alpha_to_root)
-                                    if C is None and root_right_to_alpha in record:
-                                        C = trip.C((i + 2, j + 1), (k_human + 1, l_human), 
-                                            ord_from_alpha_to_root)
-                                    if C is not None and C == 0:
-                                        passed += 1
                                     
-                            passing_order = sp.Rational(1, 2) * half_passed + passed        
+                            passing_order = PL[((i+1, j+1), (k_human, l_human))] + PR[((i+1, j+1), (k_human, l_human))]         
 
                             temp = sp.Rational(1, 2) * (passing_order 
                                                         - coef_s[i, i, l, l] - coef_s[j, j, k, k]
@@ -1700,6 +1603,7 @@ def ggs_conjecture_constant_sch(trip: triple.BDTriple, q_nth: sp.Symbol) \
     n = trip.n
     T = trip.T
     components = trip.connected_components()
+    PL, PR = trip.passing_orders()
     
     coef1 = mat2.to_sparray(n, [0] * pow(n, 4))
     for i in range(n):
