@@ -332,6 +332,12 @@ class MatrixTensor2:
                     coef[i, j, k, l] = coef1[i, j, k, l].limit(var_name, var_limit)
 
         return MatrixTensor2(dim, coef, self.ggs)
+    
+
+    def __getitem__(self, key):
+        # key will be the tuple (1, 2)
+        i, j, k, l = key
+        return self.coef[i, j, k, l]
 
     # def subs(self, x, y):
     #     dim = self.dim

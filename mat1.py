@@ -45,6 +45,11 @@ class MatrixTensor1:
     
     def __eq__(self, other):
         return self.coef == other.coef
+    
+    def __getitem__(self, key):
+        # key will be the tuple (1, 2)
+        i, j = key
+        return self.coef[i, j]
 
     def __repr__(self):
         dim = self.dim

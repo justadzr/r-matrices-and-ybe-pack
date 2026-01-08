@@ -1,5 +1,7 @@
 import sympy as sp, mat1, mat2, mat3, triple
 from numpy import zeros
+from colorama import Fore, Style, init
+init()
 
 # Need to declare the variables first
 (u1, u2, u3) = sp.symbols("u1:4")
@@ -449,8 +451,181 @@ def ggs_conjecture_rat_passing_ord(trip: triple.BDTriple, x: sp.Symbol, q_nth: s
                             i_human, j_human = k_human, l_human
     return dic, (standard_part + mat2.MatrixTensor2(n, coef, True))
 
-def ess_twist(trip: triple.BDTriple, x: sp.Symbol, q_nth: sp.Symbol) \
-    -> mat2.MatrixTensor2:
+def ess_twist_paper(trip: triple.BDTriple, x: sp.Symbol, q_nth: sp.Symbol, focus_lst):
+    print(f"Computing the twist using the inverse triple: {trip}")
+    n = trip.n
+    T = trip.T
+    J_inv = [mat2.identity(n)] * n
+    J21 = [mat2.identity(n)] * n
+    J21_inv = [mat2.identity(n)] * n
+    J = [mat2.identity(n)] * n
+    components = trip.connected_components()
+    
+    def in_one_component(i, j):
+        for connected in components:
+            p = (i - j) % n
+            if set([red(j + k, n) for k in range(p)]).issubset(connected):
+                return True
+        return False
+
+    def take_out_ind(symb):
+        s = str(symb)
+        if s[0] == "-":
+            lst = s[1:].split(' + ')
+            return int(lst[1][1:]), int(lst[0][1:])
+        else:
+            lst = s.split(' - ')
+            return int(lst[0][1:]), int(lst[1][1:])
+
+    def red(a, b):
+        return (a - 1) % b + 1
+    
+    qq = q_nth ** sp.Rational(n, 2)
+    PL, PR = trip.passing_orders()
+    e = sp.symbols(f"e1:{n + 1}")
+    for m in range(1, n):
+        for i, j in [(x, y) for x in range(n) for y in range(n)]:
+                num = 0
+                i_human = i + 1
+                j_human = j + 1
+                if (i - j) % n == m:
+                    record = []
+                    while in_one_component(i_human, j_human):
+                        a = i_human - 1
+                        b = j_human - 1
+                        root = 0
+
+                        p = (a - b) % n
+                        for q in range(p):
+                            root += e[T(red(j_human + q, n)) % n] - e[T(red(j_human + q, n))-1]
+                        k_human, l_human = take_out_ind(root)
+                        
+                        num += 1
+                        record.append((k_human, l_human))
+                        k, l = k_human - 1, l_human - 1
+                        indicator = trip.C((i + 1, j + 1), (k_human, l_human), num)
+                        if indicator is None:
+                            break
+                        else:
+                            a_passing_order = PR[((i+1, j+1), (k_human, l_human))] - PL[((i+1, j+1), (k_human, l_human))]
+                            root_length = (i - j) % n
+                            # print(f"The APS at alpha=({i+1},{j+1}) beta=({k+1}, {l+1}) for T^{num} is {a_passing_order} with orientation C = {indicator}")
+
+                            coef_j21 = mat2.to_sparray(n, [0] * pow(n, 4))
+                            coef_j21[i, j, l, k] = (-qq) ** (-indicator * (root_length - 1)) * qq ** (a_passing_order) * (qq - qq ** (-1)) * x ** (-m)
+                            J21[num-1] = J21[num-1] + mat2.MatrixTensor2(n, coef_j21, True)
+
+                            coef_j_inv = mat2.to_sparray(n, [0] * pow(n, 4))
+                            coef_j_inv[l, k, i, j] = (-qq) ** (indicator * (root_length - 1)) * qq ** (a_passing_order) * (qq - qq ** (-1)) * x ** (m)
+                            J_inv[num-1] = J_inv[num-1] - mat2.MatrixTensor2(n, coef_j_inv, True)
+
+                            coef_j = mat2.to_sparray(n, [0] * pow(n, 4))
+                            coef_j[l, k, i, j] = (-qq) ** (-indicator * (root_length - 1)) * qq ** (a_passing_order) * (qq - qq ** (-1)) * x ** (m)
+                            J[num-1] = J[num-1] + mat2.MatrixTensor2(n, coef_j, True)
+
+                            coef_j21 = mat2.to_sparray(n, [0] * pow(n, 4))
+                            coef_j21[i, j, l, k] = (-qq) ** (indicator * (root_length - 1)) * qq ** (a_passing_order) * (qq - qq ** (-1)) * x ** (-m)
+                            J21_inv[num-1] = J21_inv[num-1] - mat2.MatrixTensor2(n, coef_j21, True)
+
+
+                            
+                            # ps = 1 - coef_s[i, i, k, k] - coef_s[j, j, l, l] + coef_s[i, i, l, l] + coef_s[j, j, k, k]
+                            # temp = sp.Rational(1, 2) * (passing_order 
+                            #                             - coef_s[i, i, l, l] - coef_s[j, j, k, k]
+                            #                             + indicator * (root_length - 1))
+                            # if passing_order > 1:
+                            #     print(f"For the triple: {trip.to_latex()}:")
+                            #     print(f"The passing order at alpha=({i+1},{j+1}) beta=({k+1}, {l+1}) for T^{num} is {passing_order}")
+                            #     print("=============================================")
+                            # coef[k, l, j, i] -= (-1) ** (indicator * (root_length - 1)) * \
+                            #     q_nth ** (n * temp) * x ** m
+                            # coef[j, i, k, l] += (-1) ** (indicator * (root_length - 1)) * \
+                            #     q_nth ** (-n * temp) / (x ** m)
+                            i_human, j_human = k_human, l_human
+
+    coef1 = mat2.to_sparray(n, [0] * pow(n, 4))
+    for i, j in [(x, y) for x in range(n) for y in range(n)]:
+            if i != j:
+                coef1[i, i, j, j] += 1
+    for i in range(n):
+        coef1[i, i, i, i] += qq + x ** (n) * (qq - qq ** (-1)) / (1 - x ** (n))
+    
+    coef2 = mat2.to_sparray(n, [0] * pow(n, 4))
+    for m_human in range(1, n):
+        for i in range(n):
+            coef2[i, (i + m_human) % n, (i + m_human) % n, i] += \
+                 (qq - qq ** (-1)) * x ** (m_human) / (1 - x ** (n))
+    std = mat2.MatrixTensor2(n, coef1, True) + mat2.MatrixTensor2(n, coef2, True)
+
+    res = mat2.identity(n)
+    for j in J21_inv[::-1]:
+        res = res * j
+    res = res * std
+    for j in J:
+        res = res * j
+    
+    def focus(lst, f):
+        return lst[*f]
+    
+    res_schedler = mat2.identity(n)
+
+    def attention(x, y, n, lst):
+        for i, j in [(a, b) for a in range(n) for b in range(n)]:
+            if x[lst[0], i, lst[2], j] != 0 and y[i, lst[1], j, lst[3]] not in [0, 1]:
+                lst1 = [lst[0], i, lst[2], j]
+                lst2 = [i, lst[1], j, lst[3]]
+                temp1 = x[lst[0], i, lst[2], j]
+                temp2 = y[i, lst[1], j, lst[3]]
+                print(Fore.GREEN + f"At {list(map(lambda p: p+1, lst1))} and {list(map(lambda p: p+1, lst2))}, we multiply {temp1} and {temp2} to get {temp1 * temp2}" + Style.RESET_ALL)
+
+    for j in J_inv[::-1]:
+        print("*********************************")
+        print(f"After factor {j-mat2.identity(n)} + I")
+        attention(res_schedler.coef, j.coef, n, focus_lst)
+        res_schedler = res_schedler * j
+        if isinstance(focus(res_schedler.coef, focus_lst), sp.Expr):
+            print(f"To be e{list(map(lambda p: p+1, focus_lst))}: {focus(res_schedler.coef, focus_lst).simplify()}")
+        else:
+            print(f"To be e{list(map(lambda p: p+1, focus_lst))}: {focus(res_schedler.coef, focus_lst)}")
+    print("*********************************")
+    # print(std.subs(x, 1/x).swap())
+    print("*********************************")
+    print("After standard")
+    attention(res_schedler.coef, std.subs(x, 1/x).swap().coef, n, focus_lst)
+    res_schedler = res_schedler * std.subs(x, 1/x).swap()
+    if isinstance(focus(res_schedler.coef, focus_lst), sp.Expr):
+        print(f"To be e{list(map(lambda p: p+1, focus_lst))}: {focus(res_schedler.coef, focus_lst).simplify()}")
+    else:
+            print(f"To be e{list(map(lambda p: p+1, focus_lst))}: {focus(res_schedler.coef, focus_lst)}")
+    for j in J21:
+        print("*********************************")
+        print(f"After factor {j-mat2.identity(n)} + I")
+        attention(res_schedler.coef, j.coef, n, focus_lst)
+        res_schedler = res_schedler * j   
+        if isinstance(focus(res_schedler.coef, focus_lst), sp.Expr):
+            print(f"To be e{list(map(lambda p: p+1, focus_lst))}: {focus(res_schedler.coef, focus_lst).simplify()}")
+        else:
+            print(f"To be e{list(map(lambda p: p+1, focus_lst))}: {focus(res_schedler.coef, focus_lst)}")
+
+    print(res_schedler.simplify())
+
+    print("All J^-1 factors: ------------------------------------------------")
+    print([(j - mat2.identity(n)).simplify() for j in J_inv])
+    print("All J21 factors: ------------------------------------------------")
+    print([(j - mat2.identity(n)).simplify() for j in J21])
+    # print("Inverse check: =================================================")
+    # for i in range(n):
+    #     print((J21_inv[i] * J21[i] - mat2.identity(n)).simplify())
+    # print("J21 check: =================================================")
+    # for i in range(n):
+    #     print((J21[i] - J[i].subs(x, 1/x).swap()).simplify())
+    # # print("Standard R")
+    # # print(std)
+    # print("Done printing in the method ess_twist ==========================")
+                
+    return J_inv, J21, res, res_schedler, std.subs(x, 1/x).swap()
+
+def ess_twist(trip: triple.BDTriple, x: sp.Symbol, q_nth: sp.Symbol):
     print(f"Computing the twist using the inverse triple: {trip}")
     n = trip.n
     T = trip.T
@@ -562,26 +737,45 @@ def ess_twist(trip: triple.BDTriple, x: sp.Symbol, q_nth: sp.Symbol) \
     res = res * std
     for j in J:
         res = res * j
-
+    
+    def focus(lst, f):
+        return lst[*f]
+    
     res_schedler = mat2.identity(n)
-    for j in J_inv[::-1]:
-        
+
+    def attention(x, y, n, lst):
+        for i, j in [(a, b) for a in range(n) for b in range(n)]:
+            if x[lst[0], i, lst[2], j] != 0 and y[i, lst[1], j, lst[3]] not in [0, 1]:
+                lst1 = [lst[0], i, lst[2], j]
+                lst2 = [i, lst[1], j, lst[3]]
+                temp1 = x[lst[0], i, lst[2], j]
+                temp2 = y[i, lst[1], j, lst[3]]
+                print(f"At {list(map(lambda p: p+1, lst1))} and {list(map(lambda p: p+1, lst2))}, we multiply {temp1} and {temp2} to get {temp1 * temp2}")
+
+    focus_lst = [1, 0, 2, 3]
+
+    for j in J_inv[::-1]:        
         res_schedler = res_schedler * j
-        # print(f"After factor {j-mat2.identity(n)} + I")
-        # print(f"To be e15e13: {(1 / (qq  ** (-1) - qq)*res_schedler.coef[4, 0, 2, 0]).simplify()}")
+        print("*********************************")
+        print(f"After factor {j-mat2.identity(n)} + I")
+        print(f"To be e{list(map(lambda p: p+1, focus_lst))}: {(1 / (qq  ** (-1) - qq)*focus(res_schedler.coef, focus_lst)).simplify()}")
     res_schedler = res_schedler * std.subs(x, 1/x).swap()
-    # print(std.subs(x, 1/x).swap())
-    # print("After standard")
-    # print(f"To be e15e13: {(1 / (qq  ** (-1) - qq)*res_schedler.coef[4, 0, 2, 0]).simplify()}")
+    print("*********************************")
+    print(std.subs(x, 1/x).swap())
+    print("*********************************")
+    print("After standard")
+    print(f"To be e{list(map(lambda p: p+1, focus_lst))}: {(1 / (qq  ** (-1) - qq)*focus(res_schedler.coef, focus_lst)).simplify()}")
     for j in J21:
         res_schedler = res_schedler * j
-        # print(f"After factor {j-mat2.identity(n)} + I")
-        # print(f"To be e15e13: {(1 / (qq  ** (-1) - qq)*res_schedler.coef[4, 0, 2, 0]).simplify()}")
-    
-    # print("All J^-1 factors: ==============================================")
-    # print([(j - mat2.identity(n)).simplify() for j in J_inv])
-    # print("All J21 factors: =================================================")
-    # print([(j - mat2.identity(n)).simplify() for j in J21])
+        print("*********************************")
+        print(f"After factor {j-mat2.identity(n)} + I")
+        attention(res.coef, j.coef, n, focus_lst)
+        print(f"To be e{list(map(lambda p: p+1, focus_lst))}: {(1 / (qq  ** (-1) - qq)*focus(res_schedler.coef, focus_lst)).simplify()}")
+
+    print("All J^-1 factors: ------------------------------------------------")
+    print([(j - mat2.identity(n)).simplify() for j in J_inv])
+    print("All J21 factors: ------------------------------------------------")
+    print([(j - mat2.identity(n)).simplify() for j in J21])
     # print("Inverse check: =================================================")
     # for i in range(n):
     #     print((J21_inv[i] * J21[i] - mat2.identity(n)).simplify())
@@ -592,7 +786,7 @@ def ess_twist(trip: triple.BDTriple, x: sp.Symbol, q_nth: sp.Symbol) \
     # # print(std)
     # print("Done printing in the method ess_twist ==========================")
                 
-    return J_inv, J21, res, res_schedler
+    return J_inv, J21, res, res_schedler, std.subs(x, 1/x).swap()
 
 
 def ess_twist_const(trip: triple.BDTriple, q_nth: sp.Symbol) \

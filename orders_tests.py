@@ -158,27 +158,24 @@ def Phi(n, conv):
 
 print("Job starts...")
 
-for n in range(8, 9):
-    trip_lst = [7, 8, 9, 10, 11, 12, 13, 14, 15, 16,17,18,0,0,0,3, 2, 1, 0]
-    trip = triple.BDTriple(trip_lst)
-    n = trip.n
+for n in range(6, 9):
     print("========================================")
     print(f"When n = {n}")
     intervals = all_cyclic_intervals(n, include_empty=False, include_full=False)
 
-    # with open(f"codes\\nonassociative-affine-triples-{n}.txt", "r") as f:
-    #     unclean_triples = f.read()[2:-2].split('], [')
-    #     triples = []
-    #     for unclean in unclean_triples:
-    #         t = str.maketrans({',': ' ', '[': ' ', ']': ' '})
-    #         lst = list(map(int, unclean.translate(t).split()))
-    #         if lst:
-    #             triples += [triple.BDTriple(lst)]
+    with open(f"codes\\nonassociative-affine-triples-{n}.txt", "r") as f:
+        unclean_triples = f.read()[2:-2].split('], [')
+        triples = []
+        for unclean in unclean_triples:
+            t = str.maketrans({',': ' ', '[': ' ', ']': ' '})
+            lst = list(map(int, unclean.translate(t).split()))
+            if lst:
+                triples += [triple.BDTriple(lst)]
 
-    triples = [trip]
     intersection_pairs = []
     a = sp.symbols([f"α{i}" for i in range(1, n + 1)])
     for trip in triples:
+        print(f"Triple now is: {trip}")
         T_pairs = []
         neutral = []
         printed = False
@@ -216,12 +213,13 @@ for n in range(8, 9):
         for x, y in signs:
             p1 = dic[x]
             p2 = dic[y]
-            for alpha, beta, k in p1:
-                for gamma, delta, k in p2:
+            for alpha, beta, _ in p1:
+                for gamma, delta, _ in p2:
                     e1 = e_root(n, alpha, x)
                     e2 = e_root(n, beta, -x)
                     e3 = e_root(n, gamma, y)
                     e4 = e_root(n, delta, -y)
+                    # print(e1, e3, e2, e4)
 
                     if str(e1 * e3) != '0' and str(e2 * e4) != '0':
                         if x == y:
@@ -247,12 +245,13 @@ for n in range(8, 9):
             print(CTQs)
             print("Opposite signs compatible pairs: ")
             print(CTQo)
-            print("Opposite pairs with the same lengths: ")
-            print(CTQo_a)
-            print("Opposite matrices with the same lengths: ")
-            print(CTQo_a_aux)
+            # print("Opposite pairs with the same lengths: ")
+            # print(CTQo_a)
+            # print("Opposite matrices with the same lengths: ")
+            # print(CTQo_a_aux)
             print("--------------------------------------------------------")
             PL, PR = trip.passing_orders()
+            
             # dic, _ = ybe.ggs_conjecture_rat_passing_ord(trip, xx, qn)
 
             def po_get(PO, key):

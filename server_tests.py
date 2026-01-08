@@ -118,9 +118,18 @@ def worker_const(n: int, lst):
 
 # print(triple.BDTriple([4, 3, 1, 0]).passing_orders())
 
-trip_lst = [7, 8, 9, 10, 11, 12, 13, 14, 15, 16,17,18,0,0,0,3, 2, 1, 0]
-# print(triple.BDTriple(trip_lst).valid())
-worker(len(trip_lst), trip_lst)
+trip_lst = [3, 4, 5, 6, 0, 1, 0]
+# trip_lst = [7, 8, 9, 10, 11, 12, 13, 14, 15, 16,17,18,19,0,0,3, 2, 1, 24, 23, 22, 0, 0, 6]
+print(len(trip_lst))
+trip = triple.BDTriple(trip_lst)
+print(trip)
+print(trip.valid())
+PL, PR = trip.passing_orders()
+for k in PL:
+    if PL[k] + PR[k] > 1:
+        print(k, PL[k] + PR[k])
+# worker(len(trip_lst), trip_lst)
+
 
 
 # for n in range(4, 9):

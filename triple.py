@@ -84,6 +84,7 @@ class BDTriple:
                 if temp == 0:
                     break
             if k >= self.n:
+                print(temp)
                 print("Not nilpotent")
                 return False
 

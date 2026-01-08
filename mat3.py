@@ -30,6 +30,11 @@ class MatrixTensor3:
             self.ggs = of_ggs_type
         else:
             raise(ValueError, "Dimension error")
+        
+    def __getitem__(self, key):
+        # key will be the tuple (1, 2)
+        i, j, k, l, p, q = key
+        return self.coef[i, j, k, l, p, q]
 
     def __repr__(self):
         dim = self.dim
