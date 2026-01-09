@@ -739,7 +739,7 @@ def ess_twist(trip: triple.BDTriple, x: sp.Symbol, q_nth: sp.Symbol):
         res = res * j
     
     def focus(lst, f):
-        return lst[*f]
+        return lst[[tuple(f)]]
     
     res_schedler = mat2.identity(n)
 
