@@ -648,5 +648,204 @@ class BDTriple:
         
         return PL, PR
     
+    def passing_orders_with_orientations(self):
+        trip = self
+        n = trip.n
+        T = trip.T
+        components = trip.connected_components()
+        PR = {}
+        PL = {}
 
+        def in_one_component(i, j):
+            for connected in components:
+                p = (i - j) % n
+                if set([red(j + k, n) for k in range(p)]).issubset(connected):
+                    return True
+            return False
+
+        def take_out_ind(symb):
+            s = str(symb)
+            if s[0] == "-":
+                lst = s[1:].split(' + ')
+                return int(lst[1][1:]), int(lst[0][1:])
+            else:
+                lst = s.split(' - ')
+                return int(lst[0][1:]), int(lst[1][1:])
+
+        def red(a, b):
+            return (a - 1) % b + 1
+        
+        def find_left(lst, b):
+            for i in lst:
+                if red(i-1, b) not in lst:
+                    return i
+        
+        def find_right(lst, b):
+            for i in lst:
+                if red(i+1, b) not in lst:
+                    return i
+        
+        def root_to_seg(n, tup):
+            if tup[0] < tup[1]:
+                res = [x for x in range(tup[1], n+1)] + [x for x in range(1, tup[0])]
+            else:
+                res = [x for x in range(tup[1], tup[0])]
+            return res
+
+        def not_touching(n, tup1, tup2):
+            if tup1[0] < tup1[1]:
+                s1 = set([x for x in range(tup1[1], n+1)] + [x for x in range(1, tup1[0])])
+            else:
+                s1 = set([x for x in range(tup1[1], tup1[0])])
+
+            if tup2[0] < tup2[1]:
+                s2 = set([x for x in range(tup2[1], n+1)] + [x for x in range(1, tup2[0])])
+            else:
+                s2 = set([x for x in range(tup2[1], tup2[0])])
+
+            return  True #s1.isdisjoint(s2)
+
+        e = sp.symbols(f"e1:{n + 1}")
+        for m in range(1, n):
+            for i, j in [(x, y) for x in range(n) for y in range(n)]:
+                    num = 0
+                    i_human = i + 1
+                    j_human = j + 1
+                    if (i - j) % n == m:
+                        record = []
+                        while in_one_component(i_human, j_human):
+                            a = i_human - 1
+                            b = j_human - 1
+                            root = 0
+
+                            p = (a - b) % n
+                            for q in range(p):
+                                root += e[T(red(j_human + q, n)) % n] - e[T(red(j_human + q, n))-1]
+                            k_human, l_human = take_out_ind(root)
+                            num += 1
+                            record.append((k_human, l_human))
+                            indicator = trip.C((i + 1, j + 1), (k_human, l_human), num)
+                            if indicator is None:
+                                break
+                            else:
+                                root_length = (i - j) % n
+                                pl = 0
+                                pr = 0
+
+                                root_left_to_beta = \
+                                    (red(k_human - root_length, n), red(l_human - root_length, n))
+                                root_right_to_beta = \
+                                    (red(k_human + root_length, n), red(l_human + root_length, n))
+                                root_left_to_alpha = \
+                                    (red(i + 1 - root_length, n), red(j + 1 - root_length, n))
+                                root_right_to_alpha = \
+                                    (red(i + 1 + root_length, n), red(j + 1 + root_length, n))
+
+                                if root_left_to_beta == (i + 1, j + 1) and not_touching(n, (k_human, l_human), (i + 1, j + 1)):
+                                    pr += sp.Rational(1, 2)
+                                if root_right_to_beta == (i + 1, j + 1) and not_touching(n, (k_human, l_human), (i + 1, j + 1)):
+                                    pl += sp.Rational(1, 2)
+
+                                if root_left_to_alpha in record:
+                                    ord_from_alpha_to_root = record.index(root_left_to_alpha) + 1
+                                    ord_from_root_to_beta = num - ord_from_alpha_to_root
+                                    if ord_from_alpha_to_root < num:
+                                        # print(f"Alpha: {(i + 1, j + 1)} Beta: {(k_human, l_human)}")
+                                        alpha_and_adjacent_indexes_set = root_to_seg(n, (i+1, j+1)) + root_to_seg(n, root_left_to_alpha)
+                                        beta_adjacent = record[ord_from_root_to_beta-1]
+                                        beta_and_adjacent_indexes_set = root_to_seg(n, (k_human, l_human)) + root_to_seg(n, beta_adjacent)
+
+                                        # print(f"Alpha: {(i+1, j+1)} Beta: {(k_human, l_human)}")
+                                        # print(f"Alpha and adjacent {alpha_and_adjacent_indexes_set}")
+                                        # print(f"beta and adjacent {beta_and_adjacent_indexes_set}")
+                                        # print((red(find_right(alpha_and_adjacent_indexes_set, n)+1, n), find_left(alpha_and_adjacent_indexes_set, n)), (red(find_right(beta_and_adjacent_indexes_set, n)+1, n), find_left(beta_and_adjacent_indexes_set, n)), ord_from_root_to_beta)
+                                        # print(f"The orientation is: {trip.C((red(find_right(alpha_and_adjacent_indexes_set, n)+1, n), find_left(alpha_and_adjacent_indexes_set, n)), (red(find_right(beta_and_adjacent_indexes_set, n)+1, n), find_left(beta_and_adjacent_indexes_set, n)), ord_from_root_to_beta)}")
+
+
+                                        C = trip.C((red(find_right(alpha_and_adjacent_indexes_set, n)+1, n), find_left(alpha_and_adjacent_indexes_set, n)), (red(find_right(beta_and_adjacent_indexes_set, n)+1, n), find_left(beta_and_adjacent_indexes_set, n)), ord_from_root_to_beta)
+                                        if C == 0:
+                                            pl += 1
+
+
+                                    # if root_length == 1:
+                                    #     if root_left_to_beta in record:
+                                    #         ord_from_alpha_to_root = record.index(root_left_to_beta) + 1
+                                    #         ord_from_root_to_beta = num - ord_from_alpha_to_root
+                                    #         C = trip.C((i + 1, j), (k_human, l_human - 1), 
+                                    #                 ord_from_alpha_to_root)
+                                    #         if C is not None and C == 0:
+                                    #             pl += 1
+                                    #     if root_right_to_beta in record:
+                                    #         ord_from_alpha_to_root = record.index(root_right_to_beta) + 1
+                                    #         ord_from_root_to_beta = num - ord_from_alpha_to_root
+                                    #         C = trip.C((i + 1, j), (k_human + 1, l_human), 
+                                    #                 ord_from_alpha_to_root)
+                                    #         if C is not None and C == 0:
+                                    #             pl += 1
+                                    # else:
+                                    #     if root_left_to_beta in record:
+                                    #         ord_from_alpha_to_root = record.index(root_left_to_beta) + 1
+                                    #         ord_from_root_to_beta = num - ord_from_alpha_to_root
+                                    #         if trip.C(root_left_to_beta, (k_human, l_human), 
+                                    #                 ord_from_root_to_beta) == indicator:
+                                    #             pl += 1
+                                    #     if root_right_to_beta in record:
+                                    #         ord_from_alpha_to_root = record.index(root_right_to_beta) + 1
+                                    #         ord_from_root_to_beta = num - ord_from_alpha_to_root
+                                    #         if trip.C(root_right_to_beta, (k_human, l_human), 
+                                    #                 ord_from_root_to_beta) == indicator:
+                                    #             pl += 1
+                                # print(record)
+                                if root_right_to_alpha in record:
+                                    ord_from_alpha_to_root = record.index(root_right_to_alpha) + 1
+                                    ord_from_root_to_beta = num - ord_from_alpha_to_root
+                                    if ord_from_alpha_to_root < num:
+                                        alpha_and_adjacent_indexes_set = root_to_seg(n, (i+1, j+1)) + root_to_seg(n, root_right_to_alpha)
+                                        beta_adjacent = record[ord_from_root_to_beta-1]
+                                        beta_and_adjacent_indexes_set = root_to_seg(n, (k_human, l_human)) + root_to_seg(n, beta_adjacent)
+
+                                        # print(f"Alpha: {(i+1, j+1)} Beta: {(k_human, l_human)}")
+                                        # print(f"Alpha and adjacent {alpha_and_adjacent_indexes_set}")
+                                        # print(f"beta and adjacent {beta_and_adjacent_indexes_set}")
+                                        # print((red(find_right(alpha_and_adjacent_indexes_set, n)+1, n), find_left(alpha_and_adjacent_indexes_set, n)), (red(find_right(beta_and_adjacent_indexes_set, n)+1, n), find_left(beta_and_adjacent_indexes_set, n)), ord_from_root_to_beta)
+                                        # print(f"The orientation is: {trip.C((red(find_right(alpha_and_adjacent_indexes_set, n)+1, n), find_left(alpha_and_adjacent_indexes_set, n)), (red(find_right(beta_and_adjacent_indexes_set, n)+1, n), find_left(beta_and_adjacent_indexes_set, n)), ord_from_root_to_beta)}")
+
+                                        C = trip.C((red(find_right(alpha_and_adjacent_indexes_set, n)+1, n), find_left(alpha_and_adjacent_indexes_set, n)), (red(find_right(beta_and_adjacent_indexes_set, n)+1, n), find_left(beta_and_adjacent_indexes_set, n)), ord_from_root_to_beta)
+                                        if C == 0:
+                                            pr += 1
+
+                                    # if root_length == 1:
+                                    #     if root_left_to_beta in record:
+                                    #         ord_from_alpha_to_root = record.index(root_left_to_beta) + 1
+                                    #         ord_from_root_to_beta = num - ord_from_alpha_to_root
+                                    #         C = trip.C((i + 2, j + 1), (k_human, l_human - 1), 
+                                    #                 ord_from_alpha_to_root)
+                                    #         if C is not None and C == 0:
+                                    #             pr += 1
+                                    #     if root_right_to_beta in record:
+                                    #         ord_from_alpha_to_root = record.index(root_right_to_beta) + 1
+                                    #         ord_from_root_to_beta = num - ord_from_alpha_to_root
+                                    #         C = trip.C((i + 2, j + 1), (k_human + 1, l_human), 
+                                    #                 ord_from_alpha_to_root)
+                                    #         if C is not None and C == 0:
+                                    #             pr += 1
+                                    # else:
+                                    #     if root_left_to_beta in record:
+                                    #         ord_from_alpha_to_root = record.index(root_left_to_beta) + 1
+                                    #         ord_from_root_to_beta = num - ord_from_alpha_to_root
+                                    #         if trip.C(root_left_to_beta, (k_human, l_human), 
+                                    #                 ord_from_root_to_beta) == indicator:
+                                    #             pr += 1
+                                    #     if root_right_to_beta in record:
+                                    #         ord_from_alpha_to_root = record.index(root_right_to_beta) + 1
+                                    #         ord_from_root_to_beta = num - ord_from_alpha_to_root
+                                    #         if trip.C(root_right_to_beta, (k_human, l_human), 
+                                    #                 ord_from_root_to_beta) == indicator:
+                                    #             pr += 1
+                                PR[((i+1, j+1), (k_human, l_human), indicator, num)] = pr
+                                PL[((i+1, j+1), (k_human, l_human), indicator, num)] = pl
+                                
+                                i_human, j_human = k_human, l_human
+        
+        return PL, PR
 

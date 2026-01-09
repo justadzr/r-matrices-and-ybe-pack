@@ -607,12 +607,12 @@ def ess_twist_paper(trip: triple.BDTriple, x: sp.Symbol, q_nth: sp.Symbol, focus
         else:
             print(f"To be e{list(map(lambda p: p+1, focus_lst))}: {focus(res_schedler.coef, focus_lst)}")
 
-    print(res_schedler.simplify())
+    # print(res_schedler.simplify())
 
-    print("All J^-1 factors: ------------------------------------------------")
-    print([(j - mat2.identity(n)).simplify() for j in J_inv])
-    print("All J21 factors: ------------------------------------------------")
-    print([(j - mat2.identity(n)).simplify() for j in J21])
+    # print("All J^-1 factors: ------------------------------------------------")
+    # print([(j - mat2.identity(n)).simplify() for j in J_inv])
+    # print("All J21 factors: ------------------------------------------------")
+    # print([(j - mat2.identity(n)).simplify() for j in J21])
     # print("Inverse check: =================================================")
     # for i in range(n):
     #     print((J21_inv[i] * J21[i] - mat2.identity(n)).simplify())
