@@ -565,7 +565,7 @@ def ess_twist_paper(trip: triple.BDTriple, x: sp.Symbol, q_nth: sp.Symbol, focus
         res = res * j
     
     def focus(lst, f):
-        return lst[*f]
+        return lst[tuple(f)]
     
     res_schedler = mat2.identity(n)
 
