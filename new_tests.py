@@ -20,7 +20,7 @@ qn = sp.Symbol('qn', positive=True)
 # print("===========================================================================")
 # print(to_test.subs(xx, 1/xx).subs(qn, 1/qn).transpose().simplify())
 
-for n in range(4, 13):
+# for n in range(4, 13):
 #     print("*************************************************")
 #     print(f"When n = {n}")
 #     qq = qn ** (sp.Rational(n, 2))
@@ -33,23 +33,23 @@ for n in range(4, 13):
     #         lst = list(map(int, unclean.translate(t).split()))
     #         if lst:
     #             triples += [triple.BDTriple(lst)]
-    for n in range(13, 21):
-        triples = nonassoc_affine.nonassoc_affine_triples(n)
-        with open(f"nonassociative-affine-triples-{n}.txt", "w") as f1:
-            print(triples, file=f1)
-            with open(f"server-output/nightmare-for-{n}.txt", "w") as f2:
-                for trip in triples:
-                    PL, _ = trip.passing_orders_with_orientations()
-                    # print(PL)
-                    for k in PL:
-                        # if k[2] == 1 and PL[k] == 1:
-                        #     print(f"For the triple {trip}, the pair {k} is left passed and reversed.")
-                        no = True
-                        if PL[k] == 1/2:
-                            for j in PL:
-                                if k[0][1] == j[0][0] and k[1]:
-                                    print(f"For the triple {trip}, quadruple {j, k} is a nightmare.", file=f2)
-                                    no = False
+for n in range(13, 21):
+    triples = nonassoc_affine.nonassoc_affine_triples(n)
+    with open(f"nonassociative-affine-triples-{n}.txt", "w") as f1:
+        print(triples, file=f1)
+        with open(f"server-output/nightmare-for-{n}.txt", "w") as f2:
+            for trip in triples:
+                PL, _ = trip.passing_orders_with_orientations()
+                # print(PL)
+                for k in PL:
+                    # if k[2] == 1 and PL[k] == 1:
+                    #     print(f"For the triple {trip}, the pair {k} is left passed and reversed.")
+                    no = True
+                    if PL[k] == 1/2:
+                        for j in PL:
+                            if k[0][1] == j[0][0] and k[1]:
+                                print(f"For the triple {trip}, quadruple {j, k} is a nightmare.", file=f2)
+                                no = False
         # if no:
         #     print(f"{trip} safe.")
     
